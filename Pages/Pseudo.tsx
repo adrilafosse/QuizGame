@@ -24,10 +24,17 @@ const Pseudo: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   const Validation = () => {
     if (pseudo) {
+      get(ref(db, `${valeur}/lancement`)).then((snapshot) => {
+        if (snapshot.exists()) {
+            alert('La partie a déjà commencé');
+            navigation.navigate('PageAccueil');
+            return;
+        }
+      });
       get(ref(db, `${valeur}/pseudo`)).then((snapshot) => {
         if (snapshot.exists() && snapshot.child(pseudo).exists()) {
             alert('Ce pseudo est déjà utilisé');
-        } 
+        }
         else {
           update(ref(db, `${valeur}/pseudo`), {
               [pseudo]: pseudo,
