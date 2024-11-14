@@ -12,6 +12,7 @@ import Question from './Pages/Question'
 import CodeAdmin from './Pages/CodeAdmin'
 import AttenteReponse from './Pages/AttenteReponse'
 import Fin from'./Pages/Fin'
+import NomPartie from'./Pages/NomPartie'
 
 const Stack = createNativeStackNavigator();
 
@@ -30,6 +31,7 @@ export default function App() {
         <Stack.Screen name="CodeAdmin" component={CodeAdmin} />
         <Stack.Screen name="AttenteReponse" component={AttenteReponse} />
         <Stack.Screen name="Fin" component={Fin} />
+        <Stack.Screen name="NomPartie" component={NomPartie} />
 
       </Stack.Navigator>
     </NavigationContainer>

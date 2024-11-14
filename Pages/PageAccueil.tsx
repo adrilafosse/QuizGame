@@ -33,7 +33,7 @@ const Page_Accueil: React.FC<{ navigation: any }> = ({ navigation }) => {
       <TouchableOpacity style={styles.bouton2} onPress={Validation}>
         <Text style={styles.boutonText}>Valider</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.bouton} onPress={() => navigation.navigate('Nouvelle partie')}>
+      <TouchableOpacity style={styles.bouton} onPress={() => navigation.navigate('NomPartie')}>
         <Text style={styles.boutonText}>Créer une partie</Text>
       </TouchableOpacity>
     </View>

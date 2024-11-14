@@ -4,14 +4,19 @@ import { StyleSheet, Text, View, TouchableOpacity, Button } from 'react-native';
 import { Platform } from 'react-native';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
-import { ref, set } from 'firebase/database';
+import { get, ref, update } from 'firebase/database';
 import { db } from '../firebaseConfig';
+import { useRoute } from '@react-navigation/native';
 
+interface RouteParams {
+  uniqueId: string;
+}
 
 const NouvellePartie: React.FC<{ navigation: any }> = ({ navigation }) => {
+  const route = useRoute();
+  const { uniqueId } = route.params as RouteParams;
   const [nombrePages, setcompteur] = useState(1);
   const [frequence, setfrequence] = useState(1);
-  const uniqueId = uuidv4().substring(0, 8);
   const idAdmin = uuidv4().substring(0, 8);
 
   React.useLayoutEffect(() => {
@@ -43,12 +48,12 @@ const NouvellePartie: React.FC<{ navigation: any }> = ({ navigation }) => {
   }
   
   async function Firebase(){
-
-    set(ref(db, uniqueId),{
+    
+    update(ref(db, uniqueId),{
       nombrePages : nombrePages,
       frequence : frequence,
       idAdmin : idAdmin,
-    })
+  })
   }
   return (
     <View style={styles.container}>
