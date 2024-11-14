@@ -141,8 +141,10 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
     
     if (compteur < nombreQuestions) {
       navigation.navigate('AttenteReponse', { valeur, pseudo, compteur2,frequence });
+      return;
     } else {
       navigation.navigate('Fin', { valeur, pseudo });
+      return;
     }
   };
 

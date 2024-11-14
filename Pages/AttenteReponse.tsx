@@ -17,6 +17,8 @@ const AttenteReponse: React.FC<{ navigation: any }> = ({ navigation }) => {
   const { valeur, pseudo, compteur2, frequence } = route.params as RouteParams;
   const [timer, setTimer] = useState(0);
   const[compteur,setcompteur] = useState(0);
+  const [bonneReponse,setBonneReponse] = useState('');
+  const [question,setQuestion] = useState('');
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -30,12 +32,19 @@ const AttenteReponse: React.FC<{ navigation: any }> = ({ navigation }) => {
   }, [compteur2]);
 
   useEffect(() => {
+    get(ref(db, `${valeur}/question_reponse/question_reponse_${compteur}`)).then((snapshot) => {
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        setQuestion(data.question);
+        setBonneReponse(data.reponse1);
+      }
+    })
     get(ref(db, `${valeur}/compteur`)).then((snapshot) => {
       if (snapshot.exists() && snapshot.val() === compteur2) {
         navigation.navigate('Question', { valeur, pseudo, compteur, frequence });
       }
     });
-    if(timer<(frequence/6)){
+    if(timer<(frequence/2)){
       const intervalId = setInterval(() => {
         setTimer(prev => prev + 1);
       }, 1000);
@@ -51,7 +60,16 @@ const AttenteReponse: React.FC<{ navigation: any }> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.timer}>{timer}s</Text>
-      <Text style={styles.titre}>Votre réponse a bien été envoyée</Text>
+      {timer <= 10 ? (
+        <>
+          <Text style={styles.titre}>Votre réponse a bien été envoyée</Text>
+        </>
+        ):(
+        <>
+          <Text style={styles.sous_titre}>{question}</Text>
+          <Text style={styles.reponse}>La bonne réponse était : {bonneReponse}</Text>
+         </>
+        )}
     </View>
   );
 };
@@ -63,6 +81,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: wp('5%'),
+  },
+  sous_titre: {
+    color: '#757575',
+    textAlign: 'center',
+    fontSize: wp('5%'),
+    paddingTop: hp('4%'),
+    textDecorationLine: 'underline',
+  },
+  reponse: {
+    color: '#757575',
+    textAlign: 'center',
+    fontSize: wp('5%'),
+    paddingTop: hp('4%'),
   },
   titre: {
     color: '#333333',
