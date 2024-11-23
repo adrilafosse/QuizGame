@@ -14,6 +14,7 @@ const Terminer: React.FC<{ navigation: any }> = ({ navigation }) => {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => null,
+      headerShown: false,
     });
   }, [navigation]);
   
@@ -33,34 +34,33 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5F5F5',
     alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: wp('5%'),  
+    paddingTop: Platform.OS === 'web' ? hp('15%') :  hp('28%'),
   },
   titre: {
     color: '#333333',
     fontWeight: 'bold',
-    fontSize: wp('5%'), 
-    paddingTop: hp('5%'), 
-    textAlign: 'center', 
+    fontSize: Platform.OS === 'web' ? wp('5%') : wp('8%'),
+    textAlign: 'center',
+    paddingHorizontal: wp('5%'), 
   },
   sous_titre: {
     color: '#4CAF50',
     fontSize: wp('5%'),
-    paddingTop: hp('3%'),
+    paddingTop: hp('4%'),
     textAlign: 'center', 
   },
   bouton: {
     backgroundColor: '#4CAF50',
     paddingVertical: hp('2.5%'),
-    paddingHorizontal: wp('20%'),
+    paddingHorizontal: wp('15%'),
     borderRadius: 8,
-    marginTop: hp('5%'),
+    marginTop: hp('4%'),
     alignItems: 'center',
     justifyContent: 'center',
   },
   boutonText: {
     color: '#FFFFFF',
-    fontSize: wp('4.5%'),
+    fontSize: wp('4%'),
     fontWeight: 'bold',
   },
 });

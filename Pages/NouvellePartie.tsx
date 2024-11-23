@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { StyleSheet, Text, View, TouchableOpacity, Button } from 'react-native';
-import { Platform, TextInput } from 'react-native';
+import { Platform } from 'react-native';
 import 'react-native-get-random-values';
-import { get, ref, update } from 'firebase/database';
+import { ref, update } from 'firebase/database';
 import { db } from '../firebaseConfig';
 import { useRoute } from '@react-navigation/native';
 
@@ -96,25 +96,25 @@ const NouvellePartie: React.FC<{ navigation: any }> = ({ navigation }) => {
       <Text style={styles.titre}>Combien de temps la partie va durer /min  ?</Text>
       <View style={styles.container2}>
         <TouchableOpacity style={styles.bouton1} onPress={() => Temps(durer + 10)}>
-          <Text style={styles.boutonText}>+</Text>
+          <Text style={styles.boutonText1}>+</Text>
         </TouchableOpacity>
         <Text style={styles.chiffre}>{durer}</Text>
         <TouchableOpacity style={styles.bouton2} onPress={() => Temps(durer - 10)}>
-          <Text style={styles.boutonText}>-</Text>
+          <Text style={styles.boutonText1}>-</Text>
         </TouchableOpacity>
       </View>
       <Text style={styles.titre}>Combien de questions vous voulez poser ?</Text>
       <View style={styles.container2}>
         <TouchableOpacity style={styles.bouton1} onPress={() => Compteur(nombrePages + 1)}>
-          <Text style={styles.boutonText}>+</Text>
+          <Text style={styles.boutonText1}>+</Text>
         </TouchableOpacity>
         <Text style={styles.chiffre}>{nombrePages}</Text>
         <TouchableOpacity style={styles.bouton2} onPress={() => Compteur(nombrePages - 1)}>
-          <Text style={styles.boutonText}>-</Text>
+          <Text style={styles.boutonText1}>-</Text>
         </TouchableOpacity>
       </View>
       <TouchableOpacity style={styles.bouton3} onPress={Firebase}>
-          <Text style={styles.boutonText}>Valider</Text>
+          <Text style={styles.boutonText2}>Valider</Text>
       </TouchableOpacity>
     </View>
   );
@@ -126,27 +126,22 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5F5F5',
     alignItems: 'center',
+    paddingTop: hp('10%'),
   },
   titre: {
     color: '#333333',
     fontWeight: 'bold',
+    textAlign: 'center',
     fontSize: Platform.OS === 'web' ? wp('3%') : wp('7%'),
-    paddingTop: Platform.OS === 'web' ? hp('5%') : hp('7%'),
-  },
-  input: {
-    height: hp('8%'),
-    width: '80%',
-    borderColor: '#757575',
-    borderWidth: 1,
-    borderRadius: 5,
-    paddingHorizontal: wp('4%'),
-    marginTop: hp('3%'),
-    color: '#333333',
+    paddingTop: Platform.OS === 'web' ? hp('2%') :  hp('6%'),
+    paddingHorizontal: wp('3%')
   },
   bouton1: {
     backgroundColor: '#72825e',
-    paddingVertical: Platform.OS === 'web' ? hp('1%') : hp('3%'), 
-    paddingHorizontal: Platform.OS === 'web' ? wp('2%') : wp('10%'),
+    paddingVertical: Platform.OS === 'web' ? hp('1%') : hp('3%'),
+    paddingHorizontal: Platform.OS === 'web' ? wp('2.5%') : wp('10%'), 
+    marginLeft: wp('2%'),
+    marginRight: wp('10%'),
     borderRadius: 20,
     marginTop: Platform.OS === 'web' ? hp('2%') : hp('5%'),
   },
@@ -154,12 +149,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#72825e',
     paddingVertical: Platform.OS === 'web' ? hp('1%') : hp('3%'), 
     paddingHorizontal: Platform.OS === 'web' ? wp('2.5%') : wp('10%'),
+    marginRight: wp('2%'),
+    marginLeft: wp('10%'),
     borderRadius: 20,
     marginTop: Platform.OS === 'web' ? hp('2%') : hp('5%'),
   },
-  boutonText: {
+  boutonText1: {
     color: '#FFFFFF',
-    fontSize: Platform.OS === 'web' ? wp('4%') : wp('6%'),
+    fontSize: Platform.OS === 'web' ? wp('4%') : wp('8%'),
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom:5,
@@ -174,8 +171,6 @@ const styles = StyleSheet.create({
   chiffre: {
     fontSize: Platform.OS === 'web' ? wp('3%') : wp('10%'),
     paddingTop: Platform.OS === 'web' ? wp('0%') : wp('10%'),
-    marginLeft: Platform.OS === 'web' ? wp('3%') : wp('10%'),
-    marginRight:Platform.OS === 'web' ? wp('3%') : wp('10%'),
     color: '#757575',
   },
   bouton3: {
@@ -190,6 +185,13 @@ const styles = StyleSheet.create({
   selectedDate: {
     fontSize: 16,
     marginBottom: 10,
+  },
+  boutonText2: {
+    color: '#FFFFFF',
+    fontSize: Platform.OS === 'web' ? wp('4%') : wp('6%'),
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom:5,
   },
 });
 export default NouvellePartie;

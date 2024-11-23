@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity, Switch } from 'rea
 import React, { useState } from 'react';
 import { ref, set, get } from 'firebase/database';
 import { db } from '../firebaseConfig';
-import { useRoute } from '@react-navigation/native';
+import { Platform } from 'react-native';
 
 const NomPartie: React.FC<{ navigation: any }> = ({ navigation }) => {
     const [uniqueId, setUniqueId] = useState('');
@@ -19,6 +19,8 @@ const NomPartie: React.FC<{ navigation: any }> = ({ navigation }) => {
                     navigation.navigate('DateHeure', { uniqueId });
                 }
             });
+        }else{
+          alert('Vous devez rentrer un nom de partie');
         }
     }
     React.useLayoutEffect(() => {
@@ -50,40 +52,39 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#F5F5F5',
       alignItems: 'center',
-      justifyContent: 'center',
-      padding: wp('5%'), 
+      paddingTop: Platform.OS === 'web' ? hp('20%') :  hp('28%'),
     },
     titre: {
       color: '#333333',
       fontWeight: 'bold',
-      fontSize: wp('8%'),
-      paddingTop: hp('1%'),
+      fontSize: Platform.OS === 'web' ? wp('7%') : wp('10%'),
       textAlign: 'center',
     },
     input: {
       height: hp('8%'),
-      width: '80%',
+      width: wp('80%'),
       borderColor: '#757575',
       borderWidth: 1,
       borderRadius: 5,
-      paddingHorizontal: wp('4%'),
-      marginTop: hp('3%'),
+      marginTop: hp('4%'),
       color: '#333333',
+      textAlign: 'center',
+      fontSize: Platform.OS === 'web' ? wp('2%') : wp('4%'),
     },
     bouton: {
-        backgroundColor: '#4CAF50',
-        paddingVertical: hp('2.5%'),
-        paddingHorizontal: wp('15%'),
-        borderRadius: 8,
-        marginTop: hp('4%'),
-        alignItems: 'center',
-        justifyContent: 'center',
-      },
-      boutonText: {
-        color: '#FFFFFF',
-        fontSize: wp('4%'),
-        fontWeight: 'bold',
-      },
+      backgroundColor: '#4CAF50',
+      paddingVertical: hp('2.5%'),
+      paddingHorizontal: wp('15%'),
+      borderRadius: 8,
+      marginTop: hp('4%'),
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    boutonText: {
+      color: '#FFFFFF',
+      fontSize: wp('4%'),
+      fontWeight: 'bold',
+    },
 });
 
 export default NomPartie;

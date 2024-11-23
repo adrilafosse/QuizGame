@@ -43,7 +43,7 @@ const QuestionsReponses: React.FC<{ navigation: any }> = ({ navigation }) => {
   const questionSuivante = () => {
     if (page < nombrePages) {
       setPage(page + 1);
-      Firebase();
+      Validation();
       setQuestion('');
       setreponse1('');
       setreponse2('');
@@ -54,58 +54,61 @@ const QuestionsReponses: React.FC<{ navigation: any }> = ({ navigation }) => {
     }
   };
 
-  async function Firebase(){
-
-    if(reponse3 && reponse4){
-      set(ref(db, `${uniqueId}/question_reponse/question_reponse_${page}`), {
-        question : question,
-        reponse1 : reponse1,
-        reponse2 : reponse2,
-        reponse3 : reponse3,
-        reponse4 : reponse4,
-        nombreDeReponses : 4,
-      });
-    }
-    else if(reponse3){
-      set(ref(db, `${uniqueId}/question_reponse/question_reponse_${page}`), {
-        question : question,
-        reponse1 : reponse1,
-        reponse2 : reponse2,
-        reponse3 : reponse3,
-        nombreDeReponses : 3,
-      });
-    }
+  async function Validation(){
+    if(reponse1 && reponse2 && question){
+      if(reponse3 && reponse4){
+        set(ref(db, `${uniqueId}/question_reponse/question_reponse_${page}`), {
+          question : question,
+          reponse1 : reponse1,
+          reponse2 : reponse2,
+          reponse3 : reponse3,
+          reponse4 : reponse4,
+          nombreDeReponses : 4,
+        });
+      }
+      else if(reponse3){
+        set(ref(db, `${uniqueId}/question_reponse/question_reponse_${page}`), {
+          question : question,
+          reponse1 : reponse1,
+          reponse2 : reponse2,
+          reponse3 : reponse3,
+          nombreDeReponses : 3,
+        });
+      }
+      else{
+        set(ref(db, `${uniqueId}/question_reponse/question_reponse_${page}`), {
+          question : question,
+          reponse1 : reponse1,
+          reponse2 : reponse2,
+          nombreDeReponses : 2,
+        });
+      }
+    } 
     else{
-      set(ref(db, `${uniqueId}/question_reponse/question_reponse_${page}`), {
-        question : question,
-        reponse1 : reponse1,
-        reponse2 : reponse2,
-        nombreDeReponses : 2,
-      });
-    }
-    
+      alert("Vous devez rentrer au moins une question, une bonne réponse et une mauvaise réponse");
+    } 
   }
   
   return (
     <View style={styles.container}>
       <Text style={styles.question}>Question: {page}/{nombrePages}</Text>
       <TextInput 
-        style={styles.input} 
+        style={styles.input1} 
         placeholder="Ecrivez votre question"
         placeholderTextColor="#757575"
         value={question}
         onChangeText={setQuestion} 
       />
-      <Text style={styles.question}>Vos réponses</Text>
+      <Text style={styles.reponse}>Vos réponses</Text>
       <TextInput 
-        style={styles.input} 
+        style={styles.input2} 
         placeholder="Ecrivez la bonne réponse"
         placeholderTextColor="#757575"
         value={reponse1}
         onChangeText={setreponse1} 
       />
       <TextInput 
-        style={styles.input} 
+        style={styles.input1} 
         placeholder="Ecrivez une mauvaise réponse"
         placeholderTextColor="#757575"
         value={reponse2}
@@ -113,7 +116,7 @@ const QuestionsReponses: React.FC<{ navigation: any }> = ({ navigation }) => {
       />
      {compteur === 3 ? (
       <TextInput 
-        style={styles.input} 
+        style={styles.input1} 
         placeholder="Ecrivez une mauvaise réponse"
         placeholderTextColor="#757575"
         value={reponse3}
@@ -122,14 +125,14 @@ const QuestionsReponses: React.FC<{ navigation: any }> = ({ navigation }) => {
       ) : compteur > 3 ? (
       <>
         <TextInput 
-          style={styles.input} 
+          style={styles.input1} 
           placeholder="Ecrivez une mauvaise réponse"
           placeholderTextColor="#757575"
           value={reponse3}
           onChangeText={setreponse3} 
         />
         <TextInput 
-          style={styles.input} 
+          style={styles.input1} 
           placeholder="Ecrivez une mauvaise réponse"
           placeholderTextColor="#757575"
           value={reponse4}
@@ -153,7 +156,7 @@ const QuestionsReponses: React.FC<{ navigation: any }> = ({ navigation }) => {
       ) : (
         <TouchableOpacity 
           style={styles.bouton} 
-          onPress={() => {navigation.navigate('Terminer', { uniqueId }); Firebase() }}
+          onPress={() => {navigation.navigate('Terminer', { uniqueId }); Validation() }}
         >
           <Text style={styles.boutonText}>Terminer le quiz</Text>
         </TouchableOpacity>
@@ -167,21 +170,21 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5F5F5',
     alignItems: 'center',
-    paddingHorizontal: wp('5%'),
+    paddingTop: Platform.OS === 'web' ? hp('4%') :  hp('9%'),
   },
   container2: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: hp('3%'),
-    width: '40%',
+    marginTop: Platform.OS === 'web' ? hp('2%') :  hp('5%'),
+    width: Platform.OS === 'web' ? '40%' : wp('70%'), 
   },
   bouton: {
     backgroundColor: '#4CAF50',
     paddingVertical: Platform.OS === 'web' ? hp('2%') : hp('3%'),
     paddingHorizontal: Platform.OS === 'web' ? wp('15%') : wp('20%'),
     borderRadius: 8,
-    marginTop: Platform.OS === 'web' ? hp('5%') : hp('5%'),
+    marginTop: Platform.OS === 'web' ? hp('2%') : hp('6%'),
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -196,10 +199,16 @@ const styles = StyleSheet.create({
     color: '#333333',
     fontWeight: 'bold',
     fontSize: Platform.OS === 'web' ? wp('3%') : wp('8%'),
-    paddingTop: Platform.OS === 'web' ? hp('5%') : hp('7%'),
     textAlign: 'center',
   },
-  input: {
+  reponse:{
+    color: '#333333',
+    fontWeight: 'bold',
+    fontSize: Platform.OS === 'web' ? wp('3%') : wp('8%'),
+    paddingTop: Platform.OS === 'web' ? hp('5%') : hp('3%'),
+    textAlign: 'center',
+  },
+  input1: {
     height: hp('6%'),
     width: '80%',
     borderColor: '#757575',
@@ -208,17 +217,30 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp('3%'),
     marginTop: hp('2%'),
     color: '#333333',
+    textAlign: 'center',
   },
+  input2: {
+    height: hp('6%'),
+    width: '80%',
+    borderColor: 'red', // Changer la couleur de la bordure en rouge
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: wp('3%'),
+    marginTop: hp('2%'),
+    color: 'red', // Changer la couleur du texte en rouge
+    textAlign: 'center',
+  },
+  
   bouton1: {
     backgroundColor: '#72825e',
-    paddingVertical: hp('0.5%'),
-    paddingHorizontal: wp('2%'),
+    paddingVertical: Platform.OS === 'web' ? hp('1%') : hp('3%'),
+    paddingHorizontal: Platform.OS === 'web' ? wp('2.5%') : wp('10%'),
     borderRadius: 20,
   },
   bouton2: {
     backgroundColor: '#72825e',
-    paddingVertical: hp('0.5%'),
-    paddingHorizontal: wp('2.5%'),
+    paddingVertical: Platform.OS === 'web' ? hp('1%') : hp('3%'),
+    paddingHorizontal: Platform.OS === 'web' ? wp('2.5%') : wp('10%'),
     borderRadius: 20,
   },
 });

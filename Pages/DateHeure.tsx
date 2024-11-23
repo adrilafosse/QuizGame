@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { ref, update } from 'firebase/database';
 import { db } from '../firebaseConfig';
 import { useRoute } from '@react-navigation/native';
+import { Platform } from 'react-native';
 
 interface RouteParams {
   uniqueId: string;
@@ -37,13 +38,15 @@ const DateHeure: React.FC<{ navigation: any }> = ({ navigation }) => {
       } else {
         alert("Le format de la date n'est pas correct. Utilisez jj/mm/aaaa hh:mm.");
       }
+    }else{
+      alert("Vous devez rentrer une date");
     }
   };
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
-      headerLeft: () => null,
-      headerShown: false, // Masque la flèche de retour
+      //headerLeft: () => null,
+      //headerShown: false, // Masque la flèche de retour
     });
   }, [navigation]);
 
@@ -69,25 +72,25 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5F5F5',
     alignItems: 'center',
-    justifyContent: 'center',
-    padding: wp('5%'),
+    paddingTop: Platform.OS === 'web' ? hp('15%') :  hp('14%'),
   },
   titre: {
     color: '#333333',
     fontWeight: 'bold',
-    fontSize: wp('8%'),
-    paddingTop: hp('1%'),
+    fontSize: Platform.OS === 'web' ? wp('6%') : wp('8%'),
     textAlign: 'center',
+    marginHorizontal: wp('5%')
   },
   input: {
     height: hp('8%'),
-    width: '80%',
+    width: wp('80%'),
     borderColor: '#757575',
     borderWidth: 1,
     borderRadius: 5,
-    paddingHorizontal: wp('4%'),
-    marginTop: hp('3%'),
+    marginTop: hp('4%'),
+    textAlign: 'center',
     color: '#333333',
+    fontSize: Platform.OS === 'web' ? wp('2%') : wp('4%'),
   },
   bouton: {
     backgroundColor: '#4CAF50',

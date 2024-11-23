@@ -75,14 +75,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F5F5',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: wp('5%'), 
+    paddingTop: hp('25%'),
   },
   titre: {
     color: '#333333',
     fontWeight: 'bold',
     fontSize: wp('8%'),
-    paddingTop: hp('5%'),
     textAlign: 'center',
+    paddingHorizontal: wp('5%'),
   },
   input: {
     height: hp('8%'),
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: wp('4%'),
-    marginTop: hp('3%'),
+    marginTop: hp('2%'),
     color: '#333333',
   },
   bouton: {
