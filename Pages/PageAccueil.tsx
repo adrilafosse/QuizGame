@@ -54,6 +54,7 @@ const Page_Accueil: React.FC<{ navigation: any }> = ({ navigation }) => {
       <TouchableOpacity style={styles.bouton2} onPress={Validation}>
         <Text style={styles.boutonText}>Valider</Text>
       </TouchableOpacity>
+      <Text style={styles.ou}>----------   ou   ----------</Text>
       <TouchableOpacity style={styles.bouton} onPress={() => navigation.navigate('NomPartie')}>
         <Text style={styles.boutonText}>Créer une partie</Text>
       </TouchableOpacity>
@@ -66,19 +67,24 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5F5F5',
     alignItems: 'center',
-    paddingTop: hp('5%'),
+    paddingTop: Platform.OS === 'web' ? hp('3%') :  hp('10%'),
   },
   titre: {
     color: '#333333',
     fontWeight: 'bold',
-    fontSize: wp('7%'),
+    fontSize: Platform.OS === 'web' ? wp('7%') : wp('16%'),
     paddingTop: hp('1%'),
+  },
+  ou:{
+    paddingTop: Platform.OS === 'web' ? wp('2%') : wp('12%'),
+    color: '#757575',
+    fontSize: Platform.OS === 'web' ? wp('2%') : wp('4%'),
   },
   sous_titre: {
     color: '#757575',
     textAlign: 'center',
-    fontSize: wp('5%'),
-    paddingTop: hp('3%'),
+    fontSize: Platform.OS === 'web' ? wp('3%') : wp('8%'),
+    paddingTop: Platform.OS === 'web' ? wp('2%') : wp('14%'),
     textDecorationLine: 'underline',
   },
   input: {
@@ -90,13 +96,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp('4%'),
     marginTop: hp('2%'),
     color: '#333333',
+    textAlign: 'center',
   },
   bouton: {
     backgroundColor: '#4CAF50',
     paddingVertical: hp('2.5%'),
     paddingHorizontal: wp('20%'),
     borderRadius: 8,
-    marginTop: hp('4%'),
+    marginTop: Platform.OS === 'web' ? wp('2%') : wp('12%'),
     alignItems: 'center',
     justifyContent: 'center',
   },

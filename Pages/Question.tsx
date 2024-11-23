@@ -124,7 +124,6 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
     <View style={styles.container}>
       <Text style={styles.timer}>{timer}s</Text>
       <Text style={styles.question}>{question}</Text>
-
       <View style={styles.reponseContainer}>
         <TouchableOpacity style={[styles.button, styles.color1]} onPress={() => Validation(tableauFinal[0])}>
           <Text style={styles.texte}>{tableauFinal[0]}</Text>
@@ -157,28 +156,29 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5F5F5',
     alignItems: 'center',
-    paddingTop: hp('7%'),
+    paddingTop: hp('15%'),
   },
   nombreDeQuestion: {
-    fontSize: wp('4%'),
+    fontSize: wp('8%'),
     fontWeight: 'bold',
     color: '#333333',
     textAlign: 'center',
-    marginTop: hp('2%'),
+    marginTop: hp('8%'),
   },
   question: {
-    fontSize: wp('5.5%'),
+    fontSize: wp('12%'),
     fontWeight: 'bold',
     color: '#222222',
-    marginVertical: hp('4%'),
     textAlign: 'center',
     paddingHorizontal: wp('4%'),
+    paddingTop: hp('8%'),
   },
   reponseContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
     width: '90%',
+    paddingTop: hp('8%'),
   },
   button: {
     width: '48%',
@@ -195,10 +195,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   timer: {
-    position: 'absolute',
-    top: hp('5%'),
-    right: wp('5%'),
-    fontSize: wp('6%'),
+    fontSize: wp('10%'),
     fontWeight: 'bold',
     color: '#333',
   },

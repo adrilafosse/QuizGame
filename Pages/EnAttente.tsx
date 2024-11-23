@@ -15,7 +15,6 @@ interface RouteParams {
 const EnAttente: React.FC<{ navigation: any }> = ({ navigation }) => {
   const route = useRoute();
   const { valeur, pseudo } = route.params as RouteParams;
-  const [compteur, setCompteur] = useState(1);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({

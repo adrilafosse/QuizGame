@@ -12,7 +12,6 @@ const Pseudo: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [pseudo, setPseudo] = useState('');
   const route = useRoute();
   const { valeur } = route.params as RouteParams;
-  const [date,setDate] = useState('');
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -23,11 +22,13 @@ const Pseudo: React.FC<{ navigation: any }> = ({ navigation }) => {
   
   const Validation = () => {
     if (pseudo) {
-      get(ref(db, valeur)).then((snapshot) => {
+      get(ref(db, `${valeur}/date`)).then((snapshot) => {
         if (snapshot.exists()) {
-          setDate(snapshot.val())
+          const date = snapshot.val()
           const datePartie = new Date(date)
+          console.log("datePartie : "+date)
           const dateActuelle = new Date();
+          console.log("datePartie : "+dateActuelle)
           if(dateActuelle<datePartie){
             get(ref(db, `${valeur}/pseudo`)).then((snapshot) => {
               if (snapshot.exists() && snapshot.child(pseudo).exists()) {
@@ -74,13 +75,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5F5F5',
     alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: hp('25%'),
+    paddingTop: hp('28%'),
   },
   titre: {
     color: '#333333',
     fontWeight: 'bold',
-    fontSize: wp('8%'),
+    fontSize: wp('10%'),
     textAlign: 'center',
     paddingHorizontal: wp('5%'),
   },
@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp('4%'),
     marginTop: hp('2%'),
     color: '#333333',
+    textAlign: 'center',
   },
   bouton: {
     backgroundColor: '#4CAF50',
