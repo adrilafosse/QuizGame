@@ -18,7 +18,10 @@
       "entitlements": {
         "aps-environment": "production"
       },
-      "bundleIdentifier": "com.anonymous.QuizGame"
+      "bundleIdentifier": "com.anonymous.QuizGame",
+      "runtimeVersion": {
+        "policy": "appVersion"
+      }
     },
     "android": {
       "googleServicesFile": "./google-services.json",
@@ -32,7 +35,8 @@
         "WAKE_LOCK",
         "VIBRATE",
         "FOREGROUND_SERVICE"
-      ]
+      ],
+      "runtimeVersion": "1.0.0"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -50,8 +54,12 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "854a4b45-9549-447d-b7ef-b97e3796ec7d"
+        "projectId": "9aebfeb7-74ab-45f9-aaab-270fc341f47f"
       }
-    }
+    },
+    "updates": {
+      "url": "https://u.expo.dev/854a4b45-9549-447d-b7ef-b97e3796ec7d"
+    },
+    "owner": "adrienlfe"
   }
 }
