@@ -1,0 +1,57 @@
+{
+  "expo": {
+    "name": "QuizGame",
+    "slug": "QuizGame",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "supportsTablet": true,
+      "newArchEnabled": true,
+      "entitlements": {
+        "aps-environment": "production"
+      },
+      "bundleIdentifier": "com.anonymous.QuizGame"
+    },
+    "android": {
+      "googleServicesFile": "./google-services.json",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.anonymous.QuizGame",
+      "permissions": [
+        "NOTIFICATIONS",
+        "WAKE_LOCK",
+        "VIBRATE",
+        "FOREGROUND_SERVICE"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "@react-native-firebase/app",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "854a4b45-9549-447d-b7ef-b97e3796ec7d"
+      }
+    }
+  }
+}
