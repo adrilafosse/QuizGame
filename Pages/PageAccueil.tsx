@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-nativ
 import { get, ref } from 'firebase/database';
 import { db } from '../firebaseConfig';
 import * as Notifications from 'expo-notifications';
+import { Platform } from 'react-native';
 
 
 const Page_Accueil: React.FC<{ navigation: any }> = ({ navigation }) => {
@@ -24,14 +25,18 @@ const Page_Accueil: React.FC<{ navigation: any }> = ({ navigation }) => {
   
 
   const Validation = async () => {
-    if (valeur) {
-      get(ref(db, valeur)).then(async (snapshot) => {
-        if (snapshot.exists()) {
-          navigation.navigate('Pseudo', { valeur });
-        } else {
-          alert('Le code de partie n\'est pas correct');
-        }
-      });
+    if (Platform.OS === 'web') {
+      alert('Impossible de rejoindre une partie sur le web');
+    }else{
+      if (valeur) {
+        get(ref(db, valeur)).then(async (snapshot) => {
+          if (snapshot.exists()) {
+            navigation.navigate('Pseudo', { valeur });
+          } else {
+            alert('Le code de partie n\'est pas correct');
+          }
+        });
+      }
     }
   };
 
