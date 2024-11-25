@@ -22,7 +22,6 @@ const NomPartie: React.FC<{ navigation: any }> = ({ navigation }) => {
                     alert('Ce nom de partie existe déjà');
                 }
                 else {
-                    set(ref(db, uniqueId), true)
                     navigation.navigate('DateHeure', { uniqueId });
                 }
             });

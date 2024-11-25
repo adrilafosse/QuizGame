@@ -84,6 +84,9 @@ const NouvellePartie: React.FC<{ navigation: any }> = ({ navigation }) => {
         update(ref(db,`${uniqueId}/question-temps`),{
           [question] : dateUTC,
         })
+        update(ref(db, uniqueId), {
+          date: dateFormate,
+        });
       }
       navigation.navigate('Questions réponses', { uniqueId,nombrePages })
     }else{

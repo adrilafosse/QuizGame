@@ -35,9 +35,6 @@ const DateHeure: React.FC<{ navigation: any }> = ({ navigation }) => {
         //date de la partie doit être 15 minutes après la date actuelle donc l'utilisateur à 15 min pour creer ses questions
         currentDate.setMinutes(currentDate.getMinutes() + 15)
         if(currentDate < dateFormate){
-          update(ref(db, uniqueId), {
-            date: dateFormate,
-          });
           navigation.navigate('Nouvelle partie', { uniqueId, dateFormate });
         }else{
           alert("La date doit être supérieur de 15 minutes à la date actuelle");
