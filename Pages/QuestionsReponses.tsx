@@ -42,51 +42,59 @@ const QuestionsReponses: React.FC<{ navigation: any }> = ({ navigation }) => {
   }
   const questionSuivante = () => {
     if (page < nombrePages) {
-      setPage(page + 1);
-      Validation();
-      setQuestion('');
-      setreponse1('');
-      setreponse2('');
-      setreponse3('');
-      setreponse4('');
-      navigation.navigate('Questions réponses', { uniqueId, nombrePages, page });
-      
-    }
-  };
-
-  async function Validation(){
-    if(reponse1 && reponse2 && question){
-      if(reponse3 && reponse4){
-        set(ref(db, `${uniqueId}/question_reponse/question_reponse_${page}`), {
-          question : question,
-          reponse1 : reponse1,
-          reponse2 : reponse2,
-          reponse3 : reponse3,
-          reponse4 : reponse4,
-          nombreDeReponses : 4,
-        });
-      }
-      else if(reponse3){
-        set(ref(db, `${uniqueId}/question_reponse/question_reponse_${page}`), {
-          question : question,
-          reponse1 : reponse1,
-          reponse2 : reponse2,
-          reponse3 : reponse3,
-          nombreDeReponses : 3,
-        });
+      if(reponse1 && reponse2 && question){
+        setPage(page + 1);
+        Validation();
+        setQuestion('');
+        setreponse1('');
+        setreponse2('');
+        setreponse3('');
+        setreponse4('');
+        navigation.navigate('Questions réponses', { uniqueId, nombrePages, page });
       }
       else{
-        set(ref(db, `${uniqueId}/question_reponse/question_reponse_${page}`), {
-          question : question,
-          reponse1 : reponse1,
-          reponse2 : reponse2,
-          nombreDeReponses : 2,
-        });
-      }
-    } 
+        alert("Vous devez rentrer au moins une question, une bonne réponse et une mauvaise réponse");
+      } 
+    }
+  };
+  const questionFinal = () => {
+    if(reponse1 && reponse2 && question){
+      Validation();
+      navigation.navigate('Terminer', { uniqueId });
+    }
     else{
       alert("Vous devez rentrer au moins une question, une bonne réponse et une mauvaise réponse");
     } 
+  }
+
+  async function Validation(){
+    if(reponse3 && reponse4){
+      set(ref(db, `${uniqueId}/question_reponse/${page}`), {
+        question : question,
+        reponse1 : reponse1,
+        reponse2 : reponse2,
+        reponse3 : reponse3,
+        reponse4 : reponse4,
+        nombreDeReponses : 4,
+      });
+    }
+    else if(reponse3){
+      set(ref(db, `${uniqueId}/question_reponse/${page}`), {
+        question : question,
+        reponse1 : reponse1,
+        reponse2 : reponse2,
+        reponse3 : reponse3,
+        nombreDeReponses : 3,
+      });
+    }
+    else{
+      set(ref(db, `${uniqueId}/question_reponse/${page}`), {
+        question : question,
+        reponse1 : reponse1,
+        reponse2 : reponse2,
+        nombreDeReponses : 2,
+      });
+    }
   }
   
   return (
@@ -156,7 +164,7 @@ const QuestionsReponses: React.FC<{ navigation: any }> = ({ navigation }) => {
       ) : (
         <TouchableOpacity 
           style={styles.bouton} 
-          onPress={() => {navigation.navigate('Terminer', { uniqueId }); Validation() }}
+          onPress={questionFinal}
         >
           <Text style={styles.boutonText}>Terminer le quiz</Text>
         </TouchableOpacity>

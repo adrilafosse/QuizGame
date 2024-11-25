@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5F5F5',
     alignItems: 'center',
-    paddingTop: Platform.OS === 'web' ? hp('3%') :  hp('10%'),
+    paddingTop: Platform.OS === 'web' ? hp('10%') :  hp('10%'),
   },
   titre: {
     color: '#333333',
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     paddingVertical: hp('2.5%'),
     paddingHorizontal: wp('20%'),
     borderRadius: 8,
-    marginTop: Platform.OS === 'web' ? wp('10%') : wp('12%'),
+    marginTop: Platform.OS === 'web' ? wp('8%') : wp('12%'),
     alignItems: 'center',
     justifyContent: 'center',
   },

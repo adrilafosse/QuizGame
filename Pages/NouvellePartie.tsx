@@ -79,10 +79,9 @@ const NouvellePartie: React.FC<{ navigation: any }> = ({ navigation }) => {
       }
       tableau.sort((a, b) => a.getTime() - b.getTime());
       for(let k=1;k<tableau.length;k++){
-        const question = `question${k}`;
         const dateUTC = tableau[k].toISOString();
         update(ref(db,`${uniqueId}/question-temps`),{
-          [question] : dateUTC,
+          [k] : dateUTC,
         })
         update(ref(db, uniqueId), {
           date: dateFormate,

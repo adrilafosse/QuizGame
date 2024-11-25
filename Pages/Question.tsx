@@ -109,7 +109,7 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
   const Validation = (reponse: string) => {
     setReponse(reponse)
     update(ref(db, `${valeur}/reponses/${pseudo}`), {
-      [`reponseQuestion${compteur}`]: reponse,
+      [compteur]: reponse,
     });    
     if (compteur < nombreQuestions) {
       navigation.navigate('AttenteReponse');
