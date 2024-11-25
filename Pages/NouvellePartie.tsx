@@ -24,7 +24,7 @@ const NouvellePartie: React.FC<{ navigation: any }> = ({ navigation }) => {
       headerLeft: () => null,
       headerShown: false, // Masque la flèche de retour
     });
-  }, [navigation]);
+  }, []);
 
   function Compteur (compteur){
     if(compteur < 1){
@@ -54,7 +54,7 @@ const NouvellePartie: React.FC<{ navigation: any }> = ({ navigation }) => {
 
     let tableau: Date[] = [];
     let ecart = durer / nombrePages;
-    //il faut 5 minutes entre chaque question minimum
+    //il faut 10 minutes entre chaque question minimum
     if (ecart >= 10) {
       ecart = 10;
       for (let i = 0; i < nombrePages+1; i++) {

@@ -8,6 +8,13 @@ import { Platform } from 'react-native';
 const NomPartie: React.FC<{ navigation: any }> = ({ navigation }) => {
     const [uniqueId, setUniqueId] = useState('');
 
+    React.useLayoutEffect(() => {
+      navigation.setOptions({
+        headerLeft: () => null,
+        headerShown: false, // Masque la flèche de retour
+      });
+    }, []);
+
     const Validation = () => {
         if (uniqueId) {
             get(ref(db)).then((snapshot) => {
@@ -23,12 +30,6 @@ const NomPartie: React.FC<{ navigation: any }> = ({ navigation }) => {
           alert('Vous devez rentrer un nom de partie');
         }
     }
-    React.useLayoutEffect(() => {
-        navigation.setOptions({
-          headerLeft: () => null,
-          headerShown: false, // Masque la flèche de retour
-        });
-      }, [navigation]);
 
     return (
         <View style={styles.container}>

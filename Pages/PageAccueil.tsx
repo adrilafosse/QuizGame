@@ -10,8 +10,9 @@ import { Platform } from 'react-native';
 const Page_Accueil: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [valeur, setvaleur] = useState('');
   
+  //ecouteur gr9ace a use Effect pour la notification
   useEffect(() => {
-    const subscription = Notifications.addNotificationResponseReceivedListener(response => {
+    const notification = Notifications.addNotificationResponseReceivedListener(response => {
       const { valeur, pseudo, compteur, date } = response.notification.request.content.data;
       if (valeur && pseudo && compteur && date) {
         navigation.navigate('Question', { valeur, pseudo, compteur,date });
@@ -19,9 +20,10 @@ const Page_Accueil: React.FC<{ navigation: any }> = ({ navigation }) => {
         console.log("Les données de la notification sont manquantes");
       }
     });
-  
-    return () => subscription.remove();
-  }, [navigation]);
+    //vider l'ecouteur
+    return () => notification.remove();
+    //aucune dépendance useEffect se déclenchera qu'une seule fois 
+  }, []);
   
 
   const Validation = async () => {
@@ -43,18 +45,22 @@ const Page_Accueil: React.FC<{ navigation: any }> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.titre}>QuizGame</Text>
-      <Text style={styles.sous_titre}>Rejoindre une partie</Text>
-      <TextInput 
-        style={styles.input} 
-        placeholder="Entrez le nom de la partie"
-        placeholderTextColor="#757575"
-        value={valeur}
-        onChangeText={(text) => setvaleur(text)}
-      />
-      <TouchableOpacity style={styles.bouton2} onPress={Validation}>
-        <Text style={styles.boutonText}>Valider</Text>
-      </TouchableOpacity>
-      <Text style={styles.ou}>----------   ou   ----------</Text>
+      {Platform.OS !== 'web' ? (
+        <>
+          <Text style={styles.sous_titre}>Rejoindre une partie</Text>
+          <TextInput 
+            style={styles.input} 
+            placeholder="Entrez le nom de la partie"
+            placeholderTextColor="#757575"
+            value={valeur}
+            onChangeText={(text) => setvaleur(text)}
+          />
+          <TouchableOpacity style={styles.bouton2} onPress={Validation}>
+          <Text style={styles.boutonText}>Valider</Text>
+          </TouchableOpacity>
+          <Text style={styles.ou}>----------   ou   ----------</Text>
+        </>
+      ) : null}
       <TouchableOpacity style={styles.bouton} onPress={() => navigation.navigate('NomPartie')}>
         <Text style={styles.boutonText}>Créer une partie</Text>
       </TouchableOpacity>
@@ -72,7 +78,7 @@ const styles = StyleSheet.create({
   titre: {
     color: '#333333',
     fontWeight: 'bold',
-    fontSize: Platform.OS === 'web' ? wp('7%') : wp('16%'),
+    fontSize: Platform.OS === 'web' ? wp('10%') : wp('16%'),
     paddingTop: hp('1%'),
   },
   ou:{
@@ -103,7 +109,7 @@ const styles = StyleSheet.create({
     paddingVertical: hp('2.5%'),
     paddingHorizontal: wp('20%'),
     borderRadius: 8,
-    marginTop: Platform.OS === 'web' ? wp('2%') : wp('12%'),
+    marginTop: Platform.OS === 'web' ? wp('10%') : wp('12%'),
     alignItems: 'center',
     justifyContent: 'center',
   },

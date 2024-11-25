@@ -16,7 +16,7 @@ const Terminer: React.FC<{ navigation: any }> = ({ navigation }) => {
       headerLeft: () => null,
       headerShown: false,
     });
-  }, [navigation]);
+  }, []);
   
   return (
     <View style={styles.container}>

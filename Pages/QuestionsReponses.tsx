@@ -28,7 +28,7 @@ const QuestionsReponses: React.FC<{ navigation: any }> = ({ navigation }) => {
       headerLeft: () => null,
       headerShown: false, // Masque la flèche de retour
     });
-  }, [navigation]);
+  }, []);
 
   const CompteurPlus = () => {
     if(compteur<=4){

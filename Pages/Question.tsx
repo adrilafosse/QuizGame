@@ -29,7 +29,7 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
       headerLeft: () => null,
       headerShown: false, // Masque la flèche de retour
     });
-  }, [navigation]);
+  }, []);
 
   //reinitialisation des champs
   useFocusEffect(

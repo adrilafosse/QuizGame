@@ -21,7 +21,7 @@ const EnAttente: React.FC<{ navigation: any }> = ({ navigation }) => {
       headerLeft: () => null,
       headerShown: false, // Masque la flèche de retour
     });
-  }, [navigation]);
+  }, []);
 
   Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -33,7 +33,7 @@ const EnAttente: React.FC<{ navigation: any }> = ({ navigation }) => {
   
   const scheduleNotification = async (title: string, body: string, date: Date, data: any) => {
     try {
-      const notificationId = await Notifications.scheduleNotificationAsync({
+      await Notifications.scheduleNotificationAsync({
         content: {
           title: title,
           body: body,
@@ -59,8 +59,7 @@ const EnAttente: React.FC<{ navigation: any }> = ({ navigation }) => {
             date,
             { valeur, pseudo,compteur,date }
           );
-        }
-        
+        }    
       }
     });
   });

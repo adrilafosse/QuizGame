@@ -15,6 +15,13 @@ const DateHeure: React.FC<{ navigation: any }> = ({ navigation }) => {
   const { uniqueId } = route.params as RouteParams;
   const [date, setDate] = useState('');
 
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      //headerLeft: () => null,
+      //headerShown: false, // Masque la flèche de retour
+    });
+  }, []);
+  
   const Validation = () => {
     if (date) {
       const regex = /^([0-2][0-9]|3[01])\/(0[1-9]|1[0-2])\/(19|20)\d\d\s([01][0-9]|2[0-3]):([0-5][0-9])$/;
@@ -42,13 +49,6 @@ const DateHeure: React.FC<{ navigation: any }> = ({ navigation }) => {
       alert("Vous devez rentrer une date");
     }
   };
-
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      //headerLeft: () => null,
-      //headerShown: false, // Masque la flèche de retour
-    });
-  }, [navigation]);
 
   return (
     <View style={styles.container}>

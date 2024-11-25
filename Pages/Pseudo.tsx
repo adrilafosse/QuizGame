@@ -18,7 +18,7 @@ const Pseudo: React.FC<{ navigation: any }> = ({ navigation }) => {
       headerLeft: () => null,
       headerShown: false, // Masque la flèche de retour
     });
-  }, [navigation]);
+  }, []);
   
   const Validation = () => {
     if (pseudo) {
@@ -26,9 +26,7 @@ const Pseudo: React.FC<{ navigation: any }> = ({ navigation }) => {
         if (snapshot.exists()) {
           const date = snapshot.val()
           const datePartie = new Date(date)
-          console.log("datePartie : "+date)
           const dateActuelle = new Date();
-          console.log("datePartie : "+dateActuelle)
           if(dateActuelle<datePartie){
             get(ref(db, `${valeur}/pseudo`)).then((snapshot) => {
               if (snapshot.exists() && snapshot.child(pseudo).exists()) {
