@@ -23,6 +23,8 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [timer, setTimer] = useState(60);
   let tableau = [];
   const [tableauFinal, setTableauFinal] = useState<string[]>([]);
+  const [bonneReponse, setBonneReponse] = useState('');
+  const [scoreJoueur, setScoreJoueur] = useState(0);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -75,11 +77,18 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
         setNombreQuestions(snapshot.val());
       }
     });
-    get(ref(db, `${valeur}/question_reponse/question_reponse_${compteur}`)).then((snapshot) => {
+    get(ref(db, `${valeur}/score`)).then((snapshot) => {
+      if (snapshot.exists()&& snapshot.child(pseudo).exists()) {
+        const score = snapshot.child(pseudo).val();
+        setScoreJoueur(score)
+      }
+    });
+    get(ref(db, `${valeur}/question_reponse/${compteur}`)).then((snapshot) => {
       if (snapshot.exists()) {
         const data = snapshot.val();
         setNombreReponses(data.nombreDeReponses);
         setQuestion(data.question);
+        setBonneReponse(data.reponse1)
         if(data.nombreDeReponses === 2){
           tableau = [data.reponse1,data.reponse2]
         }
@@ -110,7 +119,16 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
     setReponse(reponse)
     update(ref(db, `${valeur}/reponses/${pseudo}`), {
       [compteur]: reponse,
-    });    
+    });
+    if(reponse == bonneReponse){
+      update(ref(db, `${valeur}/score/`),{
+        [pseudo] : scoreJoueur + 100 + timer
+      });  
+    }else{
+      update(ref(db, `${valeur}/score/`),{
+        [pseudo] : scoreJoueur
+      });
+    }
     if (compteur < nombreQuestions) {
       navigation.navigate('AttenteReponse');
       return;

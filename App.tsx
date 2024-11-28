@@ -4,7 +4,6 @@ import * as Notifications from 'expo-notifications';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-// Vos imports existants ici
 import PageAccueil from './Pages/PageAccueil';
 import NouvellePartie from './Pages/NouvellePartie';
 import QuestionsReponses from './Pages/QuestionsReponses';
