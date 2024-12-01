@@ -230,12 +230,12 @@ const styles = StyleSheet.create({
   input2: {
     height: hp('6%'),
     width: '80%',
-    borderColor: 'red', // Changer la couleur de la bordure en rouge
+    borderColor: 'red',
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: wp('3%'),
     marginTop: hp('2%'),
-    color: 'red', // Changer la couleur du texte en rouge
+    color: 'red',
     textAlign: 'center',
   },
   

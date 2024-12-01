@@ -10,7 +10,6 @@ import { Platform } from 'react-native';
 const Page_Accueil: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [valeur, setvaleur] = useState('');
   
-  //ecouteur gr9ace a use Effect pour la notification
   useEffect(() => {
     const notification = Notifications.addNotificationResponseReceivedListener(response => {
       const { valeur, pseudo, compteur, date } = response.notification.request.content.data;
@@ -38,6 +37,8 @@ const Page_Accueil: React.FC<{ navigation: any }> = ({ navigation }) => {
             alert('Le code de partie n\'est pas correct');
           }
         });
+      }else{
+        alert('Veuillez rentrer un nom de partie');
       }
     }
   };

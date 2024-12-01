@@ -54,24 +54,24 @@ const NouvellePartie: React.FC<{ navigation: any }> = ({ navigation }) => {
 
     let tableau: Date[] = [];
     let ecart = durer / nombrePages;
-    //il faut 10 minutes entre chaque question minimum
-    if (ecart >= 10) {
-      ecart = 10;
+    //il faut 3 minutes entre chaque question minimum
+    if (ecart <=3) {
       for (let i = 0; i < nombrePages+1; i++) {
         const nouvelleDateWithRandomMinutes = new Date(dateFormate);
         //On ajoute des minutes durer * un nombre entre 0 et 1[ et on prend la partie entiere
         nouvelleDateWithRandomMinutes.setMinutes(nouvelleDateWithRandomMinutes.getMinutes() + Math.floor(Math.random() * durer)); 
         let dateValide = true;
         for (let j = 0; j < tableau.length; j++) {
-          //on parcourt le tableau si la nouvelle date n'a pas 5 minutes alors on ne la sauvegarde pas
+          //on parcourt le tableau si la nouvelle date n'a pas 2 minutes alors on ne la sauvegarde pas
           const diff = Math.abs(nouvelleDateWithRandomMinutes.getTime() - tableau[j].getTime()); // Comparer en ms
-          console.log("tableau : "+tableau)
-          if (diff < 300000) {
-            dateValide = false;
+          if (diff < 120000) {
+            dateValide = false
+            ;
             break;
           }
         }
         if (dateValide) {
+          
           tableau.push(nouvelleDateWithRandomMinutes);
         } else {
           i--;
@@ -89,7 +89,7 @@ const NouvellePartie: React.FC<{ navigation: any }> = ({ navigation }) => {
       }
       navigation.navigate('Questions réponses', { uniqueId,nombrePages })
     }else{
-      alert("Il doit y avoir au moins 10 minutes entre chaque question");
+      alert("Il doit y avoir au moins 3 minutes entre chaque question");
     }
   }
 

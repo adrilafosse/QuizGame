@@ -53,8 +53,8 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
     }
     const dateActuelle = new Date();
     const dateComparaison = new Date(date)
-    //Si la notification est apparue il y a plus de 5 minutes ou si le compteur est arrivé à 0
-    dateComparaison.setMinutes(dateComparaison.getMinutes() + 5)
+    //Si la notification est apparue il y a plus de 2 minutes ou si le compteur est arrivé à 0
+    dateComparaison.setMinutes(dateComparaison.getMinutes() + 2)
     if (!reponse || dateActuelle>dateComparaison) {
       if (compteur < nombreQuestions && timer == 0) {     
         update(ref(db, `${valeur}/reponses/${pseudo}`), {
@@ -68,6 +68,9 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
         });
         navigation.navigate('Fin');
       }
+    }
+    else{
+      navigation.navigate('ReponseTropLongue');
     }
   }, [timer]);
 

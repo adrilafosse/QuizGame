@@ -49,7 +49,7 @@ const EnAttente: React.FC<{ navigation: any }> = ({ navigation }) => {
     get(ref(db, `${valeur}/question-temps`)).then((snapshot) => {
       if (snapshot.exists()) {
         const data = snapshot.val();
-        const tableau = Object.values(data)as string[];; // creation tableau        
+        const tableau = Object.values(data)as string[]; // creation tableau        
         for (let i = 0; i < tableau.length; i++) {
           const date = new Date(tableau[i]);
           const compteur = i+1;
