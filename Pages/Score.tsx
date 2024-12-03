@@ -1,5 +1,5 @@
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { get, ref } from 'firebase/database';
 import { db } from '../firebaseConfig';
@@ -16,13 +16,6 @@ const Score: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [dataTableau, setDataTableau] = useState([]);
   const [bonneReponse, setBonneReponse] = useState('');
   const [question, setQuestion] = useState('');
-
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerLeft: () => null,
-      headerShown: false, // Masque la flèche de retour
-    });
-  }, []);
 
     useEffect(() => {
         get(ref(db, `${valeur}/question-temps`)).then((snapshot) => {
@@ -80,13 +73,6 @@ const Score: React.FC<{ navigation: any }> = ({ navigation }) => {
                     <Text style={styles.rankText}>{index + 1}. {item.name} - {item.score} pts</Text>
                 </View>
             ))}
-            <TouchableOpacity 
-                style={styles.bouton} 
-                onPress={() => navigation.navigate('Bilan', { valeur, pseudo })}
-                >
-                <Text style={styles.boutonText}>Bilan</Text>
-            </TouchableOpacity>
-
         </View>
     )
 };
@@ -100,7 +86,7 @@ const styles = StyleSheet.create({
     sous_titre: {
         color: 'red',
         textAlign: 'center',
-        fontSize: wp('2%'),
+        fontSize: wp('8%'),
         paddingTop: wp('2%'),
         paddingBottom : wp('2%'),
         textDecorationLine: 'underline',
@@ -126,22 +112,9 @@ const styles = StyleSheet.create({
     titre: {
         color: '#333333',
         fontWeight: 'bold',
-        fontSize: wp('8%'),
+        fontSize: wp('15%'),
+        paddingTop: hp('10%'),
     },
-    bouton: {
-        backgroundColor: '#4CAF50',
-        paddingVertical: hp('2.5%'),
-        paddingHorizontal: wp('15%'),
-        borderRadius: 8,
-        marginTop: hp('4%'),
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-     boutonText: {
-        color: '#FFFFFF',
-        fontSize: wp('4%'),
-        fontWeight: 'bold',
-     },
 });
 
 export default Score;

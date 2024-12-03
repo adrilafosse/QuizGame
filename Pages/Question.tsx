@@ -60,17 +60,17 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
         update(ref(db, `${valeur}/reponses/${pseudo}`), {
           [`reponseQuestion${compteur}`]: '',
         });
-        navigation.navigate('ReponseTropLongue');
+        navigation.navigate('ReponseTropLongue', { valeur, pseudo });
       }
       else if(compteur == nombreQuestions && timer == 0){
         update(ref(db, `${valeur}/reponses/${pseudo}`), {
           [`reponseQuestion${compteur}`]: '',
         });
-        navigation.navigate('Fin');
+        navigation.navigate('Fin', { valeur, pseudo });
       }
     }
     else{
-      navigation.navigate('ReponseTropLongue');
+      navigation.navigate('ReponseTropLongue', { valeur, pseudo });
     }
   }, [timer]);
 
@@ -133,10 +133,10 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
       });
     }
     if (compteur < nombreQuestions) {
-      navigation.navigate('AttenteReponse');
+      navigation.navigate('AttenteReponse', { valeur, pseudo });
       return;
     } else {
-      navigation.navigate('Fin');
+      navigation.navigate('Fin', { valeur, pseudo });
       return;
     }
   };

@@ -1,8 +1,17 @@
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
 import React from 'react';
+import { useRoute } from '@react-navigation/native';
+
+interface RouteParams {
+  valeur: string;
+  pseudo: string;
+}
 
 const ReponseTropLongue: React.FC<{ navigation: any }> = ({ navigation }) => {
+  const route = useRoute();
+  const { valeur, pseudo } = route.params as RouteParams;
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => null,
@@ -12,6 +21,12 @@ const ReponseTropLongue: React.FC<{ navigation: any }> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.titre}>Vous avez mis trop de temps à répondre</Text>
+      <TouchableOpacity 
+        style={styles.bouton} 
+        onPress={() => navigation.navigate('Score', { valeur, pseudo })}
+        >
+        <Text style={styles.boutonText}>Score</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -32,6 +47,20 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: hp('2%'),
   },
+  bouton: {
+    backgroundColor: '#4CAF50',
+    paddingVertical: hp('2.5%'),
+    paddingHorizontal: wp('15%'),
+    borderRadius: 8,
+    marginTop: hp('4%'),
+    alignItems: 'center',
+    justifyContent: 'center',
+},
+ boutonText: {
+    color: '#FFFFFF',
+    fontSize: wp('4%'),
+    fontWeight: 'bold',
+ },
 });
 
 export default ReponseTropLongue;

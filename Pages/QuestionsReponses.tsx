@@ -9,13 +9,13 @@ import { db } from '../firebaseConfig';
 interface RouteParams {
   uniqueId: string;
   nombrePages: number;
+  durer: number;
 }
 
 const QuestionsReponses: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [page,setPage] = useState(1);
   const route = useRoute(); 
-  const { uniqueId, nombrePages } = route.params as RouteParams;
-  const [nombreReponse,setNombreReponse] = useState(1);
+  const { uniqueId, nombrePages, durer } = route.params as RouteParams;
   const [question, setQuestion] = useState('');
   const [reponse1, setreponse1] = useState('');
   const [reponse2, setreponse2] = useState('');
@@ -50,7 +50,7 @@ const QuestionsReponses: React.FC<{ navigation: any }> = ({ navigation }) => {
         setreponse2('');
         setreponse3('');
         setreponse4('');
-        navigation.navigate('Questions réponses', { uniqueId, nombrePages, page });
+        navigation.navigate('Questions réponses', { uniqueId, nombrePages, page, durer });
       }
       else{
         alert("Vous devez rentrer au moins une question, une bonne réponse et une mauvaise réponse");
@@ -60,7 +60,7 @@ const QuestionsReponses: React.FC<{ navigation: any }> = ({ navigation }) => {
   const questionFinal = () => {
     if(reponse1 && reponse2 && question){
       Validation();
-      navigation.navigate('Terminer', { uniqueId });
+      navigation.navigate('DateHeure', { uniqueId, nombrePages, durer });
     }
     else{
       alert("Vous devez rentrer au moins une question, une bonne réponse et une mauvaise réponse");

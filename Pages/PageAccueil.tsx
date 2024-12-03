@@ -26,11 +26,9 @@ const Page_Accueil: React.FC<{ navigation: any }> = ({ navigation }) => {
   
 
   const Validation = async () => {
-    /*
     if (Platform.OS === 'web') {
       alert('Impossible de rejoindre une partie sur le web');
     }else{
-    */
       if (valeur) {
         get(ref(db, valeur)).then(async (snapshot) => {
           if (snapshot.exists()) {
@@ -55,14 +53,13 @@ const Page_Accueil: React.FC<{ navigation: any }> = ({ navigation }) => {
       }else{
         alert('Veuillez rentrer un nom de partie');
       }
-    //}
+    }
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.titre}>QuizGame</Text>
-      {/*
-      {Platform.OS !== 'web' ? (*/}
+      {Platform.OS !== 'web' ? (
         <>
           <Text style={styles.sous_titre}>Rejoindre une partie</Text>
           <TextInput 
@@ -77,8 +74,8 @@ const Page_Accueil: React.FC<{ navigation: any }> = ({ navigation }) => {
           </TouchableOpacity>
           <Text style={styles.ou}>----------   ou   ----------</Text>
         </>
-        {/*
-      ) : null} */}
+        
+      ) : null}
       <TouchableOpacity style={styles.bouton} onPress={() => navigation.navigate('NomPartie')}>
         <Text style={styles.boutonText}>Créer une partie</Text>
       </TouchableOpacity>

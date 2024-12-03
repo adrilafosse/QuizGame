@@ -19,37 +19,15 @@ const Score: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [tableauFinal, setTableauFinal] = useState<any[]>([]);
 
     useEffect(() => {
-        get(ref(db, `${valeur}/question-temps`)).then((snapshot) => {
+        get(ref(db, `${valeur}/question_reponse`)).then((snapshot) => {
             if (snapshot.exists()) {
                 const data = snapshot.val();
-                const dataFormatter = Object.entries(data).map(([key, value]) => ({
-                    question: key,
-                    date: value  
-                }));
-                setDateQuestion(dataFormatter);
-            }
-        });
-    }, []);
-    useEffect(() => {
-        dateQuestion.forEach((dateStr) => {
-            const date = new Date(dateStr.date);
-            const delay = date.getTime() + 120000 - Date.now();
-            if (delay > 0) {
-            //setTimeout se declenche quand delay arrive a 0
-                setTimeout(() => {
-
-                    get(ref(db, `${valeur}/question_reponse/${dateStr.question}`)).then((snapshot) => {
-                        if (snapshot.exists()) {
-                            const data = snapshot.val();
-                            setBonneReponseTableau((prevBonneReponse) => [...prevBonneReponse, data.reponse1]);
-                        }
-                    });
-                }, delay);
+                setBonneReponseTableau(data.reponse1);
             } else {
                 console.log('La date est déjà passée');
             }
         });
-      }, [dateQuestion, valeur]);
+      }, []);
     useEffect(() => {
         const dbRef = ref(db, `${valeur}/reponses/${pseudo}`);
         onValue(dbRef, (snapshot) => {
@@ -78,8 +56,6 @@ const Score: React.FC<{ navigation: any }> = ({ navigation }) => {
     useEffect(() => {
         
         setTableauFinal(questions.map((questionItem, index) => {
-            console.log("bonne reponse 2 :",bonneReponseTableau)
-            console.log("bonne reponse index :",bonneReponseTableau[index])
             return {
                 indice: questionItem.indice,
                 question: questionItem.question,
