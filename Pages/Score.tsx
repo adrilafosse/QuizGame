@@ -16,6 +16,7 @@ const Score: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [dataTableau, setDataTableau] = useState([]);
   const [bonneReponse, setBonneReponse] = useState('');
   const [question, setQuestion] = useState('');
+  const [numeroQuestion, setNumeroQuestion] = useState(0);
 
     useEffect(() => {
         get(ref(db, `${valeur}/question-temps`)).then((snapshot) => {
@@ -32,41 +33,52 @@ const Score: React.FC<{ navigation: any }> = ({ navigation }) => {
     useEffect(() => {
         dateQuestion.forEach((dateStr) => {
             const date = new Date(dateStr.date);
-            const delay = date.getTime() + 120000 - Date.now();
-            console.log("delay :",delay)
+            const delay = date.getTime() + 120000 - Date.now(); // 2 minutes après la date
+            console.log("delay :", delay);
+    
+            // Fonction pour récupérer les données du score et de la question
+            const recupererData = () => {
+                get(ref(db, `${valeur}/score`)).then((snapshot) => {
+                    if (snapshot.exists()) {
+                        const nouvelleDonnee = snapshot.val();
+                        const dataArray = Object.entries(nouvelleDonnee)
+                            .map(([name, score]) => ({ name, score: Number(score) }))
+                            .sort((a, b) => b.score - a.score);
+                        setDataTableau(dataArray);
+                    } else {
+                        console.log('Aucune donnée trouvée !');
+                    }
+                });
+    
+                get(ref(db, `${valeur}/question_reponse/${dateStr.question}`)).then((snapshot) => {
+                    if (snapshot.exists()) {
+                        const data = snapshot.val();
+                        setNumeroQuestion(dateStr.key)
+                        setQuestion(data.question);
+                        setBonneReponse(data.reponse1);
+                    }
+                });
+            };
+    
             if (delay > 0) {
-            //setTimeout se declenche quand delay arrive a 0
+                // Planification avec setTimeout si la date n'est pas encore passée
                 setTimeout(() => {
-                    get(ref(db, `${valeur}/score`)).then((snapshot) => {
-                        if (snapshot.exists()) {
-                            const nouvelleDonnee = snapshot.val();
-                            const dataArray = Object.entries(nouvelleDonnee)
-                                .map(([name, score]) => ({ name, score: Number(score) }))
-                                .sort((a, b) => b.score - a.score);
-                                setDataTableau(dataArray);
-                        } else {
-                            console.log('Aucune donnée trouvée !');
-                        }
-                    });
-                    get(ref(db, `${valeur}/question_reponse/${dateStr.question}`)).then((snapshot) => {
-                        if (snapshot.exists()) {
-                            const data = snapshot.val();
-                            setQuestion(data.question);
-                            setBonneReponse(data.reponse1)
-                        }
-                    });
+                    recupererData(); // Exécute la fonction lorsque le délai arrive à 0
                 }, delay);
             } else {
-                console.log('La date est déjà passée');
+                recupererData();
             }
         });
-      }, [dateQuestion]);
+    }, [dateQuestion]);
+    
 
       return (
         <View style={styles.container}>
-            <Text style={styles.titre}>Score</Text>
             {question !== '' && bonneReponse !== '' ? (
-                <Text style={styles.sous_titre}>{question} : {bonneReponse}</Text>
+                <>
+                    <Text style={styles.sous_titre}>Question {numeroQuestion} : {question}</Text>
+                    <Text style={styles.sous_titre2}>La bonne réponse : {bonneReponse}</Text>
+                </>
             ) : null}
             {dataTableau.map((item, index) => (
                 <View key={item.name} style={styles.rankItem}>
@@ -84,13 +96,20 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     sous_titre: {
-        color: 'red',
+        color: '#757575',
         textAlign: 'center',
-        fontSize: wp('8%'),
+        fontSize: wp('5%'),
         paddingTop: wp('2%'),
         paddingBottom : wp('2%'),
         textDecorationLine: 'underline',
-      },
+    },
+    sous_titre2: {
+        color: '#4CAF50',
+        textAlign: 'center',
+        fontSize: wp('4%'),
+        paddingTop: wp('2%'),
+        paddingBottom : wp('2%'),
+    },
     rankItem: {
         backgroundColor: '#fff',
         borderRadius: 8,
@@ -108,12 +127,6 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: '#333',
         fontWeight: '600',
-    },
-    titre: {
-        color: '#333333',
-        fontWeight: 'bold',
-        fontSize: wp('15%'),
-        paddingTop: hp('10%'),
     },
 });
 

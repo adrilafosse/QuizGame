@@ -12,22 +12,10 @@ interface RouteParams {
 const Score: React.FC<{ navigation: any }> = ({ navigation }) => {
   const route = useRoute();
   const { valeur, pseudo } = route.params as RouteParams;
-  const [dateQuestion, setDateQuestion] = useState([]);
   const [reponseTableau, setReponseTableau] = useState<any[]>([]);
-  const [bonneReponseTableau, setBonneReponseTableau] = useState([]);
-  const [questions, setQuestions] = useState<{ indice: string; question: string }[]>([]);
+  const [questions, setQuestions] = useState<{ indice: string; question: string; reponse: string }[]>([]);
   const [tableauFinal, setTableauFinal] = useState<any[]>([]);
 
-    useEffect(() => {
-        get(ref(db, `${valeur}/question_reponse`)).then((snapshot) => {
-            if (snapshot.exists()) {
-                const data = snapshot.val();
-                setBonneReponseTableau(data.reponse1);
-            } else {
-                console.log('La date est déjà passée');
-            }
-        });
-      }, []);
     useEffect(() => {
         const dbRef = ref(db, `${valeur}/reponses/${pseudo}`);
         onValue(dbRef, (snapshot) => {
@@ -42,10 +30,11 @@ const Score: React.FC<{ navigation: any }> = ({ navigation }) => {
     useEffect(() => {
         get(ref(db, `${valeur}/question_reponse`)).then((snapshot) => {
             if (snapshot.exists()) {
-                const data = snapshot.val() as { [key: string]: { question: string } };
+                const data = snapshot.val() as { [key: string]: { question: string , reponse1: string } };
                 const questionArray = Object.entries(data).map(([key, value]) => ({
                     indice: key,
                     question: value.question,
+                    reponse: value.reponse1,
                 }));
                 setQuestions(questionArray);    
             }
@@ -53,22 +42,20 @@ const Score: React.FC<{ navigation: any }> = ({ navigation }) => {
     }, []);
 
     
-    useEffect(() => {
-        
+    useEffect(() => { 
         setTableauFinal(questions.map((questionItem, index) => {
             return {
                 indice: questionItem.indice,
                 question: questionItem.question,
                 reponse: reponseTableau[index+1] || 'Aucune réponse',
-                bonneReponse: bonneReponseTableau[index] || '',
+                bonneReponse: questionItem.reponse,
             };
         }));
         
         
-    }, [bonneReponseTableau, questions]);
+    }, [questions]);
     return (
         <View style={styles.container}>
-            <Text style={styles.titre}>Bilan</Text>
             <FlatList
                 data={tableauFinal}
                 keyExtractor={(item) => item.indice}

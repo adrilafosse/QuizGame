@@ -55,22 +55,25 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
     const dateComparaison = new Date(date)
     //Si la notification est apparue il y a plus de 2 minutes ou si le compteur est arrivé à 0
     dateComparaison.setMinutes(dateComparaison.getMinutes() + 2)
-    if (!reponse || dateActuelle>dateComparaison) {
-      if (compteur < nombreQuestions && timer == 0) {     
-        update(ref(db, `${valeur}/reponses/${pseudo}`), {
-          [`reponseQuestion${compteur}`]: '',
-        });
+    console.log("reponse :",reponse)
+    if(!reponse){
+      if (dateActuelle>dateComparaison) {
+        if (compteur < nombreQuestions && timer == 0) {     
+          update(ref(db, `${valeur}/reponses/${pseudo}`), {
+            [`reponseQuestion${compteur}`]: '',
+          });
+          navigation.navigate('ReponseTropLongue', { valeur, pseudo });
+        }
+        else if(compteur == nombreQuestions && timer == 0){
+          update(ref(db, `${valeur}/reponses/${pseudo}`), {
+            [`reponseQuestion${compteur}`]: '',
+          });
+          navigation.navigate('Fin', { valeur, pseudo });
+        }
+      }
+      else{
         navigation.navigate('ReponseTropLongue', { valeur, pseudo });
       }
-      else if(compteur == nombreQuestions && timer == 0){
-        update(ref(db, `${valeur}/reponses/${pseudo}`), {
-          [`reponseQuestion${compteur}`]: '',
-        });
-        navigation.navigate('Fin', { valeur, pseudo });
-      }
-    }
-    else{
-      navigation.navigate('ReponseTropLongue', { valeur, pseudo });
     }
   }, [timer]);
 
@@ -177,7 +180,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5F5F5',
     alignItems: 'center',
-    paddingTop: hp('15%'),
+    paddingTop: hp('12%'),
   },
   nombreDeQuestion: {
     fontSize: wp('8%'),
@@ -187,7 +190,7 @@ const styles = StyleSheet.create({
     marginTop: hp('8%'),
   },
   question: {
-    fontSize: wp('12%'),
+    fontSize: wp('8%'),
     fontWeight: 'bold',
     color: '#222222',
     textAlign: 'center',
