@@ -52,12 +52,13 @@ const EnAttente: React.FC<{ navigation: any }> = ({ navigation }) => {
         const tableau = Object.values(data)as string[]; // creation tableau        
         for (let i = 0; i < tableau.length; i++) {
           const date = new Date(tableau[i]);
+          const date2 = date.toString();
           const compteur = i+1;
           scheduleNotification(
             `Question ${compteur}`,
             `C'est l'heure pour la question ${compteur}!`,
             date,
-            { valeur, pseudo,compteur,date }
+            { valeur,date2, pseudo,compteur }
           );
         }    
       }

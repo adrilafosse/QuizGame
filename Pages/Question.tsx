@@ -9,12 +9,13 @@ interface RouteParams {
   valeur: string;
   pseudo: string;
   compteur: number;
-  date: string;
+  date2: string;
 }
 
 const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
   const route = useRoute();
-  const { valeur, pseudo, compteur, date } = route.params as RouteParams;
+  const { valeur, pseudo, compteur, date2 } = route.params as RouteParams;
+  console.log("date 1 :",date2);
   const [nombreQuestions, setNombreQuestions] = useState(0);
   const [nombreReponses, setNombreReponses] = useState(0);
   const [question, setQuestion] = useState('');
@@ -41,6 +42,30 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
       setReponse('');
     }, [compteur])
   );
+
+  useEffect(() => {
+    const dateActuelle = new Date();
+    const dateComparaison = new Date(date2)
+    dateComparaison.setMinutes(dateComparaison.getMinutes() + 2)
+    if(!reponse){
+      //Si la notification est apparue il y a plus de 2 minutes ou si le compteur est arrivé à 0
+      if (dateActuelle>dateComparaison) {
+        if (compteur < nombreQuestions){
+          update(ref(db, `${valeur}/reponses/${pseudo}`), {
+            [`reponseQuestion${compteur}`]: '',
+          });
+          navigation.navigate('ReponseTropLongue', { valeur, pseudo });
+        }
+        else if(compteur == nombreQuestions){
+          update(ref(db, `${valeur}/reponses/${pseudo}`), {
+            [`reponseQuestion${compteur}`]: '',
+          });
+          navigation.navigate('Fin', { valeur, pseudo });
+        }
+      }
+    }
+  }, [timer, date2, reponse, compteur])
+
   useEffect(() => {
     if (timer > 0) {
       // Utilisation de setInterval pour décrémenter le timer toutes les secondes
@@ -50,31 +75,22 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
 
       // Nettoyer l'intervalle lors du démontage ou de la mise à jour du timer
       return () => clearInterval(intervalId);
-    }
-    const dateActuelle = new Date();
-    const dateComparaison = new Date(date)
-    //Si la notification est apparue il y a plus de 2 minutes ou si le compteur est arrivé à 0
-    dateComparaison.setMinutes(dateComparaison.getMinutes() + 2)
+    }    
     if(!reponse){
-      if (dateActuelle>dateComparaison) {
-        if (compteur < nombreQuestions && timer == 0) {     
-          update(ref(db, `${valeur}/reponses/${pseudo}`), {
-            [`reponseQuestion${compteur}`]: '',
-          });
-          navigation.navigate('ReponseTropLongue', { valeur, pseudo });
-        }
-        else if(compteur == nombreQuestions && timer == 0){
-          update(ref(db, `${valeur}/reponses/${pseudo}`), {
-            [`reponseQuestion${compteur}`]: '',
-          });
-          navigation.navigate('Fin', { valeur, pseudo });
-        }
-      }
-      else{
+      if (compteur < nombreQuestions && timer == 0) {     
+        update(ref(db, `${valeur}/reponses/${pseudo}`), {
+          [`reponseQuestion${compteur}`]: '',
+        });
         navigation.navigate('ReponseTropLongue', { valeur, pseudo });
       }
+      else if(compteur == nombreQuestions && timer == 0){
+        update(ref(db, `${valeur}/reponses/${pseudo}`), {
+          [`reponseQuestion${compteur}`]: '',
+        });
+        navigation.navigate('Fin', { valeur, pseudo });
+      }
     }
-  }, [timer, date, reponse, compteur]);
+  }, [timer, date2, reponse, compteur]);
 
   useEffect(() => {
     get(ref(db, `${valeur}/nombrePages`)).then((snapshot) => {

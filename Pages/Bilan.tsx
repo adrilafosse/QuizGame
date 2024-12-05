@@ -83,11 +83,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#F5F5F5',
         alignItems: 'center',
     },
-    titre: {
-        color: '#333333',
-        fontWeight: 'bold',
-        fontSize: wp('8%'),
-    },
     itemContainer: {
         marginBottom: 10,
         padding: 10,
@@ -105,7 +100,6 @@ const styles = StyleSheet.create({
         paddingVertical: hp('2.5%'),
         paddingHorizontal: wp('15%'),
         borderRadius: 8,
-        marginTop: hp('4%'),
         alignItems: 'center',
         justifyContent: 'center',
     },
