@@ -1,5 +1,5 @@
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { get, ref, onValue  } from 'firebase/database';
 import { db } from '../firebaseConfig';
@@ -67,6 +67,12 @@ const Score: React.FC<{ navigation: any }> = ({ navigation }) => {
                     </View>
                 )}
             />
+            <TouchableOpacity 
+                style={styles.bouton} 
+                onPress={() => navigation.navigate('Score', { valeur, pseudo })}
+            >
+                <Text style={styles.boutonText}>Score</Text>
+            </TouchableOpacity>
         </View>
     )
 };
@@ -94,6 +100,20 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#333',
     },
+    bouton: {
+        backgroundColor: '#4CAF50',
+        paddingVertical: hp('2.5%'),
+        paddingHorizontal: wp('15%'),
+        borderRadius: 8,
+        marginTop: hp('4%'),
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+     boutonText: {
+        color: '#FFFFFF',
+        fontSize: wp('4%'),
+        fontWeight: 'bold',
+     },
 });
 
 export default Score;

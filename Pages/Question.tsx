@@ -55,7 +55,6 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
     const dateComparaison = new Date(date)
     //Si la notification est apparue il y a plus de 2 minutes ou si le compteur est arrivé à 0
     dateComparaison.setMinutes(dateComparaison.getMinutes() + 2)
-    console.log("reponse :",reponse)
     if(!reponse){
       if (dateActuelle>dateComparaison) {
         if (compteur < nombreQuestions && timer == 0) {     
@@ -75,7 +74,7 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
         navigation.navigate('ReponseTropLongue', { valeur, pseudo });
       }
     }
-  }, [timer]);
+  }, [timer, date, reponse, compteur]);
 
   useEffect(() => {
     get(ref(db, `${valeur}/nombrePages`)).then((snapshot) => {

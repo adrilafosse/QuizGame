@@ -1,6 +1,6 @@
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
-import React from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, BackHandler } from 'react-native';
+import React, { useEffect } from 'react';
 import { useRoute } from '@react-navigation/native';
 
 interface RouteParams {
@@ -18,6 +18,22 @@ const AttenteReponse: React.FC<{ navigation: any }> = ({ navigation }) => {
       headerShown: false,
     });
   }, [navigation]);
+
+  useEffect(() => {
+    const backAction = () => {
+      navigation.navigate("PageAccueil");
+      return true;
+    };
+  
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+  
+    // Nettoie l'écouteur lorsque le composant est démonté
+    return () => backHandler.remove();
+  }, [navigation]);
+  
   return (
     <View style={styles.container}>
       <Text style={styles.titre}>Votre réponse a bien été envoyée, vous recevrez une autre notification pour la prochaine question</Text>
