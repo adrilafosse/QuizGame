@@ -67,12 +67,6 @@ const Score: React.FC<{ navigation: any }> = ({ navigation }) => {
                     </View>
                 )}
             />
-            <TouchableOpacity 
-                style={styles.bouton} 
-                onPress={() => navigation.navigate('Score', { valeur, pseudo })}
-            >
-                <Text style={styles.boutonText}>Score</Text>
-            </TouchableOpacity>
         </View>
     )
 };

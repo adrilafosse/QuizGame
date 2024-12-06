@@ -5,8 +5,8 @@ import { ref, set, get } from 'firebase/database';
 import { db } from '../firebaseConfig';
 import { Platform } from 'react-native';
 
-const NomPartie: React.FC<{ navigation: any }> = ({ navigation }) => {
-    const [uniqueId, setUniqueId] = useState('');
+const RejoindrePartie: React.FC<{ navigation: any }> = ({ navigation }) => {
+    const [valeur, setvaleur] = useState('');
 
     React.useLayoutEffect(() => {
       navigation.setOptions({
@@ -15,30 +15,42 @@ const NomPartie: React.FC<{ navigation: any }> = ({ navigation }) => {
       });
     }, []);
 
-    const Validation = () => {
-        if (uniqueId) {
-            get(ref(db)).then((snapshot) => {
-                if (snapshot.exists() && snapshot.child(uniqueId).exists()){
-                    alert('Ce nom de partie existe déjà');
-                }
-                else {
-                    navigation.navigate('Nouvelle partie', { uniqueId });
+    const Validation = async () => {
+        if (valeur) {
+            get(ref(db, valeur)).then(async (snapshot) => {
+                if (snapshot.exists()) {
+                    get(ref(db, `${valeur}/date`)).then((snapshot) => {
+                        if (snapshot.exists()) {
+                            const date = snapshot.val()
+                            const datePartie = new Date(date)
+                            const dateActuelle = new Date();
+                            if(dateActuelle<datePartie){
+                                navigation.navigate('Pseudo', { valeur });
+                            }
+                            else{
+                                navigation.navigate('PartieEnCours', { valeur });
+                            }
+                        }
+                    });
+                
+                } else {
+                    alert('Le code de partie n\'est pas correct');
                 }
             });
         }else{
-          alert('Vous devez rentrer un nom de partie');
+            alert('Veuillez rentrer un nom de partie');
         }
-    }
+    } 
 
     return (
         <View style={styles.container}>
-          <Text style={styles.titre}>Créer votre partie</Text>
+          <Text style={styles.titre}>Rejoindre une partie</Text>
           <TextInput
             style={styles.input}
-            placeholder="Creer le nom de la partie"
+            placeholder="Entrer le nom de la partie"
             placeholderTextColor="#757575"
-            value={uniqueId}
-            onChangeText={(text) => setUniqueId(text)}
+            value={valeur}
+            onChangeText={(text) => setvaleur(text)}
           />
           <TouchableOpacity style={styles.bouton} onPress={Validation}>
             <Text style={styles.boutonText}>Suivant</Text>
@@ -46,7 +58,6 @@ const NomPartie: React.FC<{ navigation: any }> = ({ navigation }) => {
         </View>
       );
 };
-
 const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -87,4 +98,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default NomPartie;
+export default RejoindrePartie;

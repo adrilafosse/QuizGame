@@ -36,7 +36,7 @@ const Pseudo: React.FC<{ navigation: any }> = ({ navigation }) => {
                 update(ref(db,`${valeur}/pseudo`),{
                   [pseudo] : pseudo,
                 })      
-                navigation.navigate('En attente', { valeur, pseudo });
+                navigation.navigate('En attente', { valeur, pseudo, datePartie });
                 }
             });
           }
@@ -53,7 +53,7 @@ const Pseudo: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.titre}>Créez votre profil</Text>
+      <Text style={styles.titre}>Créer votre profil</Text>
       <TextInput
         style={styles.input}
         placeholder="Entrez votre pseudo"
@@ -62,7 +62,7 @@ const Pseudo: React.FC<{ navigation: any }> = ({ navigation }) => {
         onChangeText={(text) => setPseudo(text)}
       />
       <TouchableOpacity style={styles.bouton} onPress={Validation}>
-        <Text style={styles.boutonText}>Valider</Text>
+        <Text style={styles.boutonText}>Suivant</Text>
       </TouchableOpacity>
     </View>
   );

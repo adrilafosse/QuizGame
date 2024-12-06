@@ -60,7 +60,7 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
           update(ref(db, `${valeur}/reponses/${pseudo}`), {
             [`reponseQuestion${compteur}`]: '',
           });
-          navigation.navigate('Fin', { valeur, pseudo });
+          navigation.navigate('Retour', { valeur, pseudo });
         }
       }
     }
@@ -87,7 +87,7 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
         update(ref(db, `${valeur}/reponses/${pseudo}`), {
           [`reponseQuestion${compteur}`]: '',
         });
-        navigation.navigate('Fin', { valeur, pseudo });
+        navigation.navigate('Retour', { valeur, pseudo });
       }
     }
   }, [timer, date2, reponse, compteur]);
@@ -154,7 +154,7 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
       navigation.navigate('AttenteReponse', { valeur, pseudo });
       return;
     } else {
-      navigation.navigate('Fin', { valeur, pseudo });
+      navigation.navigate('Retour', { valeur, pseudo });
       return;
     }
   };

@@ -46,24 +46,24 @@ const NouvellePartie: React.FC<{ navigation: any }> = ({ navigation }) => {
   }
   
   async function Firebase(){
-
-    update(ref(db, uniqueId),{
-      nombrePages : nombrePages,
-      durer : durer,
-    })
+    
     let ecart = durer / nombrePages;
     //il faut 3 minutes entre chaque question minimum
     if (ecart >= 3) {
+      update(ref(db, uniqueId),{
+        nombrePages : nombrePages,
+        durer : durer,
+      })
       navigation.navigate('Questions réponses', { uniqueId,nombrePages, durer })
     }
     else{
-      alert("Il faut au moins 3 minutes entre chaque questions");
+      alert("Il faut que le rapport entre le temps de la partie et le nombre de questions soit supérieur à 3");
     }
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.titre}>Combien de temps la partie va durer /min  ?</Text>
+      <Text style={styles.titre}>Définir la durée de la partie (de 10 à 180 minutes) ?</Text>
       <View style={styles.container2}>
         <TouchableOpacity style={styles.bouton1} onPress={() => Temps(durer + 10)}>
           <Text style={styles.boutonText1}>+</Text>
@@ -73,7 +73,7 @@ const NouvellePartie: React.FC<{ navigation: any }> = ({ navigation }) => {
           <Text style={styles.boutonText1}>-</Text>
         </TouchableOpacity>
       </View>
-      <Text style={styles.titre}>Combien de questions vous voulez poser ?</Text>
+      <Text style={styles.titre}>Définir le nombre de questions (de 1 à 20) ?</Text>
       <View style={styles.container2}>
         <TouchableOpacity style={styles.bouton1} onPress={() => Compteur(nombrePages + 1)}>
           <Text style={styles.boutonText1}>+</Text>
@@ -84,7 +84,7 @@ const NouvellePartie: React.FC<{ navigation: any }> = ({ navigation }) => {
         </TouchableOpacity>
       </View>
       <TouchableOpacity style={styles.bouton3} onPress={Firebase}>
-          <Text style={styles.boutonText2}>Valider</Text>
+          <Text style={styles.boutonText2}>Suivant</Text>
       </TouchableOpacity>
     </View>
   );

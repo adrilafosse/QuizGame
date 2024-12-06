@@ -41,7 +41,7 @@ const PartieEnCours: React.FC<{ navigation: any }> = ({ navigation }) => {
       <Text style={styles.titre}>La partie a déjà commencer, veuillez rentrer votre pseudo</Text>
       <TextInput
         style={styles.input}
-        placeholder="Entrez votre pseudo"
+        placeholder="Entrer votre pseudo"
         placeholderTextColor="#757575"
         value={pseudo}
         onChangeText={(text) => setPseudo(text)}

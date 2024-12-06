@@ -84,7 +84,7 @@ const DateHeure: React.FC<{ navigation: any }> = ({ navigation }) => {
               date: dateFormate,
             });
           }
-          navigation.navigate('Terminer', { uniqueId });
+          navigation.navigate('Terminer', { uniqueId, date });
         }else{
           alert("La date doit être supérieur de 2 minutes à la date actuelle");
         }
@@ -98,19 +98,19 @@ const DateHeure: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.titre}>Quand est ce que la partie va commencer ?</Text>
+      <Text style={styles.titre}>Définir le démarrage de la partie</Text>
       <TextInput
         style={styles.input}
-        placeholder="Entrez la date (jj/mm/aaaa hh:mm)"
+        placeholder="Entrer la date et l'heure (jj/mm/aaaa hh:mm)"
         placeholderTextColor="#757575"
         value={dateInput}
         onChangeText={(text) => setDateInput(text)}
       />
       <TouchableOpacity style={styles.bouton2} onPress={() => Validation(dateInput)}>
-        <Text style={styles.boutonText}>Valider</Text>
+        <Text style={styles.boutonText}>Créer</Text>
       </TouchableOpacity>
       <Text style={styles.ou}>--------------  ou  --------------</Text>
-      <Text style={styles.sous_titre}>La partie commmencera dans :</Text>
+      <Text style={styles.sous_titre}>Démarrer la partie dans :</Text>
       <View style={styles.container2}>
         <TouchableOpacity style={styles.bouton} onPress={() => CommencementMin(2)}>
           <Text style={styles.boutonText2}>2 minutes</Text>
@@ -122,6 +122,7 @@ const DateHeure: React.FC<{ navigation: any }> = ({ navigation }) => {
           <Text style={styles.boutonText2}>10 minutes</Text>
         </TouchableOpacity>
       </View>
+      <Text style={styles.paragraphe}>Chaque joueur doit s'inscrire avant le démarrage de la partie</Text>
     </View>
   );
 };
@@ -131,7 +132,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5F5F5',
     alignItems: 'center',
-    paddingTop: Platform.OS === 'web' ? hp('5%') :  hp('16%'),
+    paddingTop: Platform.OS === 'web' ? hp('5%') :  hp('13%'),
+  },
+  paragraphe: {
+    color: '#757575',
+    textAlign: 'center',
+    fontSize: Platform.OS === 'web' ? wp('3%') : wp('5%'),
+    paddingTop: Platform.OS === 'web' ? wp('2%') : wp('16%'),
+    fontStyle: 'italic',
   },
   bouton2: {
     backgroundColor: '#757575',

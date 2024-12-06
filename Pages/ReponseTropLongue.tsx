@@ -20,13 +20,8 @@ const ReponseTropLongue: React.FC<{ navigation: any }> = ({ navigation }) => {
   }, [navigation]);
   return (
     <View style={styles.container}>
-      <Text style={styles.titre}>Vous avez mis trop de temps à répondre</Text>
-      <TouchableOpacity 
-        style={styles.bouton} 
-        onPress={() => navigation.navigate('Score', { valeur, pseudo })}
-        >
-        <Text style={styles.boutonText}>Score</Text>
-      </TouchableOpacity>
+      <Text style={styles.titre}>Vous avez mis trop de temps à répondre. Dommage !!!</Text>
+      <Text style={styles.titre}>Veuillez attendre la prochaine question</Text>
     </View>
   );
 };
@@ -47,20 +42,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: hp('2%'),
   },
-  bouton: {
-    backgroundColor: '#4CAF50',
-    paddingVertical: hp('2.5%'),
-    paddingHorizontal: wp('15%'),
-    borderRadius: 8,
-    marginTop: hp('4%'),
-    alignItems: 'center',
-    justifyContent: 'center',
-},
- boutonText: {
-    color: '#FFFFFF',
-    fontSize: wp('4%'),
-    fontWeight: 'bold',
- },
 });
 
 export default ReponseTropLongue;

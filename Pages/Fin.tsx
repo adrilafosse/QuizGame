@@ -35,40 +35,65 @@ const Fin: React.FC<{ navigation: any }> = ({ navigation }) => {
     
     return (
         <View style={styles.container}>
-          <Text style={styles.titre}>Fin</Text>
-          <TouchableOpacity 
+          <Text style={styles.titre}>Bravo ! Vous avez terminé la partie. Maintenant, découvrez les bonnes réponses aux questions et le classement général</Text>
+          <View style={styles.boutonsContainer}>
+            <TouchableOpacity 
                 style={styles.bouton} 
                 onPress={() => navigation.navigate('Bilan', { valeur, pseudo })}
                 >
-                <Text style={styles.boutonText}>Bilan</Text>
+                <Text style={styles.boutonText}>Synthèse</Text>
             </TouchableOpacity>
+            <TouchableOpacity 
+                style={styles.bouton2} 
+                onPress={() => navigation.navigate('Scores', { valeur, pseudo })}
+                >
+                <Text style={styles.boutonText}>Score</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       );
 };
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#F5F5F5',
-      alignItems: 'center',
-      justifyContent: 'center',
-      paddingHorizontal: wp('5%'),
-    },
-    titre: {
-      color: '#333333',
-      fontWeight: 'bold',
-      fontSize: wp('8%'),
-      paddingTop: hp('5%'),
-      textAlign: 'center',
-      marginBottom: hp('2%'),
-    },
-    bouton: {
-      backgroundColor: '#4CAF50',
-      paddingVertical: hp('2.5%'),
-      paddingHorizontal: wp('15%'),
-      borderRadius: 8,
-      marginTop: hp('4%'),
-      alignItems: 'center',
-      justifyContent: 'center',
+  container: {
+    flex: 1,
+    backgroundColor: '#F5F5F5',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: wp('5%'),
+  },
+  boutonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+  },
+  titre: {
+    color: '#333333',
+    fontWeight: 'bold',
+    fontSize: wp('8%'),
+    paddingTop: hp('5%'),
+    textAlign: 'center',
+    marginBottom: hp('2%'),
+  },
+  bouton: {
+    backgroundColor: '#4CAF50',
+    paddingVertical: hp('2.5%'),
+    paddingHorizontal: wp('10%'),
+    borderRadius: 8,
+    marginTop: hp('4%'),
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 10,
+  },
+  bouton2: {
+    backgroundColor: '#4CAF50',
+    paddingVertical: hp('2.5%'),
+    paddingHorizontal: wp('14%'),
+    borderRadius: 8,
+    marginTop: hp('4%'),
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 10,
   },
    boutonText: {
       color: '#FFFFFF',

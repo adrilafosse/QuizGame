@@ -36,13 +36,7 @@ const AttenteReponse: React.FC<{ navigation: any }> = ({ navigation }) => {
   
   return (
     <View style={styles.container}>
-      <Text style={styles.titre}>Votre réponse a bien été envoyée, vous recevrez une autre notification pour la prochaine question</Text>
-      <TouchableOpacity 
-        style={styles.bouton} 
-        onPress={() => navigation.navigate('Score', { valeur, pseudo })}
-        >
-        <Text style={styles.boutonText}>Score</Text>
-      </TouchableOpacity>
+      <Text style={styles.titre}>Votre réponse a bien été envoyée, vous recevrez une nouvelle notification pour la prochaine question</Text>
     </View>
   );
 };
@@ -63,20 +57,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: hp('2%'),
   },
-  bouton: {
-    backgroundColor: '#4CAF50',
-    paddingVertical: hp('2.5%'),
-    paddingHorizontal: wp('15%'),
-    borderRadius: 8,
-    marginTop: hp('4%'),
-    alignItems: 'center',
-    justifyContent: 'center',
-},
- boutonText: {
-    color: '#FFFFFF',
-    fontSize: wp('4%'),
-    fontWeight: 'bold',
- },
 });
 
 export default AttenteReponse;

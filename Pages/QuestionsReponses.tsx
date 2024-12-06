@@ -102,22 +102,22 @@ const QuestionsReponses: React.FC<{ navigation: any }> = ({ navigation }) => {
       <Text style={styles.question}>Question: {page}/{nombrePages}</Text>
       <TextInput 
         style={styles.input1} 
-        placeholder="Ecrivez votre question"
+        placeholder="Ecriver votre question"
         placeholderTextColor="#757575"
         value={question}
         onChangeText={setQuestion} 
       />
-      <Text style={styles.reponse}>Vos réponses</Text>
+      <Text style={styles.reponse}>Vos réponses (4 réponses possibles)</Text>
       <TextInput 
         style={styles.input2} 
-        placeholder="Ecrivez la bonne réponse"
+        placeholder="Ecriver la bonne réponse"
         placeholderTextColor="#757575"
         value={reponse1}
         onChangeText={setreponse1} 
       />
       <TextInput 
         style={styles.input1} 
-        placeholder="Ecrivez une mauvaise réponse"
+        placeholder="Ecriver une mauvaise réponse"
         placeholderTextColor="#757575"
         value={reponse2}
         onChangeText={setreponse2} 
@@ -125,7 +125,7 @@ const QuestionsReponses: React.FC<{ navigation: any }> = ({ navigation }) => {
      {compteur === 3 ? (
       <TextInput 
         style={styles.input1} 
-        placeholder="Ecrivez une mauvaise réponse"
+        placeholder="Ecriver une mauvaise réponse"
         placeholderTextColor="#757575"
         value={reponse3}
         onChangeText={setreponse3} 
@@ -134,14 +134,14 @@ const QuestionsReponses: React.FC<{ navigation: any }> = ({ navigation }) => {
       <>
         <TextInput 
           style={styles.input1} 
-          placeholder="Ecrivez une mauvaise réponse"
+          placeholder="Ecriver une mauvaise réponse"
           placeholderTextColor="#757575"
           value={reponse3}
           onChangeText={setreponse3} 
         />
         <TextInput 
           style={styles.input1} 
-          placeholder="Ecrivez une mauvaise réponse"
+          placeholder="Ecriver une mauvaise réponse"
           placeholderTextColor="#757575"
           value={reponse4}
           onChangeText={setreponse4} 
@@ -166,7 +166,7 @@ const QuestionsReponses: React.FC<{ navigation: any }> = ({ navigation }) => {
           style={styles.bouton} 
           onPress={questionFinal}
         >
-          <Text style={styles.boutonText}>Terminer le quiz</Text>
+          <Text style={styles.boutonText}>Suivant</Text>
         </TouchableOpacity>
       )}
     </View>
@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5F5F5',
     alignItems: 'center',
-    paddingTop: Platform.OS === 'web' ? hp('4%') :  hp('9%'),
+    paddingTop: Platform.OS === 'web' ? hp('4%') :  hp('8%'),
   },
   container2: {
     flexDirection: 'row',
@@ -206,14 +206,14 @@ const styles = StyleSheet.create({
   question: {
     color: '#333333',
     fontWeight: 'bold',
-    fontSize: Platform.OS === 'web' ? wp('3%') : wp('8%'),
+    fontSize: Platform.OS === 'web' ? wp('3%') : wp('7%'),
     textAlign: 'center',
   },
   reponse:{
     color: '#333333',
     fontWeight: 'bold',
-    fontSize: Platform.OS === 'web' ? wp('3%') : wp('8%'),
-    paddingTop: Platform.OS === 'web' ? hp('5%') : hp('3%'),
+    fontSize: Platform.OS === 'web' ? wp('3%') : wp('6%'),
+    paddingTop: Platform.OS === 'web' ? hp('5%') : hp('2%'),
     textAlign: 'center',
   },
   input1: {

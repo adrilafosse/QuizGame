@@ -10,11 +10,13 @@ import * as Notifications from 'expo-notifications';
 interface RouteParams {
   valeur: string;
   pseudo: string;
+  datePartie: Date;
 }
 
 const EnAttente: React.FC<{ navigation: any }> = ({ navigation }) => {
   const route = useRoute();
-  const { valeur, pseudo } = route.params as RouteParams;
+  const { valeur, pseudo, datePartie } = route.params as RouteParams;
+  const [tempsRestant, setTempsRestant] = useState('');
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -45,6 +47,22 @@ const EnAttente: React.FC<{ navigation: any }> = ({ navigation }) => {
       console.error('Erreur lors de la planification de la notification :', error);
     }
   };
+
+  useEffect(() => {
+    const dateActuelle = new Date();
+    const diff = datePartie.getTime() - dateActuelle.getTime();
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+    setTempsRestant(
+      `${days > 0 ? `${days} jour${days > 1 ? 's' : ''}, ` : ''}${
+        hours > 0 ? `${hours} heure${hours > 1 ? 's' : ''}, ` : ''
+      }${minutes} minute${minutes > 1 ? 's' : ''}`
+    );
+  }, [datePartie]);
+
   useEffect(() => {
     get(ref(db, `${valeur}/question-temps`)).then((snapshot) => {
       if (snapshot.exists()) {
@@ -67,7 +85,9 @@ const EnAttente: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.titre}>Votre profil a été crée vous allez recevoir une notification quand une question apparaitra</Text>
+      <Text style={styles.titre}>Félicitation, vous êtes inscrit ! La partie commencera dans {tempsRestant}</Text>
+      <Text style={styles.titre}>Une notification s'affichera sur votre téléphone pour chaque question. Vous disposerez de 2 minutes maximum pour répondre</Text>
+      <Text style={styles.titre}>Chaque bonne réponse vaut 100 points ou plus en fonction de votre rapidité</Text>
     </View>
   );
 };
@@ -83,8 +103,8 @@ const styles = StyleSheet.create({
   titre: {
     color: '#333333',
     fontWeight: 'bold',
-    fontSize: wp('4%'),
-    paddingTop: hp('2%'),
+    fontSize: wp('5%'),
+    paddingTop: hp('6%'),
     textAlign: 'center',
     marginBottom: hp('2%'),
   },

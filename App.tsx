@@ -19,6 +19,7 @@ import ReponseTropLongue from './Pages/ReponseTropLongue'
 import PartieEnCours from './Pages/PartieEnCours'
 import Score from './Pages/Score'
 import Bilan from './Pages/Bilan'
+import RejoindrePartie from './Pages/RejoindrePartie'
 
 const Stack = createNativeStackNavigator();
 
@@ -50,8 +51,8 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="PageAccueil">
-        <Stack.Screen name="PageAccueil" component={PageAccueil} />
+      <Stack.Navigator initialRouteName="Accueil">
+        <Stack.Screen name="Accueil" component={PageAccueil} />
         <Stack.Screen name="Nouvelle partie" component={NouvellePartie} />
         <Stack.Screen name="Questions réponses" component={QuestionsReponses} />
         <Stack.Screen name="Terminer" component={Terminer} />
@@ -59,13 +60,14 @@ export default function App() {
         <Stack.Screen name="En attente" component={EnAttente} />
         <Stack.Screen name="Question" component={Question} />
         <Stack.Screen name="AttenteReponse" component={AttenteReponse} />
-        <Stack.Screen name="Fin" component={Fin} />
+        <Stack.Screen name="Retour" component={Fin} />
         <Stack.Screen name="NomPartie" component={NomPartie} />
         <Stack.Screen name="DateHeure" component={DateHeure} />
         <Stack.Screen name="ReponseTropLongue" component={ReponseTropLongue} />
         <Stack.Screen name="PartieEnCours" component={PartieEnCours} />
-        <Stack.Screen name="Score" component={Score} />
+        <Stack.Screen name="Scores" component={Score} />
         <Stack.Screen name="Bilan" component={Bilan} />
+        <Stack.Screen name="RejoindrePartie" component={RejoindrePartie} />
       </Stack.Navigator>
     </NavigationContainer>
   );
