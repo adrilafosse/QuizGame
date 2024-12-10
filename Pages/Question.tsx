@@ -15,7 +15,6 @@ interface RouteParams {
 const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
   const route = useRoute();
   const { valeur, pseudo, compteur, date2 } = route.params as RouteParams;
-  console.log("date 1 :",date2);
   const [nombreQuestions, setNombreQuestions] = useState(0);
   const [nombreReponses, setNombreReponses] = useState(0);
   const [question, setQuestion] = useState('');
@@ -26,6 +25,7 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [tableauFinal, setTableauFinal] = useState<string[]>([]);
   const [bonneReponse, setBonneReponse] = useState('');
   const [scoreJoueur, setScoreJoueur] = useState(0);
+  const [redirection, setRedirection] = useState(false);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -67,27 +67,31 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
   }, [timer, date2, reponse, compteur])
 
   useEffect(() => {
-    if (timer > 0) {
-      // Utilisation de setInterval pour décrémenter le timer toutes les secondes
-      const intervalId = setInterval(() => {
-        setTimer(prev => prev - 1);
-      }, 1000);
-
-      // Nettoyer l'intervalle lors du démontage ou de la mise à jour du timer
-      return () => clearInterval(intervalId);
-    }    
-    if(!reponse){
-      if (compteur < nombreQuestions && timer == 0) {     
-        update(ref(db, `${valeur}/reponses/${pseudo}`), {
-          [`reponseQuestion${compteur}`]: '',
-        });
-        navigation.navigate('ReponseTropLongue', { valeur, pseudo });
-      }
-      else if(compteur == nombreQuestions && timer == 0){
-        update(ref(db, `${valeur}/reponses/${pseudo}`), {
-          [`reponseQuestion${compteur}`]: '',
-        });
-        navigation.navigate('Retour', { valeur, pseudo });
+    if(redirection == false){
+      if (timer > 0) {
+        // Utilisation de setInterval pour décrémenter le timer toutes les secondes
+        const intervalId = setInterval(() => {
+          setTimer(prev => prev - 1);
+        }, 1000);
+  
+        // Nettoyer l'intervalle lors du démontage ou de la mise à jour du timer
+        return () => clearInterval(intervalId);
+      }    
+      if(!reponse){
+        if (compteur < nombreQuestions && timer == 0) {     
+          update(ref(db, `${valeur}/reponses/${pseudo}`), {
+            [`reponseQuestion${compteur}`]: '',
+          });
+          navigation.navigate('ReponseTropLongue', { valeur, pseudo });
+          setRedirection(true)
+        }
+        else if(compteur == nombreQuestions && timer == 0){
+          update(ref(db, `${valeur}/reponses/${pseudo}`), {
+            [`reponseQuestion${compteur}`]: '',
+          });
+          navigation.navigate('Retour', { valeur, pseudo });
+          setRedirection(true)
+        }
       }
     }
   }, [timer, date2, reponse, compteur]);

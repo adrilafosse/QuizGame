@@ -67,7 +67,8 @@ const EnAttente: React.FC<{ navigation: any }> = ({ navigation }) => {
     get(ref(db, `${valeur}/question-temps`)).then((snapshot) => {
       if (snapshot.exists()) {
         const data = snapshot.val();
-        const tableau = Object.values(data)as string[]; // creation tableau        
+        const tableau = Object.values(data)as string[]; // creation tableau
+        console.log("tableau :",tableau)        
         for (let i = 0; i < tableau.length; i++) {
           const date = new Date(tableau[i]);
           const date2 = date.toString();
@@ -81,12 +82,12 @@ const EnAttente: React.FC<{ navigation: any }> = ({ navigation }) => {
         }    
       }
     });
-  });
+  }, []);
 
   return (
     <View style={styles.container}>
       <Text style={styles.titre}>Félicitation, vous êtes inscrit ! La partie commencera dans {tempsRestant}</Text>
-      <Text style={styles.titre}>Une notification s'affichera sur votre téléphone pour chaque question. Vous disposerez de 2 minutes maximum pour répondre</Text>
+      <Text style={styles.titre}>Une notification s'affichera sur votre téléphone pour chaque question. Vous disposerez de 2 minutes maximum pour y répondre</Text>
       <Text style={styles.titre}>Chaque bonne réponse vaut 100 points ou plus en fonction de votre rapidité</Text>
     </View>
   );
