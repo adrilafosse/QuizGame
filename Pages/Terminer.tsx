@@ -11,7 +11,6 @@ interface RouteParams {
 const Terminer: React.FC<{ navigation: any }> = ({ navigation }) => {
   const route = useRoute(); 
   const { uniqueId, date } = route.params as RouteParams;
-  console.log("date :",date);
   const [tempsRestant, setTempsRestant] = useState('');
   
   React.useLayoutEffect(() => {
@@ -28,8 +27,10 @@ const Terminer: React.FC<{ navigation: any }> = ({ navigation }) => {
     const diff = dateFinal.getTime() - dateActuelle.getTime();
 
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const heuresRestantes = diff - days*(1000 * 60 * 60 * 24);
+    const hours = Math.floor(heuresRestantes / (60 * 60 * 1000));
+    const minutesRestantes = heuresRestantes - hours*(60 * 60 * 1000);
+    const minutes = Math.floor(minutesRestantes / (60 * 1000));
 
     setTempsRestant(
       `${days > 0 ? `${days} jour${days > 1 ? 's' : ''}, ` : ''}${

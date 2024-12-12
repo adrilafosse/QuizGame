@@ -52,7 +52,7 @@ const DateHeure: React.FC<{ navigation: any }> = ({ navigation }) => {
         const dateFormate = new Date(`${year}-${month}-${day}T${hours}:${minutes}`);
         const currentDate = new Date();
         //date de la partie doit être 2 minutes après la date actuelle donc les joeur ont 2 min pour s'inscire a la partie
-        currentDate.setMinutes(currentDate.getMinutes() + 1)
+        currentDate.setMinutes(currentDate.getMinutes() + 2)
         if(currentDate < dateFormate){
           let tableau: Date[] = [];
           for (let i = 0; i < nombrePages+1; i++) {

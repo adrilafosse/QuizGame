@@ -1,16 +1,8 @@
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { StyleSheet, Text, View, TouchableOpacity, BackHandler } from 'react-native';
+import { StyleSheet, Text, View, BackHandler } from 'react-native';
 import React, { useEffect } from 'react';
-import { useRoute } from '@react-navigation/native';
-
-interface RouteParams {
-  valeur: string;
-  pseudo: string;
-}
 
 const AttenteReponse: React.FC<{ navigation: any }> = ({ navigation }) => {
-  const route = useRoute();
-  const { valeur, pseudo } = route.params as RouteParams;
 
   React.useLayoutEffect(() => {
     navigation.setOptions({

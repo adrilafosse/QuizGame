@@ -1,16 +1,8 @@
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
 import React from 'react';
-import { useRoute } from '@react-navigation/native';
-
-interface RouteParams {
-  valeur: string;
-  pseudo: string;
-}
 
 const ReponseTropLongue: React.FC<{ navigation: any }> = ({ navigation }) => {
-  const route = useRoute();
-  const { valeur, pseudo } = route.params as RouteParams;
 
   React.useLayoutEffect(() => {
     navigation.setOptions({

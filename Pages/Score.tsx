@@ -6,12 +6,11 @@ import { db } from '../firebaseConfig';
 import { useRoute } from '@react-navigation/native';
 interface RouteParams {
   valeur: string;
-  pseudo: string;
 }
 
 const Score: React.FC<{ navigation: any }> = ({ navigation }) => {
   const route = useRoute();
-  const { valeur, pseudo } = route.params as RouteParams;
+  const { valeur } = route.params as RouteParams;
   const [dataTableau, setDataTableau] = useState([]);
 
     useEffect(() => {

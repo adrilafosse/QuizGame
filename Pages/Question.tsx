@@ -40,6 +40,7 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
       setTimer(60);
       setQuestion('');
       setReponse('');
+      setRedirection(false);
     }, [compteur])
   );
 
@@ -52,13 +53,13 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
       if (dateActuelle>dateComparaison) {
         if (compteur < nombreQuestions){
           update(ref(db, `${valeur}/reponses/${pseudo}`), {
-            [`reponseQuestion${compteur}`]: '',
+            [`${compteur}`]: '',
           });
-          navigation.navigate('ReponseTropLongue', { valeur, pseudo });
+          navigation.navigate('ReponseTropLongue');
         }
         else if(compteur == nombreQuestions){
           update(ref(db, `${valeur}/reponses/${pseudo}`), {
-            [`reponseQuestion${compteur}`]: '',
+            [`${compteur}`]: '',
           });
           navigation.navigate('Retour', { valeur, pseudo });
         }
@@ -80,14 +81,14 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
       if(!reponse){
         if (compteur < nombreQuestions && timer == 0) {     
           update(ref(db, `${valeur}/reponses/${pseudo}`), {
-            [`reponseQuestion${compteur}`]: '',
+            [`${compteur}`]: '',
           });
-          navigation.navigate('ReponseTropLongue', { valeur, pseudo });
+          navigation.navigate('ReponseTropLongue');
           setRedirection(true)
         }
         else if(compteur == nombreQuestions && timer == 0){
           update(ref(db, `${valeur}/reponses/${pseudo}`), {
-            [`reponseQuestion${compteur}`]: '',
+            [`${compteur}`]: '',
           });
           navigation.navigate('Retour', { valeur, pseudo });
           setRedirection(true)
@@ -155,7 +156,7 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
       });
     }
     if (compteur < nombreQuestions) {
-      navigation.navigate('AttenteReponse', { valeur, pseudo });
+      navigation.navigate('AttenteReponse');
       return;
     } else {
       navigation.navigate('Retour', { valeur, pseudo });

@@ -45,7 +45,7 @@ const Fin: React.FC<{ navigation: any }> = ({ navigation }) => {
             </TouchableOpacity>
             <TouchableOpacity 
                 style={styles.bouton2} 
-                onPress={() => navigation.navigate('Scores', { valeur, pseudo })}
+                onPress={() => navigation.navigate('Scores', { valeur })}
                 >
                 <Text style={styles.boutonText}>Score</Text>
             </TouchableOpacity>
