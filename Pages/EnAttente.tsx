@@ -76,7 +76,8 @@ const EnAttente: React.FC<{ navigation: any }> = ({ navigation }) => {
           if (Platform.OS === 'web') {
             const intervalId = setInterval(() => {
               const nouvelleDateActuelle = new Date();
-              const diff = date.getTime() - nouvelleDateActuelle.getTime();    
+              const diff = date.getTime() - nouvelleDateActuelle.getTime();
+              console.log("diff :",diff)   
               if (diff <= 0) {
                 clearInterval(intervalId); // Arrêter l'intervalle
                 navigation.navigate('Question', { valeur, pseudo, compteur, date2 }); 

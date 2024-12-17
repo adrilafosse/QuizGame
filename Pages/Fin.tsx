@@ -2,6 +2,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { StyleSheet, Text, View, TouchableOpacity, BackHandler } from 'react-native';
 import React, { useEffect } from 'react';
 import { useRoute } from '@react-navigation/native';
+import { Platform } from 'react-native';
 interface RouteParams {
   valeur: string;
   pseudo: string;

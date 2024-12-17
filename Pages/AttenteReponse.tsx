@@ -1,6 +1,7 @@
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { StyleSheet, Text, View, BackHandler } from 'react-native';
 import React, { useEffect } from 'react';
+import { Platform } from 'react-native';
 
 const AttenteReponse: React.FC<{ navigation: any }> = ({ navigation }) => {
 
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
   titre: {
     color: '#333333',
     fontWeight: 'bold',
-    fontSize: wp('8%'),
+    fontSize : Platform.OS === 'web' ? wp('4%') :  wp('8%'),
     paddingTop: hp('5%'),
     textAlign: 'center',
     marginBottom: hp('2%'),

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { get, ref, update } from 'firebase/database';
 import { db } from '../firebaseConfig';
 import { useFocusEffect, useRoute } from '@react-navigation/native';
+import { Platform } from 'react-native';
 
 interface RouteParams {
   valeur: string;
@@ -98,7 +99,7 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
   }, [timer, date2, reponse, compteur]);
 
   useEffect(() => {
-    get(ref(db, `${valeur}/nombrePages`)).then((snapshot) => {
+    get(ref(db, `${valeur}/nombreDeQuestions`)).then((snapshot) => {
       if (snapshot.exists()) {
         setNombreQuestions(snapshot.val());
       }
@@ -200,29 +201,29 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5F5F5',
     alignItems: 'center',
-    paddingTop: hp('12%'),
+    paddingTop: Platform.OS === 'web' ? hp('5%') :  hp('12%'),
   },
   nombreDeQuestion: {
-    fontSize: wp('8%'),
+    fontSize: Platform.OS === 'web' ? wp('4%') :  wp('8%'),
     fontWeight: 'bold',
     color: '#333333',
     textAlign: 'center',
-    marginTop: hp('8%'),
+    marginTop: Platform.OS === 'web' ? hp('2%') :  hp('8%'),
   },
   question: {
-    fontSize: wp('8%'),
+    fontSize: Platform.OS === 'web' ? wp('5%') :  wp('8%'),
     fontWeight: 'bold',
     color: '#222222',
     textAlign: 'center',
     paddingHorizontal: wp('4%'),
-    paddingTop: hp('8%'),
+    paddingTop: Platform.OS === 'web' ? hp('2%') :  hp('8%'),
   },
   reponseContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
     width: '90%',
-    paddingTop: hp('8%'),
+    paddingTop: Platform.OS === 'web' ? hp('2%') :  hp('8%'),
   },
   button: {
     width: '48%',
@@ -234,12 +235,12 @@ const styles = StyleSheet.create({
   },
   texte: {
     color: '#FFFFFF',
-    fontSize: wp('5%'),
+    fontSize: wp('4%'),
     fontWeight: 'bold',
     textAlign: 'center',
   },
   timer: {
-    fontSize: wp('10%'),
+    fontSize: Platform.OS === 'web' ? wp('4%') :  wp('10%'),
     fontWeight: 'bold',
     color: '#333',
   },
