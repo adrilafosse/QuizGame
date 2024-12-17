@@ -8,13 +8,13 @@ import { Platform } from 'react-native';
 
 interface RouteParams {
   uniqueId: string;
-  nombrePages: number;
+  page2: number;
   durer: number;
 }
 
 const DateHeure: React.FC<{ navigation: any }> = ({ navigation }) => {
   const route = useRoute();
-  const { uniqueId, nombrePages, durer } = route.params as RouteParams;
+  const { uniqueId, page2, durer } = route.params as RouteParams;
   const [dateInput, setDateInput] = useState('');
 
   const formatDateToString = (date: Date): string => {
@@ -51,11 +51,11 @@ const DateHeure: React.FC<{ navigation: any }> = ({ navigation }) => {
         const [day, month, year, hours, minutes] = date.match(/\d+/g) || [];
         const dateFormate = new Date(`${year}-${month}-${day}T${hours}:${minutes}`);
         const currentDate = new Date();
-        //date de la partie doit être 2 minutes après la date actuelle donc les joeur ont 2 min pour s'inscire a la partie
+        //date de la partie doit être 2 minutes après la date actuelle donc les joueurs ont 2 min pour s'inscire a la partie
         currentDate.setMinutes(currentDate.getMinutes() + 2)
         if(currentDate < dateFormate){
           let tableau: Date[] = [];
-          for (let i = 0; i < nombrePages+1; i++) {
+          for (let i = 0; i < page2+1; i++) {
             const nouvelleDateWithRandomMinutes = new Date(dateFormate);
             //On ajoute des minutes durer * un nombre entre 0 et 1[ et on prend la partie entiere
             nouvelleDateWithRandomMinutes.setMinutes(nouvelleDateWithRandomMinutes.getMinutes() + Math.floor(Math.random() * durer)); 
@@ -112,8 +112,8 @@ const DateHeure: React.FC<{ navigation: any }> = ({ navigation }) => {
       <Text style={styles.ou}>--------------  ou  --------------</Text>
       <Text style={styles.sous_titre}>Démarrer la partie dans :</Text>
       <View style={styles.container2}>
-        <TouchableOpacity style={styles.bouton} onPress={() => CommencementMin(2)}>
-          <Text style={styles.boutonText2}>2 minutes</Text>
+        <TouchableOpacity style={styles.bouton} onPress={() => CommencementMin(3)}>
+          <Text style={styles.boutonText2}>3 minutes</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.bouton} onPress={() => CommencementMin(5)}>
           <Text style={styles.boutonText2}>5 minutes</Text>

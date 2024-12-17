@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { get, ref, update } from 'firebase/database';
 import { db } from '../firebaseConfig';
 import { useRoute } from '@react-navigation/native';
+import { Platform } from 'react-native';
 interface RouteParams {
   valeur: string;
 }
@@ -73,25 +74,25 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5F5F5',
     alignItems: 'center',
-    paddingTop: hp('28%'),
+    paddingTop: Platform.OS === 'web' ? hp('20%') :  hp('28%'),
   },
   titre: {
     color: '#333333',
     fontWeight: 'bold',
-    fontSize: wp('10%'),
+    fontSize: Platform.OS === 'web' ? wp('7%') :  wp('10%'),
     textAlign: 'center',
     paddingHorizontal: wp('5%'),
   },
   input: {
     height: hp('8%'),
-    width: '80%',
+    width: wp('80%'),
     borderColor: '#757575',
     borderWidth: 1,
     borderRadius: 5,
-    paddingHorizontal: wp('4%'),
-    marginTop: hp('2%'),
+    marginTop: hp('4%'),
     color: '#333333',
     textAlign: 'center',
+    fontSize: Platform.OS === 'web' ? wp('2%') : wp('4%'),
   },
   bouton: {
     backgroundColor: '#4CAF50',

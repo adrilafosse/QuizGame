@@ -22,7 +22,7 @@ const NomPartie: React.FC<{ navigation: any }> = ({ navigation }) => {
                     alert('Ce nom de partie existe déjà');
                 }
                 else {
-                    navigation.navigate('Nouvelle partie', { uniqueId });
+                    navigation.navigate('Questions réponses', { uniqueId });
                 }
             });
         }else{

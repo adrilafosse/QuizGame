@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   },
   sous_titre: {
     color: '#757575',
-    fontSize: wp('6%'),
+    fontSize:  Platform.OS === 'web' ? wp('3%') : wp('6%'),
     paddingTop: hp('8%'),
     textAlign: 'center', 
   },

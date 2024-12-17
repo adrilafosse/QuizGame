@@ -16,7 +16,6 @@ import Fin from './Pages/Fin';
 import NomPartie from './Pages/NomPartie';
 import DateHeure from './Pages/DateHeure';
 import ReponseTropLongue from './Pages/ReponseTropLongue'
-import PartieEnCours from './Pages/PartieEnCours'
 import Score from './Pages/Score'
 import Bilan from './Pages/Bilan'
 import RejoindrePartie from './Pages/RejoindrePartie'
@@ -35,7 +34,6 @@ export default function App() {
         }
       }
     };
-
     requestPermissions();
 
     // Configuration supplémentaire pour Android
@@ -64,7 +62,6 @@ export default function App() {
         <Stack.Screen name="NomPartie" component={NomPartie} />
         <Stack.Screen name="DateHeure" component={DateHeure} />
         <Stack.Screen name="ReponseTropLongue" component={ReponseTropLongue} />
-        <Stack.Screen name="PartieEnCours" component={PartieEnCours} />
         <Stack.Screen name="Scores" component={Score} />
         <Stack.Screen name="Bilan" component={Bilan} />
         <Stack.Screen name="RejoindrePartie" component={RejoindrePartie} />

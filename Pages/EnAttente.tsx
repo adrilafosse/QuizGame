@@ -6,6 +6,7 @@ import { ref, get } from "firebase/database";
 import { db } from '../firebaseConfig';
 import { useRoute } from '@react-navigation/native';
 import * as Notifications from 'expo-notifications';
+import { Platform } from 'react-native';
 
 interface RouteParams {
   valeur: string;
@@ -17,6 +18,7 @@ const EnAttente: React.FC<{ navigation: any }> = ({ navigation }) => {
   const route = useRoute();
   const { valeur, pseudo, datePartie } = route.params as RouteParams;
   const [tempsRestant, setTempsRestant] = useState('');
+  const dateActuelle = new Date();
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -47,9 +49,8 @@ const EnAttente: React.FC<{ navigation: any }> = ({ navigation }) => {
       console.error('Erreur lors de la planification de la notification :', error);
     }
   };
-
+  
   useEffect(() => {
-    const dateActuelle = new Date();
     const diff = datePartie.getTime() - dateActuelle.getTime();
 
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -72,12 +73,23 @@ const EnAttente: React.FC<{ navigation: any }> = ({ navigation }) => {
           const date = new Date(tableau[i]);
           const date2 = date.toString();
           const compteur = i+1;
-          scheduleNotification(
-            `Question ${compteur}`,
-            `C'est l'heure pour la question ${compteur}!`,
-            date,
-            { valeur,date2, pseudo,compteur }
-          );
+          if (Platform.OS === 'web') {
+            const intervalId = setInterval(() => {
+              const nouvelleDateActuelle = new Date();
+              const diff = date.getTime() - nouvelleDateActuelle.getTime();    
+              if (diff <= 0) {
+                clearInterval(intervalId); // Arrêter l'intervalle
+                navigation.navigate('Question', { valeur, pseudo, compteur, date2 }); 
+              }
+            }, 1000);
+          }else{
+            scheduleNotification(
+              `Question ${compteur}`,
+              `C'est l'heure pour la question ${compteur}!`,
+              date,
+              { valeur,date2, pseudo,compteur }
+            );
+          }
         }    
       }
     });
@@ -103,8 +115,8 @@ const styles = StyleSheet.create({
   titre: {
     color: '#333333',
     fontWeight: 'bold',
-    fontSize: wp('5%'),
-    paddingTop: hp('6%'),
+    fontSize: Platform.OS === 'web' ? wp('3%') :  wp('5%'),
+    paddingTop: Platform.OS === 'web' ? hp('2%') :  hp('6%'),
     textAlign: 'center',
     marginBottom: hp('2%'),
   },

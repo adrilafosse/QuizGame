@@ -1,7 +1,7 @@
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Switch } from 'react-native';
 import React, { useState } from 'react';
-import { ref, set, get } from 'firebase/database';
+import { ref, get } from 'firebase/database';
 import { db } from '../firebaseConfig';
 import { Platform } from 'react-native';
 
@@ -28,7 +28,7 @@ const RejoindrePartie: React.FC<{ navigation: any }> = ({ navigation }) => {
                                 navigation.navigate('Pseudo', { valeur });
                             }
                             else{
-                                navigation.navigate('PartieEnCours', { valeur });
+                              alert('La partie a déjà commencée');
                             }
                         }
                     });

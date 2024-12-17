@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { StyleSheet, Text, View, TouchableOpacity, Button } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Platform } from 'react-native';
 import 'react-native-get-random-values';
 import { ref, update } from 'firebase/database';
@@ -9,14 +9,14 @@ import { useRoute } from '@react-navigation/native';
 
 interface RouteParams {
   uniqueId: string;
-  dateFormate: Date;
+  page2: number;
 }
 
 const NouvellePartie: React.FC<{ navigation: any }> = ({ navigation }) => {
   const route = useRoute();
-  const { uniqueId, dateFormate } = route.params as RouteParams;
-  const [nombrePages, setcompteur] = useState(1);
+  const { uniqueId, page2 } = route.params as RouteParams;
   const [durer, setDurer] = useState(10);
+  const [durerMinimum, setDurerMinimum] = useState(10);
   
 
   React.useLayoutEffect(() => {
@@ -26,60 +26,49 @@ const NouvellePartie: React.FC<{ navigation: any }> = ({ navigation }) => {
     });
   }, []);
 
-  function Compteur (compteur){
-    if(compteur < 1){
-      compteur = 1;
-    }
-    else if(compteur >20){
-      compteur = 20
-    }
-    setcompteur(compteur)
-  }
-  function Temps (frequence){
-    if(frequence < 10){
-      frequence = 10
-    }
-    else if(frequence > 180){
+  useEffect(() => {
+    //math.ceil arrondie au superieur un nombre à virgule
+    const durerMinimum = Math.ceil((page2 * 3) / 10) * 10;
+    setDurerMinimum(durerMinimum)
+    setDurer(durerMinimum)  
+  }, []);
+
+  function Temps1 (frequence){
+   if(frequence >= 180){
       frequence = 180;
+    }
+    else{
+      frequence = frequence + 10;
+    }
+    setDurer(frequence)
+  }
+
+  function Temps2 (frequence){
+    if(frequence <= durerMinimum){
+      frequence = durerMinimum
+    }
+    else {
+      frequence = frequence - 10;
     }
     setDurer(frequence)
   }
   
   async function Firebase(){
-    
-    let ecart = durer / nombrePages;
-    //il faut 3 minutes entre chaque question minimum
-    if (ecart >= 3) {
-      update(ref(db, uniqueId),{
-        nombrePages : nombrePages,
-        durer : durer,
-      })
-      navigation.navigate('Questions réponses', { uniqueId,nombrePages, durer })
-    }
-    else{
-      alert("Il faut que le rapport entre le temps de la partie et le nombre de questions soit supérieur à 3");
-    }
+    update(ref(db, uniqueId),{
+      durer : durer,
+    })
+    navigation.navigate('DateHeure', { uniqueId, durer, page2})
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.titre}>Définir la durée de la partie (de 10 à 180 minutes) ?</Text>
+      <Text style={styles.titre}>Définir la durée de la partie (de {durerMinimum} à 180 minutes) ?</Text>
       <View style={styles.container2}>
-        <TouchableOpacity style={styles.bouton1} onPress={() => Temps(durer + 10)}>
+        <TouchableOpacity style={styles.bouton1} onPress={() => Temps1(durer)}>
           <Text style={styles.boutonText1}>+</Text>
         </TouchableOpacity>
         <Text style={styles.chiffre}>{durer}</Text>
-        <TouchableOpacity style={styles.bouton2} onPress={() => Temps(durer - 10)}>
-          <Text style={styles.boutonText1}>-</Text>
-        </TouchableOpacity>
-      </View>
-      <Text style={styles.titre}>Définir le nombre de questions (de 1 à 20) ?</Text>
-      <View style={styles.container2}>
-        <TouchableOpacity style={styles.bouton1} onPress={() => Compteur(nombrePages + 1)}>
-          <Text style={styles.boutonText1}>+</Text>
-        </TouchableOpacity>
-        <Text style={styles.chiffre}>{nombrePages}</Text>
-        <TouchableOpacity style={styles.bouton2} onPress={() => Compteur(nombrePages - 1)}>
+        <TouchableOpacity style={styles.bouton2} onPress={() => Temps2(durer)}>
           <Text style={styles.boutonText1}>-</Text>
         </TouchableOpacity>
       </View>
@@ -102,9 +91,9 @@ const styles = StyleSheet.create({
     color: '#333333',
     fontWeight: 'bold',
     textAlign: 'center',
-    fontSize: Platform.OS === 'web' ? wp('3%') : wp('7%'),
-    paddingTop: Platform.OS === 'web' ? hp('2%') :  hp('6%'),
-    paddingHorizontal: wp('3%')
+    fontSize: Platform.OS === 'web' ? wp('4%') : wp('7%'),
+    paddingTop: Platform.OS === 'web' ? hp('4%') :  hp('6%'),
+    paddingHorizontal: Platform.OS === 'web' ? wp('6%') :  wp('3%'),
   },
   bouton1: {
     backgroundColor: '#72825e',
@@ -113,7 +102,7 @@ const styles = StyleSheet.create({
     marginLeft: wp('2%'),
     marginRight: wp('10%'),
     borderRadius: 20,
-    marginTop: Platform.OS === 'web' ? hp('2%') : hp('5%'),
+    marginTop: Platform.OS === 'web' ? hp('5%') : hp('5%'),
   },
   bouton2: {
     backgroundColor: '#72825e',
@@ -122,7 +111,7 @@ const styles = StyleSheet.create({
     marginRight: wp('2%'),
     marginLeft: wp('10%'),
     borderRadius: 20,
-    marginTop: Platform.OS === 'web' ? hp('2%') : hp('5%'),
+    marginTop: Platform.OS === 'web' ? hp('5%') : hp('5%'),
   },
   boutonText1: {
     color: '#FFFFFF',
@@ -140,7 +129,7 @@ const styles = StyleSheet.create({
   },
   chiffre: {
     fontSize: Platform.OS === 'web' ? wp('3%') : wp('10%'),
-    paddingTop: Platform.OS === 'web' ? wp('0%') : wp('10%'),
+    paddingTop: Platform.OS === 'web' ? wp('2%') : wp('10%'),
     color: '#757575',
   },
   bouton3: {

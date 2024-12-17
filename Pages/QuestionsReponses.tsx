@@ -3,19 +3,17 @@ import { View, Text, Platform, TouchableOpacity, StyleSheet } from 'react-native
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useRoute } from '@react-navigation/native';
 import { TextInput } from 'react-native';
-import { ref, set } from 'firebase/database';
+import { ref, set, update } from 'firebase/database';
 import { db } from '../firebaseConfig';
 
 interface RouteParams {
   uniqueId: string;
-  nombrePages: number;
-  durer: number;
 }
 
 const QuestionsReponses: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [page,setPage] = useState(1);
   const route = useRoute(); 
-  const { uniqueId, nombrePages, durer } = route.params as RouteParams;
+  const { uniqueId } = route.params as RouteParams;
   const [question, setQuestion] = useState('');
   const [reponse1, setreponse1] = useState('');
   const [reponse2, setreponse2] = useState('');
@@ -41,30 +39,26 @@ const QuestionsReponses: React.FC<{ navigation: any }> = ({ navigation }) => {
     }
   }
   const questionSuivante = () => {
-    if (page < nombrePages) {
-      if(reponse1 && reponse2 && question){
-        setPage(page + 1);
-        Validation();
-        setQuestion('');
-        setreponse1('');
-        setreponse2('');
-        setreponse3('');
-        setreponse4('');
-        navigation.navigate('Questions réponses', { uniqueId, nombrePages, page, durer });
-      }
-      else{
-        alert("Vous devez rentrer au moins une question, une bonne réponse et une mauvaise réponse");
-      } 
-    }
-  };
-  const questionFinal = () => {
     if(reponse1 && reponse2 && question){
+      setPage(page + 1);
       Validation();
-      navigation.navigate('DateHeure', { uniqueId, nombrePages, durer });
+      setQuestion('');
+      setreponse1('');
+      setreponse2('');
+      setreponse3('');
+      setreponse4('');
+      navigation.navigate('Questions réponses', { uniqueId, page });
     }
     else{
       alert("Vous devez rentrer au moins une question, une bonne réponse et une mauvaise réponse");
     } 
+  };
+  const Terminer = () => {
+    const page2 = page -1;
+    update(ref(db, uniqueId),{
+      nombreDeQuestions : page2,
+    })
+    navigation.navigate('Nouvelle partie', { uniqueId, page2});
   }
 
   async function Validation(){
@@ -99,7 +93,7 @@ const QuestionsReponses: React.FC<{ navigation: any }> = ({ navigation }) => {
   
   return (
     <View style={styles.container}>
-      <Text style={styles.question}>Question: {page}/{nombrePages}</Text>
+      <Text style={styles.question}>Question : {page}</Text>
       <TextInput 
         style={styles.input1} 
         placeholder="Ecriver votre question"
@@ -150,26 +144,27 @@ const QuestionsReponses: React.FC<{ navigation: any }> = ({ navigation }) => {
       ) : null}
       <View style={styles.container2}>
         <TouchableOpacity style={styles.bouton1} onPress={() => CompteurPlus()}>
-          <Text style={styles.boutonText}>+</Text>
+          <Text style={styles.boutonText2}>+</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.bouton} onPress={questionSuivante}>
+          <Text style={styles.boutonText}>Valider et créer une nouvelle question</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.bouton2} onPress={() => CompteurMoins()}>
-          <Text style={styles.boutonText}>-</Text>
+          <Text style={styles.boutonText2}>-</Text>
         </TouchableOpacity>
       </View>
-      
-      {page < nombrePages ? (
-        <TouchableOpacity style={styles.bouton} onPress={questionSuivante}>
-          <Text style={styles.boutonText}>Question suivante</Text>
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity 
-          style={styles.bouton} 
-          onPress={questionFinal}
-        >
-          <Text style={styles.boutonText}>Suivant</Text>
-        </TouchableOpacity>
-      )}
-    </View>
+        {page > 1 ? (
+          <>
+            <Text style={styles.ou}>----------   ou   ----------</Text>
+            <TouchableOpacity 
+              style={styles.bouton3} 
+              onPress={Terminer}
+              >
+              <Text style={styles.boutonText3}>Suivant</Text>
+            </TouchableOpacity>
+          </>
+        ) : null}
+      </View>  
   );
 };
 
@@ -187,21 +182,50 @@ const styles = StyleSheet.create({
     marginTop: Platform.OS === 'web' ? hp('2%') :  hp('5%'),
     width: Platform.OS === 'web' ? '40%' : wp('70%'), 
   },
+  ou:{
+    paddingTop: Platform.OS === 'web' ? wp('1%') : wp('12%'),
+    color: '#757575',
+    fontSize: Platform.OS === 'web' ? wp('1%') : wp('4%'),
+  },
   bouton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#757575',
     paddingVertical: Platform.OS === 'web' ? hp('2%') : hp('3%'),
-    paddingHorizontal: Platform.OS === 'web' ? wp('15%') : wp('20%'),
+    paddingHorizontal: Platform.OS === 'web' ? wp('5%') : wp('20%'),
     borderRadius: 8,
-    marginTop: Platform.OS === 'web' ? hp('2%') : hp('6%'),
     alignItems: 'center',
     justifyContent: 'center',
+    alignSelf: 'center',
+    marginTop: Platform.OS === 'web' ? hp('2%') : hp('3%'),
+  },
+  bouton3: {
+    backgroundColor: '#4CAF50',
+    paddingVertical: Platform.OS === 'web' ? hp('2%') : hp('3%'),
+    paddingHorizontal: Platform.OS === 'web' ? wp('5%') : wp('20%'),
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: Platform.OS === 'web' ? hp('3%') : hp('3%'),
   },
   boutonText: {
     color: '#FFFFFF',
-    fontSize: wp('4%'),
+    fontSize: Platform.OS === 'web' ? wp('1%') : wp('4%'),
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 5,
+    marginLeft: 'auto',
+  },
+  boutonText2: {
+    color: '#FFFFFF',
+    fontSize: Platform.OS === 'web' ? wp('1%') : wp('4%'),
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginLeft: 'auto',
+  },
+  boutonText3: {
+    color: '#FFFFFF',
+    fontSize: Platform.OS === 'web' ? wp('2%') : wp('4%'),
+    fontWeight: 'bold',
+    textAlign: 'center',
+     marginLeft: 'auto',
   },
   question: {
     color: '#333333',
@@ -226,6 +250,7 @@ const styles = StyleSheet.create({
     marginTop: hp('2%'),
     color: '#333333',
     textAlign: 'center',
+    fontSize: Platform.OS === 'web' ? wp('1%') : wp('4%'),
   },
   input2: {
     height: hp('6%'),
@@ -237,18 +262,21 @@ const styles = StyleSheet.create({
     marginTop: hp('2%'),
     color: 'red',
     textAlign: 'center',
+    fontSize: Platform.OS === 'web' ? wp('1%') : wp('4%'),
   },
   
   bouton1: {
-    backgroundColor: '#72825e',
-    paddingVertical: Platform.OS === 'web' ? hp('1%') : hp('3%'),
-    paddingHorizontal: Platform.OS === 'web' ? wp('2.5%') : wp('10%'),
+    backgroundColor: '#757575',
+    marginTop: Platform.OS === 'web' ? hp('2%') : hp('3%'),
+    paddingVertical: Platform.OS === 'web' ? hp('3%') : hp('3%'),
+    paddingHorizontal: Platform.OS === 'web' ? wp('2%') : wp('10%'),
     borderRadius: 20,
   },
   bouton2: {
-    backgroundColor: '#72825e',
-    paddingVertical: Platform.OS === 'web' ? hp('1%') : hp('3%'),
-    paddingHorizontal: Platform.OS === 'web' ? wp('2.5%') : wp('10%'),
+    backgroundColor: '#757575',
+    marginTop: Platform.OS === 'web' ? hp('2%') : hp('3%'),
+    paddingVertical: Platform.OS === 'web' ? hp('3%') : hp('3%'),
+    paddingHorizontal: Platform.OS === 'web' ? wp('2%') : wp('10%'),
     borderRadius: 20,
   },
 });
