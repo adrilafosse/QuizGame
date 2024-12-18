@@ -2,7 +2,9 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { StyleSheet, Text, View, TouchableOpacity, BackHandler } from 'react-native';
 import React, { useEffect } from 'react';
 import { useRoute } from '@react-navigation/native';
-import { Platform } from 'react-native';
+import { Platform, Dimensions } from 'react-native';
+
+const {width} = Dimensions.get('window');
 interface RouteParams {
   valeur: string;
   pseudo: string;
@@ -62,16 +64,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: wp('5%'),
   },
-  boutonsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-  },
   titre: {
     color: '#333333',
     fontWeight: 'bold',
-    fontSize: wp('8%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('3%') :  wp('8%'),
     paddingTop: hp('5%'),
     textAlign: 'center',
     marginBottom: hp('2%'),
@@ -84,7 +80,7 @@ const styles = StyleSheet.create({
     marginTop: hp('4%'),
     alignItems: 'center',
     justifyContent: 'center',
-    marginHorizontal: 10,
+    marginHorizontal: 5,
   },
   bouton2: {
     backgroundColor: '#4CAF50',
@@ -94,11 +90,17 @@ const styles = StyleSheet.create({
     marginTop: hp('4%'),
     alignItems: 'center',
     justifyContent: 'center',
-    marginHorizontal: 10,
+    marginHorizontal: 5,
+  },
+  boutonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
   },
    boutonText: {
       color: '#FFFFFF',
-      fontSize: wp('4%'),
+      fontSize: wp('3%'),
       fontWeight: 'bold',
    },
 });

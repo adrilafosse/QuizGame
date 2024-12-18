@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, Platform, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useRoute } from '@react-navigation/native';
 import { TextInput } from 'react-native';
 import { ref, set, update } from 'firebase/database';
 import { db } from '../firebaseConfig';
+import { Platform, Dimensions } from 'react-native';
+
+const {width} = Dimensions.get('window');
 
 interface RouteParams {
   uniqueId: string;
@@ -54,11 +57,15 @@ const QuestionsReponses: React.FC<{ navigation: any }> = ({ navigation }) => {
     } 
   };
   const Terminer = () => {
-    const page2 = page -1;
-    update(ref(db, uniqueId),{
-      nombreDeQuestions : page2,
-    })
-    navigation.navigate('Nouvelle partie', { uniqueId, page2});
+    if(reponse1 && reponse2 && question){
+      alert("Pour terminer tous les champs doivent être vide");
+    }else{
+      const page2 = page -1;
+      update(ref(db, uniqueId),{
+        nombreDeQuestions : page2,
+      })
+      navigation.navigate('Nouvelle partie', {uniqueId, page2});
+    }
   }
 
   async function Validation(){
@@ -147,7 +154,7 @@ const QuestionsReponses: React.FC<{ navigation: any }> = ({ navigation }) => {
           <Text style={styles.boutonText2}>+</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.bouton} onPress={questionSuivante}>
-          <Text style={styles.boutonText}>Valider et créer une nouvelle question</Text>
+          <Text style={styles.boutonText}>Ajouter une nouvelle question</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.bouton2} onPress={() => CompteurMoins()}>
           <Text style={styles.boutonText2}>-</Text>
@@ -160,7 +167,7 @@ const QuestionsReponses: React.FC<{ navigation: any }> = ({ navigation }) => {
               style={styles.bouton3} 
               onPress={Terminer}
               >
-              <Text style={styles.boutonText3}>Suivant</Text>
+              <Text style={styles.boutonText3}>Terminer</Text>
             </TouchableOpacity>
           </>
         ) : null}
@@ -173,71 +180,70 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5F5F5',
     alignItems: 'center',
-    paddingTop: Platform.OS === 'web' ? hp('4%') :  hp('8%'),
+    paddingTop: Platform.OS === 'web' && width >= 768 ? hp('4%') :  hp('10%'),
   },
   container2: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: Platform.OS === 'web' ? hp('2%') :  hp('5%'),
-    width: Platform.OS === 'web' ? '40%' : wp('70%'), 
+    justifyContent: 'space-evenly',
+    marginTop: Platform.OS === 'web' && width >= 768 ? hp('2%') :  hp('5%'),
+    width: Platform.OS === 'web' && width >= 768 ? '40%' : wp('70%'),
   },
   ou:{
-    paddingTop: Platform.OS === 'web' ? wp('1%') : wp('12%'),
+    paddingTop: Platform.OS === 'web' && width >= 768 ? wp('1%') : wp('3%'),
     color: '#757575',
-    fontSize: Platform.OS === 'web' ? wp('1%') : wp('4%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('1%') : wp('4%'),
   },
   bouton: {
     backgroundColor: '#757575',
-    paddingVertical: Platform.OS === 'web' ? hp('2%') : hp('3%'),
-    paddingHorizontal: Platform.OS === 'web' ? wp('5%') : wp('20%'),
+    paddingVertical: Platform.OS === 'web' && width >= 768 ? hp('2%') : hp('3%'),
+    paddingHorizontal: Platform.OS === 'web' && width >= 768 ? wp('5%') : wp('6%'),
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
-    marginTop: Platform.OS === 'web' ? hp('2%') : hp('3%'),
+    marginTop: Platform.OS === 'web' && width >= 768 ? hp('2%') : hp('0%'),
+    marginHorizontal:wp('3%'),
   },
   bouton3: {
     backgroundColor: '#4CAF50',
-    paddingVertical: Platform.OS === 'web' ? hp('2%') : hp('3%'),
-    paddingHorizontal: Platform.OS === 'web' ? wp('5%') : wp('20%'),
+    paddingVertical: Platform.OS === 'web' && width >= 768 ? hp('2%') : hp('3%'),
+    paddingHorizontal: Platform.OS === 'web' && width >= 768 ? wp('5%') : wp('15%'),
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: Platform.OS === 'web' ? hp('3%') : hp('3%'),
+    marginTop: Platform.OS === 'web' && width >= 768 ? hp('3%') : hp('3%'),
   },
   boutonText: {
     color: '#FFFFFF',
-    fontSize: Platform.OS === 'web' ? wp('1%') : wp('4%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('1%') : wp('3%'),
     fontWeight: 'bold',
-    textAlign: 'center',
-    marginLeft: 'auto',
   },
   boutonText2: {
     color: '#FFFFFF',
-    fontSize: Platform.OS === 'web' ? wp('1%') : wp('4%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('1%') : wp('3%'),
     fontWeight: 'bold',
     textAlign: 'center',
     marginLeft: 'auto',
   },
   boutonText3: {
     color: '#FFFFFF',
-    fontSize: Platform.OS === 'web' ? wp('2%') : wp('4%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('2%') : wp('4%'),
     fontWeight: 'bold',
     textAlign: 'center',
-     marginLeft: 'auto',
+    marginLeft: 'auto',
   },
   question: {
     color: '#333333',
     fontWeight: 'bold',
-    fontSize: Platform.OS === 'web' ? wp('3%') : wp('7%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('3%') : wp('8%'),
     textAlign: 'center',
   },
   reponse:{
     color: '#333333',
     fontWeight: 'bold',
-    fontSize: Platform.OS === 'web' ? wp('3%') : wp('6%'),
-    paddingTop: Platform.OS === 'web' ? hp('5%') : hp('2%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('3%') : wp('6%'),
+    paddingTop: Platform.OS === 'web' && width >= 768? hp('5%') : hp('2%'),
     textAlign: 'center',
   },
   input1: {
@@ -250,7 +256,7 @@ const styles = StyleSheet.create({
     marginTop: hp('2%'),
     color: '#333333',
     textAlign: 'center',
-    fontSize: Platform.OS === 'web' ? wp('1%') : wp('4%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('1%') : wp('4%'),
   },
   input2: {
     height: hp('6%'),
@@ -262,21 +268,21 @@ const styles = StyleSheet.create({
     marginTop: hp('2%'),
     color: 'red',
     textAlign: 'center',
-    fontSize: Platform.OS === 'web' ? wp('1%') : wp('4%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('1%') : wp('4%'),
   },
   
   bouton1: {
     backgroundColor: '#757575',
-    marginTop: Platform.OS === 'web' ? hp('2%') : hp('3%'),
-    paddingVertical: Platform.OS === 'web' ? hp('3%') : hp('3%'),
-    paddingHorizontal: Platform.OS === 'web' ? wp('2%') : wp('10%'),
+    marginTop: Platform.OS === 'web' && width >= 768 ? hp('2%') : hp('0%'),
+    paddingVertical: Platform.OS === 'web'  && width >= 768? hp('3%') : hp('3%'),
+    paddingHorizontal: Platform.OS === 'web' && width >= 768 ? wp('2%') : wp('6%'),
     borderRadius: 20,
   },
   bouton2: {
     backgroundColor: '#757575',
-    marginTop: Platform.OS === 'web' ? hp('2%') : hp('3%'),
-    paddingVertical: Platform.OS === 'web' ? hp('3%') : hp('3%'),
-    paddingHorizontal: Platform.OS === 'web' ? wp('2%') : wp('10%'),
+    marginTop: Platform.OS === 'web' && width >= 768 ? hp('2%') : hp('0%'),
+    paddingVertical: Platform.OS === 'web' && width >= 768 ? hp('3%') : hp('3%'),
+    paddingHorizontal: Platform.OS === 'web' && width >= 768 ? wp('2%') : wp('6%'),
     borderRadius: 20,
   },
 });

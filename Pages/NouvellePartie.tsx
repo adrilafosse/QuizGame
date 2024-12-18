@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { Platform } from 'react-native';
 import 'react-native-get-random-values';
 import { ref, update } from 'firebase/database';
 import { db } from '../firebaseConfig';
 import { useRoute } from '@react-navigation/native';
+import { Platform, Dimensions } from 'react-native';
+
+const {width} = Dimensions.get('window');
 
 interface RouteParams {
   uniqueId: string;
@@ -91,31 +93,31 @@ const styles = StyleSheet.create({
     color: '#333333',
     fontWeight: 'bold',
     textAlign: 'center',
-    fontSize: Platform.OS === 'web' ? wp('4%') : wp('7%'),
-    paddingTop: Platform.OS === 'web' ? hp('4%') :  hp('6%'),
-    paddingHorizontal: Platform.OS === 'web' ? wp('6%') :  wp('3%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('4%') : wp('7%'),
+    paddingTop: Platform.OS === 'web' && width >= 768 ? hp('4%') :  hp('15%'),
+    paddingHorizontal: Platform.OS === 'web' && width >= 768 ? wp('6%') :  wp('3%'),
   },
   bouton1: {
     backgroundColor: '#72825e',
-    paddingVertical: Platform.OS === 'web' ? hp('1%') : hp('3%'),
-    paddingHorizontal: Platform.OS === 'web' ? wp('2.5%') : wp('10%'), 
+    paddingVertical: Platform.OS === 'web' && width >= 768 ? hp('1%') : hp('3%'),
+    paddingHorizontal: Platform.OS === 'web' && width >= 768 ? wp('2.5%') : wp('10%'), 
     marginLeft: wp('2%'),
-    marginRight: wp('10%'),
+    marginRight: Platform.OS === 'web' && width >= 768 ? wp('8%') : wp('10%'),
     borderRadius: 20,
-    marginTop: Platform.OS === 'web' ? hp('5%') : hp('5%'),
+    marginTop: Platform.OS === 'web' && width >= 768 ? hp('5%') : hp('5%'),
   },
   bouton2: {
     backgroundColor: '#72825e',
-    paddingVertical: Platform.OS === 'web' ? hp('1%') : hp('3%'), 
-    paddingHorizontal: Platform.OS === 'web' ? wp('2.5%') : wp('10%'),
+    paddingVertical: Platform.OS === 'web' && width >= 768 ? hp('1%') : hp('3%'), 
+    paddingHorizontal: Platform.OS === 'web' && width >= 768 ? wp('2.5%') : wp('10%'),
     marginRight: wp('2%'),
     marginLeft: wp('10%'),
     borderRadius: 20,
-    marginTop: Platform.OS === 'web' ? hp('5%') : hp('5%'),
+    marginTop: Platform.OS === 'web' && width >= 768 ? hp('5%') : hp('5%'),
   },
   boutonText1: {
     color: '#FFFFFF',
-    fontSize: Platform.OS === 'web' ? wp('4%') : wp('8%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('4%') : wp('8%'),
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom:5,
@@ -128,16 +130,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   chiffre: {
-    fontSize: Platform.OS === 'web' ? wp('3%') : wp('10%'),
-    paddingTop: Platform.OS === 'web' ? wp('2%') : wp('10%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('3%') : wp('10%'),
+    paddingTop: Platform.OS === 'web' && width >= 768 ? wp('2%') : wp('10%'),
     color: '#757575',
   },
   bouton3: {
     backgroundColor: '#4CAF50',
-    paddingVertical: Platform.OS === 'web' ? hp('2%') : hp('3%'), 
-    paddingHorizontal: Platform.OS === 'web' ? wp('15%') : wp('20%'),
+    paddingVertical: Platform.OS === 'web' && width >= 768 ? hp('2%') : hp('3%'), 
+    paddingHorizontal: Platform.OS === 'web' && width >= 768 ? wp('15%') : wp('20%'),
     borderRadius: 8,
-    marginTop: Platform.OS === 'web' ? hp('10%') : hp('8%'),
+    marginTop: Platform.OS === 'web' && width >= 768 ? hp('10%') : hp('8%'),
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -147,7 +149,7 @@ const styles = StyleSheet.create({
   },
   boutonText2: {
     color: '#FFFFFF',
-    fontSize: Platform.OS === 'web' ? wp('4%') : wp('6%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('4%') : wp('6%'),
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom:5,

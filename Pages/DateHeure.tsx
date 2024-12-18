@@ -4,7 +4,9 @@ import React, { useState } from 'react';
 import { ref, update } from 'firebase/database';
 import { db } from '../firebaseConfig';
 import { useRoute } from '@react-navigation/native';
-import { Platform } from 'react-native';
+import { Platform, Dimensions } from 'react-native';
+
+const {width} = Dimensions.get('window');
 
 interface RouteParams {
   uniqueId: string;
@@ -132,19 +134,19 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5F5F5',
     alignItems: 'center',
-    paddingTop: Platform.OS === 'web' ? hp('5%') :  hp('13%'),
+    paddingTop: Platform.OS === 'web' && width >= 768 ? hp('5%') :  hp('10%'),
   },
   paragraphe: {
     color: '#757575',
     textAlign: 'center',
-    fontSize: Platform.OS === 'web' ? wp('3%') : wp('5%'),
-    paddingTop: Platform.OS === 'web' ? wp('2%') : wp('16%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('3%') : wp('5%'),
+    paddingTop: Platform.OS === 'web' && width >= 768 ? wp('2%') : wp('16%'),
     fontStyle: 'italic',
   },
   bouton2: {
     backgroundColor: '#757575',
     paddingVertical: hp('2%'),
-    paddingHorizontal: Platform.OS === 'web' ? wp('5%') : wp('20%'),
+    paddingHorizontal: Platform.OS === 'web' && width >= 768 ? wp('5%') : wp('20%'),
     borderRadius: 8,
     marginTop: hp('2%'),
     alignItems: 'center',
@@ -153,19 +155,19 @@ const styles = StyleSheet.create({
   sous_titre: {
     color: '#757575',
     textAlign: 'center',
-    fontSize: Platform.OS === 'web' ? wp('3%') : wp('5%'),
-    paddingTop: Platform.OS === 'web' ? wp('2%') : wp('14%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('3%') : wp('5%'),
+    paddingTop: Platform.OS === 'web' && width >= 768 ? wp('2%') : wp('10%'),
     textDecorationLine: 'underline',
   },
   ou:{
-    paddingTop: Platform.OS === 'web' ? wp('2%') : wp('12%'),
+    paddingTop: Platform.OS === 'web' && width >= 768 ? wp('2%') : wp('10%'),
     color: '#757575',
-    fontSize: Platform.OS === 'web' ? wp('2%') : wp('4%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('2%') : wp('4%'),
   },
   titre: {
     color: '#333333',
     fontWeight: 'bold',
-    fontSize: Platform.OS === 'web' ? wp('5%') : wp('8%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('5%') : wp('8%'),
     textAlign: 'center',
     marginHorizontal: wp('5%')
   },
@@ -175,16 +177,16 @@ const styles = StyleSheet.create({
     borderColor: '#757575',
     borderWidth: 1,
     borderRadius: 5,
-    marginTop: hp('6%'),
+    marginTop: Platform.OS === 'web' && width >= 768 ? hp('6%') : hp('4%'),
     textAlign: 'center',
     color: '#333333',
-    fontSize: Platform.OS === 'web' ? wp('2%') : wp('4%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('2%') : wp('4%'),
   },
   bouton: {
     backgroundColor: '#4CAF50',
     borderRadius: 8,
     paddingVertical: hp('4%'),
-    paddingHorizontal: wp('6%'),
+    paddingHorizontal: wp('5%'),
     alignItems: 'center',
     justifyContent: 'center',
     marginHorizontal: 10,
@@ -193,22 +195,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingTop: Platform.OS === 'web' ? wp('2%') : wp('12%'),
+    paddingTop: Platform.OS === 'web' && width >= 768 ? wp('2%') : wp('12%'),
   },
   boutonText: {
     color: '#FFFFFF',
-    fontSize: Platform.OS === 'web' ? wp('2%') : wp('4%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('2%') : wp('4%'),
     fontWeight: 'bold',
   },
   boutonText2: {
     color: '#FFFFFF',
-    fontSize: Platform.OS === 'web' ? wp('2%') : wp('3%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('2%') : wp('3%'),
     fontWeight: 'bold',
   },
 });
 
 export default DateHeure;
-function formatDateToString(date: Date) {
-  throw new Error('Function not implemented.');
-}
 

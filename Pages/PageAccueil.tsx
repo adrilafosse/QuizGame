@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import * as Notifications from 'expo-notifications';
-import { Platform } from 'react-native';
+import { Platform, Dimensions } from 'react-native';
 
+const {width} = Dimensions.get('window');
 
 const Page_Accueil: React.FC<{ navigation: any }> = ({ navigation }) => {
   
@@ -40,31 +41,31 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5F5F5',
     alignItems: 'center',
-    paddingTop: Platform.OS === 'web' ? hp('1%') :  hp('8%'),
+    paddingTop: Platform.OS === 'web' && width >= 768 ? hp('1%') :  hp('8%'),
   },
   titre: {
     color: '#333333',
     fontWeight: 'bold',
-    fontSize: Platform.OS === 'web' ? wp('8%') : wp('16%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('8%') : wp('16%'),
   },
   ou:{
-    paddingTop: Platform.OS === 'web' ? wp('2%') : wp('12%'),
+    paddingTop: Platform.OS === 'web' && width >= 768 ? wp('2%') : wp('8%'),
     color: '#757575',
-    fontSize: Platform.OS === 'web' ? wp('2%') : wp('4%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('2%') : wp('4%'),
   },
   sous_titre: {
     color: '#333333',
     textAlign: 'center',
-    fontSize: Platform.OS === 'web' ? wp('2%') : wp('6%'),
-    paddingTop: Platform.OS === 'web' ? wp('2%') : wp('4%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('2%') : wp('6%'),
+    paddingTop: Platform.OS === 'web' && width >= 768 ? wp('2%') : wp('4%'),
     fontWeight: 'bold',
   },
   paragraphe: {
     color: '#757575',
     textAlign: 'center',
-    fontSize: Platform.OS === 'web' ? wp('2%') : wp('6%'),
-    paddingTop: Platform.OS === 'web' ? wp('2%') : wp('16%'),
-    paddingHorizontal: Platform.OS === 'web' ? wp('4%') : wp('2%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('2%') : wp('6%'),
+    paddingTop: Platform.OS === 'web' && width >= 768 ? wp('2%') : wp('16%'),
+    paddingHorizontal: Platform.OS === 'web' && width >= 768 ? wp('4%') : wp('2%'),
     fontStyle: 'italic',
   },
   bouton: {
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
     paddingVertical: hp('2%'),
     paddingHorizontal: wp('10%'),
     borderRadius: 8,
-    marginTop: Platform.OS === 'web' ? wp('5%') : wp('16%'),
+    marginTop: Platform.OS === 'web' && width >= 768 ? wp('5%') : wp('10%'),
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -81,13 +82,13 @@ const styles = StyleSheet.create({
     paddingVertical: hp('2%'),
     paddingHorizontal: wp('15%'),
     borderRadius: 8,
-    marginTop: Platform.OS === 'web' ? wp('2%') : wp('12%'),
+    marginTop: Platform.OS === 'web' && width >= 768 ? wp('2%') : wp('8%'),
     alignItems: 'center',
     justifyContent: 'center',
   },
   boutonText: {
     color: '#FFFFFF',
-    fontSize: wp('2%'),
+    fontSize:  Platform.OS === 'web' && width >= 768 ? wp('2%') : wp('5%'),
     fontWeight: 'bold',
   },
 });

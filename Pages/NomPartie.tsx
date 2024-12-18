@@ -1,9 +1,11 @@
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Switch } from 'react-native';
 import React, { useState } from 'react';
-import { ref, set, get } from 'firebase/database';
+import { ref, get } from 'firebase/database';
 import { db } from '../firebaseConfig';
-import { Platform } from 'react-native';
+import { Platform, Dimensions } from 'react-native';
+
+const {width} = Dimensions.get('window');
 
 const NomPartie: React.FC<{ navigation: any }> = ({ navigation }) => {
     const [uniqueId, setUniqueId] = useState('');
@@ -52,12 +54,12 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#F5F5F5',
       alignItems: 'center',
-      paddingTop: Platform.OS === 'web' ? hp('20%') :  hp('28%'),
+      paddingTop: Platform.OS === 'web' && width >= 768 ? hp('20%') :  hp('28%'),
     },
     titre: {
       color: '#333333',
       fontWeight: 'bold',
-      fontSize: Platform.OS === 'web' ? wp('7%') : wp('10%'),
+      fontSize: Platform.OS === 'web' && width >= 768 ? wp('7%') : wp('8%'),
       textAlign: 'center',
     },
     input: {
@@ -69,7 +71,7 @@ const styles = StyleSheet.create({
       marginTop: hp('4%'),
       color: '#333333',
       textAlign: 'center',
-      fontSize: Platform.OS === 'web' ? wp('2%') : wp('4%'),
+      fontSize: Platform.OS === 'web' && width >= 768 ? wp('2%') : wp('4%'),
     },
     bouton: {
       backgroundColor: '#4CAF50',

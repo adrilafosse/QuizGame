@@ -1,7 +1,10 @@
 import React, { useState , useEffect } from 'react';
-import { View, Text, Platform, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useRoute } from '@react-navigation/native';
+import { Platform, Dimensions } from 'react-native';
+
+const {width} = Dimensions.get('window');
 
 interface RouteParams {
     uniqueId: string;
@@ -55,20 +58,21 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5F5F5',
     alignItems: 'center',
-    paddingTop: Platform.OS === 'web' ? hp('15%') :  hp('25%'),
+    paddingTop: Platform.OS === 'web' && width >= 768 ? hp('15%') :  hp('25%'),
+    paddingHorizontal: wp('5%'),
   },
   titre: {
     color: '#333333',
     fontWeight: 'bold',
-    fontSize: Platform.OS === 'web' ? wp('5%') : wp('12%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('5%') : wp('12%'),
     textAlign: 'center',
     paddingHorizontal: wp('5%'), 
   },
   sous_titre: {
     color: '#757575',
-    fontSize:  Platform.OS === 'web' ? wp('3%') : wp('6%'),
+    fontSize:  Platform.OS === 'web' && width >= 768 ? wp('3%') : wp('6%'),
     paddingTop: hp('8%'),
-    textAlign: 'center', 
+    textAlign: 'center',
   },
   bouton: {
     backgroundColor: '#4CAF50',

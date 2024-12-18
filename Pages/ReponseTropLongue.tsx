@@ -1,6 +1,9 @@
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
 import React from 'react';
+import { Platform, Dimensions } from 'react-native';
+
+const {width} = Dimensions.get('window');
 
 const ReponseTropLongue: React.FC<{ navigation: any }> = ({ navigation }) => {
 
@@ -29,7 +32,7 @@ const styles = StyleSheet.create({
   titre: {
     color: '#333333',
     fontWeight: 'bold',
-    fontSize: wp('8%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('3%') :  wp('8%'),
     paddingTop: hp('5%'),
     textAlign: 'center',
     marginBottom: hp('2%'),

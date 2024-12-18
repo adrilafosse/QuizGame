@@ -6,7 +6,9 @@ import { ref, get } from "firebase/database";
 import { db } from '../firebaseConfig';
 import { useRoute } from '@react-navigation/native';
 import * as Notifications from 'expo-notifications';
-import { Platform } from 'react-native';
+import { Platform, Dimensions } from 'react-native';
+
+const {width} = Dimensions.get('window');
 
 interface RouteParams {
   valeur: string;
@@ -76,8 +78,7 @@ const EnAttente: React.FC<{ navigation: any }> = ({ navigation }) => {
           if (Platform.OS === 'web') {
             const intervalId = setInterval(() => {
               const nouvelleDateActuelle = new Date();
-              const diff = date.getTime() - nouvelleDateActuelle.getTime();
-              console.log("diff :",diff)   
+              const diff = date.getTime() - nouvelleDateActuelle.getTime(); 
               if (diff <= 0) {
                 clearInterval(intervalId); // Arrêter l'intervalle
                 navigation.navigate('Question', { valeur, pseudo, compteur, date2 }); 
@@ -116,8 +117,8 @@ const styles = StyleSheet.create({
   titre: {
     color: '#333333',
     fontWeight: 'bold',
-    fontSize: Platform.OS === 'web' ? wp('3%') :  wp('5%'),
-    paddingTop: Platform.OS === 'web' ? hp('2%') :  hp('6%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('3%') :  wp('5%'),
+    paddingTop: Platform.OS === 'web' && width >= 768 ? hp('2%') :  hp('6%'),
     textAlign: 'center',
     marginBottom: hp('2%'),
   },
