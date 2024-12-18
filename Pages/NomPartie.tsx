@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     },
     boutonText: {
       color: '#FFFFFF',
-      fontSize: wp('4%'),
+      fontSize: wp('3%'),
       fontWeight: 'bold',
     },
 });

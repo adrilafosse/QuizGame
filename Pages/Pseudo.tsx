@@ -15,13 +15,6 @@ const Pseudo: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [pseudo, setPseudo] = useState('');
   const route = useRoute();
   const { valeur } = route.params as RouteParams;
-
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerLeft: () => null,
-      headerShown: false, // Masque la flèche de retour
-    });
-  }, []);
   
   const Validation = () => {
     if (pseudo) {
@@ -76,12 +69,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5F5F5',
     alignItems: 'center',
-    paddingTop: Platform.OS === 'web' && width >= 768 ? hp('20%') :  hp('28%'),
+    paddingTop: Platform.OS === 'web' && width >= 768 ? hp('10%') :  hp('28%'),
   },
   titre: {
     color: '#333333',
     fontWeight: 'bold',
-    fontSize: Platform.OS === 'web' && width >= 768 ? wp('7%') :  wp('8%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('6%') :  wp('8%'),
     textAlign: 'center',
     paddingHorizontal: wp('5%'),
   },
@@ -107,7 +100,7 @@ const styles = StyleSheet.create({
   },
   boutonText: {
     color: '#FFFFFF',
-    fontSize: wp('4%'),
+    fontSize: wp('3%'),
     fontWeight: 'bold',
   },
 });

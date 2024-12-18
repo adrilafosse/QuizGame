@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     paddingVertical: hp('2%'),
     paddingHorizontal: wp('10%'),
     borderRadius: 8,
-    marginTop: Platform.OS === 'web' && width >= 768 ? wp('5%') : wp('10%'),
+    marginTop: Platform.OS === 'web' && width >= 768 ? wp('4%') : wp('10%'),
     alignItems: 'center',
     justifyContent: 'center',
   },

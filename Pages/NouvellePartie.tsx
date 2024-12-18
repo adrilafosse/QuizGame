@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
   },
   boutonText2: {
     color: '#FFFFFF',
-    fontSize: Platform.OS === 'web' && width >= 768 ? wp('4%') : wp('6%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('3%') : wp('6%'),
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom:5,
