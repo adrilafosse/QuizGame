@@ -19,6 +19,7 @@ import ReponseTropLongue from './Pages/ReponseTropLongue'
 import Score from './Pages/Score'
 import Bilan from './Pages/Bilan'
 import RejoindrePartie from './Pages/RejoindrePartie'
+import QuestionsReponsesIA from './Pages/QuestionsReponsesIA';
 
 const Stack = createNativeStackNavigator();
 
@@ -65,6 +66,7 @@ export default function App() {
         <Stack.Screen name="Scores" component={Score} />
         <Stack.Screen name="Bilan" component={Bilan} />
         <Stack.Screen name="RejoindrePartie" component={RejoindrePartie} />
+        <Stack.Screen name="Questions réponsesIA" component={QuestionsReponsesIA} />
       </Stack.Navigator>
     </NavigationContainer>
   );
