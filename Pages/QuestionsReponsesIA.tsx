@@ -6,6 +6,7 @@ import { TextInput } from 'react-native';
 import { ref, set, update } from 'firebase/database';
 import { db } from '../firebaseConfig';
 import { Platform, Dimensions } from 'react-native';
+import Question from './Question';
 
 const {width} = Dimensions.get('window');
 
@@ -23,7 +24,7 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [reponse3, setreponse3] = useState('');
   const [reponse4, setreponse4] = useState('');
   const [texte, setTexte] = useState('');
-
+  const [dataPrecedente,setDataPrecedente] = useState('');
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => null,
@@ -40,7 +41,7 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
       setreponse2('');
       setreponse3('');
       setreponse4('');
-      navigation.navigate('Questions réponses', { uniqueId, page });
+      navigation.navigate('Questions réponsesIA', { uniqueId, page });
     }
     else{
       alert("Vous devez rentrer au moins une question, une bonne réponse et une mauvaise réponse");
@@ -57,43 +58,39 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
       navigation.navigate('Nouvelle partie', {uniqueId, page2});
     }
   }
-  const Generer = async () => {
-    if (texte) {
-      const apiKey = 'AIzaSyBA5bG-TxUApB51ROdO9cfj-syyw6lurp0'; // Assurez-vous que la clé API est valide
-      const apiUrl = 'https://generativeai.googleapis.com/v1/models/gemini-1.5-flash:generateContent';
-  
-      const requestData = {
-        prompt: `Génére moi une question et 1 bonne réponse et 3 mauvaises réponses par rapport à ça : ${texte}`, // Utilisation des backticks pour l'interpolation
-        temperature: 0.7, // Paramètre de température (entre 0 et 1)
-      };
-  
-      try {
-        const response = await fetch(apiUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${apiKey}`, // Authentification avec la clé API
-          },
-          body: JSON.stringify(requestData),
-        });
-  
-        if (!response.ok) {
-          throw new Error('Request failed');
-        }
-  
-        const responseData = await response.json();
-        console.log(responseData.text); // Affiche le texte généré par l'API
-  
-        // Vous pouvez ici gérer la réponse, par exemple l'afficher dans l'interface
-      } catch (error) {
-        console.error('Erreur lors de l\'appel à l\'API :', error);
+  const Generer = async (texte: string) => {
+    try {
+      const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyCMhkNL29dS3JKxmQcCUrEtfIFQPrXSA0Y", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [
+                { text: `Génère une question avec 1 bonne réponse et 3 mauvaises réponses à partir du texte suivant : "${texte} et je veux que le résultat soit uniquement sous cette forme question,bonnereponse,mauvaisereponse1,mauvaisereponse2,mauvaisereponse3"` }
+              ]
+            }
+          ]
+        })
+      });
+
+      const data = await response.json();
+      if (data && data.candidates && data.candidates.length > 0) {
+        const toutesLesReponses = data.candidates[0].content.parts[0].text.split(',').map(str => str.trim());
+        setQuestion(toutesLesReponses[0]);
+        setreponse1(toutesLesReponses[1]);
+        setreponse2(toutesLesReponses[2]);
+        setreponse3(toutesLesReponses[3]);
+        setreponse4(toutesLesReponses[4]);
       }
-    } else {
-      alert("Vous devez rentrer au moins une question, une bonne réponse et une mauvaise réponse");
+
+    } catch (error) {
+      console.error('Erreur lors de la génération de contenu:', error);
     }
   };
   
-
   async function Validation(){
     if(reponse3 && reponse4){
       set(ref(db, `${uniqueId}/question_reponse/${page}`), {
@@ -136,9 +133,10 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
             value={texte}
             onChangeText={setTexte} 
         />
-        <TouchableOpacity style={styles.bouton} onPress={Generer}>
-          <Text style={styles.boutonText}>Générer</Text>
+        <TouchableOpacity style={styles.bouton} onPress={() => Generer(texte)}>
+            <Text style={styles.boutonText}>Générer</Text>
         </TouchableOpacity>
+
         <View style={styles.container2}>
             <Text style={styles.Question}>Question               :     </Text>
             <TextInput 
@@ -197,10 +195,17 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
         <TouchableOpacity style={styles.bouton2} onPress={questionSuivante}>
           <Text style={styles.boutonText}>Ajouter</Text>
         </TouchableOpacity>
-        <Text style={styles.ou}>----------   ou   ----------</Text>
-        <TouchableOpacity style={styles.bouton3} onPress={Terminer}>
-            <Text style={styles.boutonText3}>Terminer</Text>
-        </TouchableOpacity>
+        {page > 1 ? (
+            <>
+                <Text style={styles.ou}>----------   ou   ----------</Text>
+                <TouchableOpacity 
+                    style={styles.bouton3} 
+                    onPress={Terminer}
+                    >
+                    <Text style={styles.boutonText3}>Terminer</Text>
+                </TouchableOpacity>
+            </>
+        ) : null}
       </View>  
   );
 };

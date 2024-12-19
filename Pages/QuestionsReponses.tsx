@@ -171,7 +171,7 @@ const QuestionsReponses: React.FC<{ navigation: any }> = ({ navigation }) => {
             </TouchableOpacity>
           </>
         ) : null}
-      </View>  
+    </View>  
   );
 };
 
