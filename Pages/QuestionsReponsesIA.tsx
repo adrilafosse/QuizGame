@@ -24,7 +24,6 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [reponse3, setreponse3] = useState('');
   const [reponse4, setreponse4] = useState('');
   const [texte, setTexte] = useState('');
-  const [dataPrecedente,setDataPrecedente] = useState('');
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => null,
@@ -138,56 +137,61 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
         </TouchableOpacity>
 
         <View style={styles.container2}>
-            <Text style={styles.Question}>Question               :     </Text>
+          { width >= 768 ? (
+            <Text style={styles.Question}>Question               : </Text>
+          ) : null}
             <TextInput 
             style={styles.input} 
             placeholder="Question"
             placeholderTextColor="#757575"
-            multiline={true}
             value={question}
             onChangeText={setQuestion} 
             />
         </View>
         <View style={styles.container2}>
-            <Text style={styles.bonne_reponse}>Bonne réponse      :     </Text>
+          { width >= 768 ? (
+            <Text style={styles.bonne_reponse}>Bonne réponse      : </Text>
+          ) : null}
             <TextInput 
             style={styles.input} 
             placeholder="Bonne réponse "
             placeholderTextColor="#757575"
-            multiline={true}
             value={reponse1}
             onChangeText={setreponse1} 
             />
         </View>
         <View style={styles.container2}>
-            <Text>Mauvaise réponse :     </Text>
+          { width >= 768 ? (
+            <Text>Mauvaise réponse : </Text>
+          ) : null}
             <TextInput 
             style={styles.input} 
             placeholder="Mauvaise réponse"
             placeholderTextColor="#757575"
-            multiline={true}
             value={reponse2}
             onChangeText={setreponse2} 
             />
         </View>
         <View style={styles.container2}>
-            <Text>Mauvaise réponse :     </Text>
+          { width >= 768 ? (
+            <Text>Mauvaise réponse : </Text>
+          ) : null}
             <TextInput 
             style={styles.input} 
             placeholder="Mauvaise réponse"
             placeholderTextColor="#757575"
-            multiline={true}
             value={reponse3}
             onChangeText={setreponse3} 
             />
         </View>
         <View style={styles.container2}>
-            <Text>Mauvaise réponse :     </Text>
+          { width >= 768 ? (
+            <Text>Mauvaise réponse : </Text>
+          ) : null}
             <TextInput 
             style={styles.input} 
             placeholder="Mauvaise réponse"
             placeholderTextColor="#757575"
-            multiline={true}
             value={reponse4}
             onChangeText={setreponse4} 
             />
@@ -215,14 +219,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5F5F5',
     alignItems: 'center',
-    paddingTop: Platform.OS === 'web' && width >= 768 ? hp('2%') :  hp('10%'),
+    paddingTop: Platform.OS === 'web' && width >= 768 ? hp('2%') :  hp('6%'),
   },
   container2: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',
-    marginTop: Platform.OS === 'web' && width >= 768 ? hp('1%') :  hp('5%'),
-    width: Platform.OS === 'web' && width >= 768 ? '60%' : wp('70%'),
+    marginTop: Platform.OS === 'web' && width >= 768 ? hp('2%') :  hp('2%'),
+    width: Platform.OS === 'web' && width >= 768 ? '70%' : wp('95%'),
   },
   bonne_reponse:{
     color: 'red',
@@ -253,24 +257,24 @@ const styles = StyleSheet.create({
   },
   bouton: {
     backgroundColor: '#81b0ff',
-    paddingVertical: Platform.OS === 'web' && width >= 768 ? hp('2%') : hp('3%'),
-    paddingHorizontal: Platform.OS === 'web' && width >= 768 ? wp('5%') : wp('6%'),
+    paddingVertical: Platform.OS === 'web' && width >= 768 ? hp('2%') : hp('2%'),
+    paddingHorizontal: Platform.OS === 'web' && width >= 768 ? wp('5%') : wp('12%'),
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
-    marginTop: Platform.OS === 'web' && width >= 768 ? hp('2%') : hp('0%'),
-    marginHorizontal:wp('3%'),
+    marginTop: Platform.OS === 'web' && width >= 768 ? hp('2%') : hp('2%'),
+    marginBottom: Platform.OS === 'web' && width >= 768 ? hp('2%') : hp('0%'),
   },
   bouton2: {
     backgroundColor: '#757575',
-    paddingVertical: Platform.OS === 'web' && width >= 768 ? hp('2%') : hp('3%'),
-    paddingHorizontal: Platform.OS === 'web' && width >= 768 ? wp('5%') : wp('6%'),
+    paddingVertical: Platform.OS === 'web' && width >= 768 ? hp('2%') : hp('2%'),
+    paddingHorizontal: Platform.OS === 'web' && width >= 768 ? wp('5%') : wp('12%'),
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
-    marginTop: Platform.OS === 'web' && width >= 768 ? hp('2%') : hp('0%'),
+    marginTop: Platform.OS === 'web' && width >= 768 ? hp('2%') : hp('2%'),
     marginHorizontal:wp('3%'),
   },
   boutonText: {
@@ -296,21 +300,20 @@ const styles = StyleSheet.create({
   },
   input: {
     height: hp('4%'),
-    width: '80%',
+    width: Platform.OS === 'web' && width >= 768 ? '60%' : '95%',
     borderColor: '#757575',
     borderWidth: 1,
     borderRadius: 5,
-    paddingHorizontal: wp('3%'),
-    marginTop: hp('2%'),
     color: '#333333',
     textAlign: 'center',
     fontSize: Platform.OS === 'web' && width >= 768 ? wp('1%') : wp('4%'),
-    marginRight:('13%'),
+    marginRight: Platform.OS === 'web' && width >= 768 ? wp('13%') : wp('0%'),
+    marginLeft: Platform.OS === 'web' && width >= 768 ? wp('4%') : wp('0%'),
   },
   sous_titre: {
     color: '#333333',
     textAlign: 'center',
-    fontSize: Platform.OS === 'web' && width >= 768 ? wp('1.5%') : wp('6%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('1.5%') : wp('4%'),
     paddingTop: Platform.OS === 'web' && width >= 768 ? wp('0.5%') : wp('4%'),
     fontWeight: 'bold',
     textDecorationLine: 'underline',

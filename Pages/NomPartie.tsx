@@ -58,7 +58,7 @@ const NomPartie: React.FC<{ navigation: any }> = ({ navigation }) => {
               onValueChange={toggleSwitch}
               value={tiroir}
             />
-            <Text style={[styles.choix2, {color: tiroir ? '#81b0ff' : '#757575', fontWeight: tiroir ? 'bold' : 'normal'}]}>IA          </Text>
+            <Text style={[styles.choix2, {color: tiroir ? '#81b0ff' : '#757575', fontWeight: tiroir ? 'bold' : 'normal'}]}>IA      </Text>
           </View>
           <TouchableOpacity style={styles.bouton} onPress={Validation}>
             <Text style={styles.boutonText}>Suivant</Text>
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#F5F5F5',
       alignItems: 'center',
-      paddingTop: Platform.OS === 'web' && width >= 768 ? hp('10%') :  hp('28%'),
+      paddingTop: Platform.OS === 'web' && width >= 768 ? hp('10%') :  hp('15%'),
     },
     container2:{
       flexDirection: 'row',
@@ -80,28 +80,29 @@ const styles = StyleSheet.create({
       justifyContent: 'space-evenly',
     },
     choix1:{
-      marginRight:hp('10%'),
-      fontSize: Platform.OS === 'web' && width >= 768 ? wp('2%') : hp('1%'),
+      marginRight: Platform.OS === 'web' && width >= 768 ? hp('10%') : hp('5%'),
+      fontSize: Platform.OS === 'web' && width >= 768 ? wp('2%') : hp('3%'),
       color: '#757575',
     },
     choix2:{
-      marginLeft:hp('10%'),
-      fontSize: Platform.OS === 'web' && width >= 768 ? wp('2%') : hp('1%'),
+      marginLeft: Platform.OS === 'web' && width >= 768 ? hp('10%') : hp('5%'),
+      fontSize: Platform.OS === 'web' && width >= 768 ? wp('2%') : hp('3%'),
     },
     titre: {
       color: '#333333',
       fontWeight: 'bold',
-      fontSize: Platform.OS === 'web' && width >= 768 ? wp('7%') : wp('8%'),
+      fontSize: Platform.OS === 'web' && width >= 768 ? wp('7%') : wp('10%'),
       textAlign: 'center',
     },
     sous_titre: {
       color: '#333333',
       textAlign: 'center',
-      fontSize: Platform.OS === 'web' && width >= 768 ? wp('3%') : wp('6%'),
-      paddingTop: Platform.OS === 'web' && width >= 768 ? wp('4%') : wp('4%'),
-      paddingBottom: Platform.OS === 'web' && width >= 768 ? wp('2%') : wp('4%'),
+      fontSize: Platform.OS === 'web' && width >= 768 ? wp('3%') : wp('5%'),
+      paddingTop: Platform.OS === 'web' && width >= 768 ? wp('4%') : wp('10%'),
+      paddingBottom: Platform.OS === 'web' && width >= 768 ? wp('2%') : wp('10%'),
       fontWeight: 'bold',
       textDecorationLine: 'underline',
+      paddingHorizontal: Platform.OS === 'web' && width >= 768 ? wp('2%') : wp('5%'),
     },
     input: {
       height: hp('8%'),
@@ -125,7 +126,7 @@ const styles = StyleSheet.create({
     },
     boutonText: {
       color: '#FFFFFF',
-      fontSize: wp('3%'),
+      fontSize: Platform.OS === 'web' && width >= 768 ? wp('3%') : wp('5%'),
       fontWeight: 'bold',
     },
 });

@@ -22,7 +22,6 @@ const QuestionsReponses: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [reponse2, setreponse2] = useState('');
   const [reponse3, setreponse3] = useState('');
   const [reponse4, setreponse4] = useState('');
-  const [compteur, setcompteur] = useState(2);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -31,16 +30,6 @@ const QuestionsReponses: React.FC<{ navigation: any }> = ({ navigation }) => {
     });
   }, []);
 
-  const CompteurPlus = () => {
-    if(compteur<=4){
-      setcompteur(compteur+1)
-    }
-  }
-  const CompteurMoins = () => {
-    if(compteur>=2){
-      setcompteur(compteur-1)
-    }
-  }
   const questionSuivante = () => {
     if(reponse1 && reponse2 && question){
       setPage(page + 1);
@@ -123,7 +112,6 @@ const QuestionsReponses: React.FC<{ navigation: any }> = ({ navigation }) => {
         value={reponse2}
         onChangeText={setreponse2} 
       />
-     {compteur === 3 ? (
       <TextInput 
         style={styles.input1} 
         placeholder="Ecriver une mauvaise réponse"
@@ -131,33 +119,16 @@ const QuestionsReponses: React.FC<{ navigation: any }> = ({ navigation }) => {
         value={reponse3}
         onChangeText={setreponse3} 
       />
-      ) : compteur > 3 ? (
-      <>
-        <TextInput 
-          style={styles.input1} 
-          placeholder="Ecriver une mauvaise réponse"
-          placeholderTextColor="#757575"
-          value={reponse3}
-          onChangeText={setreponse3} 
-        />
-        <TextInput 
-          style={styles.input1} 
-          placeholder="Ecriver une mauvaise réponse"
-          placeholderTextColor="#757575"
-          value={reponse4}
-          onChangeText={setreponse4} 
-        />
-      </>
-      ) : null}
+      <TextInput 
+        style={styles.input1} 
+        placeholder="Ecriver une mauvaise réponse"
+        placeholderTextColor="#757575"
+        value={reponse4}
+        onChangeText={setreponse4} 
+      />
       <View style={styles.container2}>
-        <TouchableOpacity style={styles.bouton1} onPress={() => CompteurPlus()}>
-          <Text style={styles.boutonText2}>+</Text>
-        </TouchableOpacity>
         <TouchableOpacity style={styles.bouton} onPress={questionSuivante}>
           <Text style={styles.boutonText}>Ajouter une nouvelle question</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.bouton2} onPress={() => CompteurMoins()}>
-          <Text style={styles.boutonText2}>-</Text>
         </TouchableOpacity>
       </View>
         {page > 1 ? (
