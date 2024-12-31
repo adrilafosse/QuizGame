@@ -45,6 +45,7 @@ const Terminer: React.FC<{ navigation: any }> = ({ navigation }) => {
     <View style={styles.container}>
       <Text style={styles.titre}>Pour rappel :</Text>
       <Text style={styles.sous_titre}>Pour rejoindre la partie, entrer le nom suivant : {uniqueId}</Text>
+      <Text style={styles.sous_titre2}>{uniqueId}</Text>
       <Text style={styles.sous_titre}>La partie débutera dans {tempsRestant}</Text>         
       <TouchableOpacity style={styles.bouton} onPress={() => navigation.navigate('Accueil')}>
         <Text style={styles.boutonText}>Accueil</Text>
@@ -71,6 +72,13 @@ const styles = StyleSheet.create({
   sous_titre: {
     color: '#757575',
     fontSize:  Platform.OS === 'web' && width >= 768 ? wp('3%') : wp('6%'),
+    paddingTop: hp('8%'),
+    textAlign: 'center',
+  },
+  sous_titre2: {
+    color: '#757575',
+    fontWeight: 'bold',
+    fontSize:  Platform.OS === 'web' && width >= 768 ? wp('4%') : wp('7%'),
     paddingTop: hp('8%'),
     textAlign: 'center',
   },

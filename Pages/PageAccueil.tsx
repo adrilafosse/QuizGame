@@ -23,8 +23,8 @@ const Page_Accueil: React.FC<{ navigation: any }> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.titre}>QuizGame</Text>
-      <Text style={styles.paragraphe}>Créer votre propre quiz en toute liberté pour animer vos soirées entre amis ou famille.</Text>
-      <Text style={styles.sous_titre}>Go!</Text>
+      <Text style={styles.paragraphe}>Créer votre propre quiz en toute liberté pour animer vos soirées entre amis ou en famille.</Text>
+      <Text style={styles.sous_titre}>Top départ !</Text>
       <TouchableOpacity style={styles.bouton} onPress={() => navigation.navigate('NomPartie')}>
         <Text style={styles.boutonText}>Créer une partie</Text>
       </TouchableOpacity>

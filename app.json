@@ -18,7 +18,7 @@
       "entitlements": {
         "aps-environment": "production"
       },
-      "bundleIdentifier": "com.anonymous.QuizGame",
+      "bundleIdentifier": "com.isen.QuizGame",
       "runtimeVersion": {
         "policy": "appVersion"
       }
@@ -29,7 +29,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.QuizGame",
+      "package": "com.isen.QuizGame",
       "permissions": [
         "NOTIFICATIONS",
         "WAKE_LOCK",

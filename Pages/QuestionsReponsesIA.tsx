@@ -6,7 +6,6 @@ import { TextInput } from 'react-native';
 import { ref, set, update } from 'firebase/database';
 import { db } from '../firebaseConfig';
 import { Platform, Dimensions } from 'react-native';
-import Question from './Question';
 
 const {width} = Dimensions.get('window');
 
@@ -24,6 +23,7 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [reponse3, setreponse3] = useState('');
   const [reponse4, setreponse4] = useState('');
   const [texte, setTexte] = useState('');
+  const [generer, setGenerer] = useState(false);
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => null,
@@ -40,6 +40,8 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
       setreponse2('');
       setreponse3('');
       setreponse4('');
+      setGenerer(false);
+      setTexte('');
       navigation.navigate('Questions réponsesIA', { uniqueId, page });
     }
     else{
@@ -59,7 +61,8 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
   }
   const Generer = async (texte: string) => {
     try {
-      const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyCMhkNL29dS3JKxmQcCUrEtfIFQPrXSA0Y", {
+      setGenerer(true)
+      const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyBxIQCYEIKS0GD6A2JdFuV7lULAySottYw", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -123,10 +126,10 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
   return (
     <View style={styles.container}>
         <Text style={styles.question}>Question : {page}</Text>
-        <Text style={styles.sous_titre }>Ecriver un texte pour générer une question</Text>
+        <Text style={styles.sous_titre }>Ecrivez un texte pour générer une question avec les réponses</Text>
         <TextInput 
             style={styles.input3} 
-            placeholder="Ecriver quelque chose..."
+            placeholder="Ecrivez quelque chose..."
             placeholderTextColor="#757575"
             multiline={true}
             value={texte}
@@ -136,6 +139,8 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
             <Text style={styles.boutonText}>Générer</Text>
         </TouchableOpacity>
 
+        { generer ? (
+        <>
         <View style={styles.container2}>
           { width >= 768 ? (
             <Text style={styles.Question}>Question               : </Text>
@@ -152,13 +157,13 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
           { width >= 768 ? (
             <Text style={styles.bonne_reponse}>Bonne réponse      : </Text>
           ) : null}
-            <TextInput 
+          <TextInput 
             style={styles.input} 
             placeholder="Bonne réponse "
             placeholderTextColor="#757575"
             value={reponse1}
             onChangeText={setreponse1} 
-            />
+          />
         </View>
         <View style={styles.container2}>
           { width >= 768 ? (
@@ -199,6 +204,8 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
         <TouchableOpacity style={styles.bouton2} onPress={questionSuivante}>
           <Text style={styles.boutonText}>Ajouter</Text>
         </TouchableOpacity>
+        </>
+        ) : null}
         {page > 1 ? (
             <>
                 <Text style={styles.ou}>----------   ou   ----------</Text>

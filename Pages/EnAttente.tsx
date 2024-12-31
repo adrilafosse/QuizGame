@@ -99,9 +99,10 @@ const EnAttente: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.titre}>Félicitation, vous êtes inscrit ! La partie commencera dans {tempsRestant}</Text>
-      <Text style={styles.titre}>Une notification s'affichera sur votre téléphone pour chaque question. Vous disposerez de 2 minutes maximum pour y répondre</Text>
-      <Text style={styles.titre}>Chaque bonne réponse vaut 100 points ou plus en fonction de votre rapidité</Text>
+      <Text style={styles.titre2}>Félicitations, vous êtes inscrit !</Text>
+      <Text style={styles.titre}>La partie commencera dans {tempsRestant}.</Text>
+      <Text style={styles.titre}>Une notification s'affichera sur votre téléphone pour chaque question. Vous disposerez de 2 minutes maximum pour y répondre.</Text>
+      <Text style={styles.titre}>Chaque bonne réponse vaut 100 points ou plus en fonction de votre rapidité.</Text>
     </View>
   );
 };
@@ -116,8 +117,15 @@ const styles = StyleSheet.create({
   },
   titre: {
     color: '#333333',
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('2%') :  wp('4%'),
+    paddingTop: Platform.OS === 'web' && width >= 768 ? hp('2%') :  hp('6%'),
+    textAlign: 'center',
+    marginBottom: hp('2%'),
+  },
+  titre2: {
+    color: '#333333',
     fontWeight: 'bold',
-    fontSize: Platform.OS === 'web' && width >= 768 ? wp('3%') :  wp('5%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('4%') :  wp('6%'),
     paddingTop: Platform.OS === 'web' && width >= 768 ? hp('2%') :  hp('6%'),
     textAlign: 'center',
     marginBottom: hp('2%'),

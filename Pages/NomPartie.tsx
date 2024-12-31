@@ -35,7 +35,7 @@ const NomPartie: React.FC<{ navigation: any }> = ({ navigation }) => {
                 }
             });
         }else{
-          alert('Vous devez rentrer un nom de partie');
+          alert('Vous devez créer un nom de partie');
         }
     }
 
@@ -44,14 +44,14 @@ const NomPartie: React.FC<{ navigation: any }> = ({ navigation }) => {
           <Text style={styles.titre}>Créer votre partie</Text>
           <TextInput
             style={styles.input}
-            placeholder="Creer le nom de la partie"
+            placeholder="Créez le nom de la partie"
             placeholderTextColor="#757575"
             value={uniqueId}
             onChangeText={(text) => setUniqueId(text)}
           />
-          <Text style={styles.sous_titre}>Ecriver votre quiz manuellement ou utiliser l'IA</Text>
+          <Text style={styles.sous_titre}>Ecrivez votre quiz avec ou sans IA</Text>
           <View style={styles.container2}>
-            <Text style={[styles.choix1, { color: tiroir ? '#757575' : '#4CAF50', fontWeight: tiroir ? 'normal' : 'bold' }]}>Classique</Text>
+            <Text style={[styles.choix1, { color: tiroir ? '#757575' : '#4CAF50', fontWeight: tiroir ? 'normal' : 'bold' }]}>Humain</Text>
             <Switch
               trackColor={{ false: "#767577", true: "#81b0ff" }}
               thumbColor={tiroir ? "#f5dd4b" : "#f4f3f4"}

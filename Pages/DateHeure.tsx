@@ -88,7 +88,7 @@ const DateHeure: React.FC<{ navigation: any }> = ({ navigation }) => {
           }
           navigation.navigate('Terminer', { uniqueId, date });
         }else{
-          alert("La date doit être supérieur de 2 minutes à la date actuelle");
+          alert("Le départ de la partie doit être supérieur au minimum de 2 minutes par rapport à l'horaireen cours");
         }
       } else {
         alert("Le format de la date n'est pas correct. Utilisez jj/mm/aaaa hh:mm.");

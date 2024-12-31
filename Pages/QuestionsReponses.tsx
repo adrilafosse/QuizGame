@@ -42,7 +42,7 @@ const QuestionsReponses: React.FC<{ navigation: any }> = ({ navigation }) => {
       navigation.navigate('Questions réponses', { uniqueId, page });
     }
     else{
-      alert("Vous devez rentrer au moins une question, une bonne réponse et une mauvaise réponse");
+      alert("Vous devez écrire au minimum une question avec une bonne réponse et une mauvaise réponse");
     } 
   };
   const Terminer = () => {
@@ -92,7 +92,7 @@ const QuestionsReponses: React.FC<{ navigation: any }> = ({ navigation }) => {
       <Text style={styles.question}>Question : {page}</Text>
       <TextInput 
         style={styles.input1} 
-        placeholder="Ecriver votre question"
+        placeholder="Ecrivez votre question"
         placeholderTextColor="#757575"
         value={question}
         onChangeText={setQuestion} 
@@ -100,28 +100,28 @@ const QuestionsReponses: React.FC<{ navigation: any }> = ({ navigation }) => {
       <Text style={styles.reponse}>Vos réponses (4 réponses possibles)</Text>
       <TextInput 
         style={styles.input2} 
-        placeholder="Ecriver la bonne réponse"
+        placeholder="Ecrivez la bonne réponse"
         placeholderTextColor="#757575"
         value={reponse1}
         onChangeText={setreponse1} 
       />
       <TextInput 
         style={styles.input1} 
-        placeholder="Ecriver une mauvaise réponse"
+        placeholder="Ecrivez une mauvaise réponse"
         placeholderTextColor="#757575"
         value={reponse2}
         onChangeText={setreponse2} 
       />
       <TextInput 
         style={styles.input1} 
-        placeholder="Ecriver une mauvaise réponse"
+        placeholder="Ecrivez une mauvaise réponse"
         placeholderTextColor="#757575"
         value={reponse3}
         onChangeText={setreponse3} 
       />
       <TextInput 
         style={styles.input1} 
-        placeholder="Ecriver une mauvaise réponse"
+        placeholder="Ecrivez une mauvaise réponse"
         placeholderTextColor="#757575"
         value={reponse4}
         onChangeText={setreponse4} 
