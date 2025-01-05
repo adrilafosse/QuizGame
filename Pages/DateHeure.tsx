@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5F5F5',
     alignItems: 'center',
-    paddingTop: Platform.OS === 'web' && width >= 768 ? hp('5%') :  hp('8%'),
+    paddingTop: Platform.OS === 'web' && width >= 768 ? hp('5%') :  hp('12%'),
   },
   paragraphe: {
     color: '#757575',

@@ -47,6 +47,7 @@ const EnAttente: React.FC<{ navigation: any }> = ({ navigation }) => {
         },
         trigger: date, // Date spécifique pour la notification
       });
+      console.log("notification:",date)
     } catch (error) {
       console.error('Erreur lors de la planification de la notification :', error);
     }
@@ -75,16 +76,15 @@ const EnAttente: React.FC<{ navigation: any }> = ({ navigation }) => {
           const date = new Date(tableau[i]);
           const date2 = date.toString();
           const compteur = i+1;
-          if (Platform.OS === 'web') {
-            const intervalId = setInterval(() => {
-              const nouvelleDateActuelle = new Date();
-              const diff = date.getTime() - nouvelleDateActuelle.getTime(); 
-              if (diff <= 0) {
-                clearInterval(intervalId); // Arrêter l'intervalle
-                navigation.navigate('Question', { valeur, pseudo, compteur, date2 }); 
-              }
-            }, 1000);
-          }else{
+          const intervalId = setInterval(() => {
+            const nouvelleDateActuelle = new Date();
+            const diff = date.getTime() - nouvelleDateActuelle.getTime(); 
+            if (diff <= 0) {
+              clearInterval(intervalId); // Arrêter l'intervalle
+              navigation.navigate('Question', { valeur, pseudo, compteur, date2 }); 
+            }
+          }, 1000);
+          if (Platform.OS !== 'web') {
             scheduleNotification(
               `Question ${compteur}`,
               `C'est l'heure pour la question ${compteur}!`,
