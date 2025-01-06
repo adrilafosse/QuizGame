@@ -1,5 +1,5 @@
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { StyleSheet, Text, View, TouchableOpacity, BackHandler } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, BackHandler, Image } from 'react-native';
 import React, { useEffect } from 'react';
 import { useRoute } from '@react-navigation/native';
 import { Platform, Dimensions } from 'react-native';
@@ -53,6 +53,13 @@ const Fin: React.FC<{ navigation: any }> = ({ navigation }) => {
                 <Text style={styles.boutonText}>Score</Text>
             </TouchableOpacity>
           </View>
+          <TouchableOpacity style={styles.bouton3} onPress={() => navigation.navigate('Accueil')}>
+            <Image
+              source={require('./../assets/maison.png')}
+              style={styles.image}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
         </View>
       );
 };
@@ -91,6 +98,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginHorizontal: 5,
+  },
+  bouton3: {
+    position: 'absolute',
+    top: hp('4%'),
+    right: wp('4%'), 
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 0,
+    backgroundColor: 'transparent',
+  },
+  image: {
+    width : Platform.OS === 'web' && width >= 768 ? wp('8%') :  wp('15%'),
+    height: wp('8%'),
   },
   boutonsContainer: {
     flexDirection: 'row',

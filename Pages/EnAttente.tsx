@@ -76,14 +76,16 @@ const EnAttente: React.FC<{ navigation: any }> = ({ navigation }) => {
           const date = new Date(tableau[i]);
           const date2 = date.toString();
           const compteur = i+1;
-          const intervalId = setInterval(() => {
-            const nouvelleDateActuelle = new Date();
-            const diff = date.getTime() - nouvelleDateActuelle.getTime(); 
-            if (diff <= 0) {
-              clearInterval(intervalId); // Arrêter l'intervalle
-              navigation.navigate('Question', { valeur, pseudo, compteur, date2 }); 
-            }
-          }, 1000);
+          if (Platform.OS === 'web') {
+            const intervalId = setInterval(() => {
+              const nouvelleDateActuelle = new Date();
+              const diff = date.getTime() - nouvelleDateActuelle.getTime(); 
+              if (diff <= 0) {
+                clearInterval(intervalId); // Arrêter l'intervalle
+                navigation.navigate('Question', { valeur, pseudo, compteur, date2 }); 
+              }
+            }, 1000);
+          }
           if (Platform.OS !== 'web') {
             scheduleNotification(
               `Question ${compteur}`,
