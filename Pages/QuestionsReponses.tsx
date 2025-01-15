@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useRoute } from '@react-navigation/native';
@@ -11,12 +11,12 @@ const {width} = Dimensions.get('window');
 
 interface RouteParams {
   uniqueId: string;
+  page: number;
 }
 
 const QuestionsReponses: React.FC<{ navigation: any }> = ({ navigation }) => {
-  const [page,setPage] = useState(1);
   const route = useRoute(); 
-  const { uniqueId } = route.params as RouteParams;
+  const { uniqueId, page} = route.params as RouteParams;
   const [question, setQuestion] = useState('');
   const [reponse1, setreponse1] = useState('');
   const [reponse2, setreponse2] = useState('');
@@ -32,21 +32,20 @@ const QuestionsReponses: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   const questionSuivante = () => {
     if(reponse1 && reponse2 && question){
-      setPage(page + 1);
       Validation();
       setQuestion('');
       setreponse1('');
       setreponse2('');
       setreponse3('');
       setreponse4('');
-      navigation.navigate('Questions réponses', { uniqueId, page });
+      navigation.navigate('Questions réponses', { uniqueId, page: page + 1 });
     }
     else{
       alert("Vous devez écrire au minimum une question avec une bonne réponse et une mauvaise réponse");
     } 
   };
   const Terminer = () => {
-    if(reponse1 && reponse2 && question){
+    if(reponse1 && reponse2 && question && reponse3 && reponse4){
       alert("Pour terminer tous les champs doivent être vide");
     }else{
       const page2 = page -1;

@@ -11,6 +11,7 @@ const {width} = Dimensions.get('window');
 const NomPartie: React.FC<{ navigation: any }> = ({ navigation }) => {
     const [uniqueId, setUniqueId] = useState('');
     const [tiroir, setTiroir] = useState(false);
+    const [page,setPage] = useState(1);
     React.useLayoutEffect(() => {
       navigation.setOptions({
         headerLeft: () => null,
@@ -28,9 +29,9 @@ const NomPartie: React.FC<{ navigation: any }> = ({ navigation }) => {
                 }
                 else {
                   if(tiroir){
-                    navigation.navigate('Questions réponsesIA', { uniqueId });
+                    navigation.navigate('Questions réponsesIA', { uniqueId, page });
                   }else{
-                    navigation.navigate('Questions réponses', { uniqueId });
+                    navigation.navigate('Questions réponses', { uniqueId, page });
                   }
                 }
             });
