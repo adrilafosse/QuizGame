@@ -61,7 +61,7 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
   const Generer = async (texte: string) => {
     try {
       setGenerer(true)
-      const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyANAAv7jGqiKNaxspWSDyBz-egP4sYt_YQ", {
+      const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyBZcicrdZrHXirde-AcHddKpoQSL7h7pD8", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
