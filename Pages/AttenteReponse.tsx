@@ -53,7 +53,11 @@ const AttenteReponse: React.FC<{ navigation: any }> = ({ navigation }) => {
         source={randomGif}
         resizeMode="contain"
       />
-      <Text style={styles.titre}>Bravo ! Votre réponse a bien été envoyée, vous recevrez une nouvelle notification pour la prochaine question</Text>
+      { Platform.OS === 'web' ? (
+        <Text style={styles.titre}>Votre réponse a bien été envoyée, vous recevrez une nouvelle notification pour la prochaine question.</Text>
+      ) : 
+        <Text style={styles.titre}>Votre réponse a bien été envoyée. Veuillez rester sur cette page, une nouvelle question arrivera bientôt.</Text>
+      }
     </View>
   );
 };

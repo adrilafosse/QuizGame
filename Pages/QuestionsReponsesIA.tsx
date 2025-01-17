@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useRoute } from '@react-navigation/native';
@@ -24,12 +24,52 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [reponse4, setreponse4] = useState('');
   const [texte, setTexte] = useState('');
   const [generer, setGenerer] = useState(false);
+  const [tableauExemple, setTableauExemple] = useState([]);
+  const apiKey = process.env.API_KEY;
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => null,
       headerShown: false, // Masque la flèche de retour
     });
   }, []);
+
+  const Exemple = async  () => {
+    try {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyBZcicrdZrHXirde-AcHddKpoQSL7h7pD8`,{
+      
+      //const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [
+                { text: `Génère moi un JSON contenant 5 nouveaux exemples de prompts similaire à ces 10 exemples : 
+                  J'adore regarder le coucher de soleil à la plage, Mon passe-temps préféré est de lire des romans policiers,
+                  J'aime faire des gâteaux avec ma famille, Je bois toujours un café le matin pour bien commencer la journée,
+                  J'aime faire du jogging dans le parc chaque week-end, J'adore voyager et découvrir de nouvelles cultures,
+                  Mon plat préféré est la pizza faite maison, 'aime passer du temps à jardiner dans mon jardin,
+                  Je regarde toujours les étoiles la nuit quand le ciel est dégagé, J'apprécie écouter de la musique pour me détendre."` }
+              ]
+            }
+          ]
+        })
+      });
+      const data = await response.json();
+      const text = data.candidates[0].content.parts[0].text;
+      // Suppression des balises ```json
+      const nettoyer = text.replace(/```json|```/g, "").trim();
+      const exemples = JSON.parse(nettoyer);
+      const formattedExamples = exemples.map((exemple, index) => {
+        return `${index + 1}. ${exemple}`;
+      });
+      setTableauExemple(formattedExamples);
+    } catch (error) {
+      console.error('Erreur lors de la génération de contenu:', error);
+    }
+  }
 
   const questionSuivante = () => {
     if(reponse1 && reponse2 && question){
@@ -61,7 +101,7 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
   const Generer = async (texte: string) => {
     try {
       setGenerer(true)
-      const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyBZcicrdZrHXirde-AcHddKpoQSL7h7pD8", {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -125,6 +165,16 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
   return (
     <View style={styles.container}>
         <Text style={styles.question}>Question : {page}</Text>
+        <TouchableOpacity style={styles.bouton} onPress={Exemple}>
+          <Text style={styles.boutonText}>Exemples</Text>
+        </TouchableOpacity>
+        <View style={styles.list}>
+          {tableauExemple.map((example, index) => (
+            <Text key={index} style={styles.exampleText}>
+              {example}
+            </Text>
+          ))}
+        </View>
         <Text style={styles.sous_titre }>Ecrivez un texte pour générer une question avec les réponses</Text>
         <TextInput 
             style={styles.input3} 
@@ -323,6 +373,16 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS === 'web' && width >= 768 ? wp('0.5%') : wp('4%'),
     fontWeight: 'bold',
     textDecorationLine: 'underline',
+  },
+  list: {
+    marginTop: 20,
+    width: '100%',
+  },
+  exampleText: {
+    fontSize: 16,
+    padding: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
   },
 });
 

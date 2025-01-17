@@ -102,8 +102,16 @@ const EnAttente: React.FC<{ navigation: any }> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.titre2}>Félicitations, vous êtes inscrit !</Text>
-      <Text style={styles.titre}>La partie commencera dans {tempsRestant}.</Text>
-      <Text style={styles.titre}>Une notification s'affichera sur votre téléphone pour chaque question. Vous disposerez de 2 minutes maximum pour y répondre.</Text>
+      { tempsRestant !== '0 minute' ? (
+        <Text style={styles.titre}>La partie commencera dans {tempsRestant}.</Text>
+      ):
+        <Text style={styles.titre}>La partie débutera dans moins d'une minute</Text>
+      }
+      { Platform.OS !== 'web' ? (
+        <Text style={styles.titre}>Une notification s'affichera sur votre téléphone pour chaque question. Vous disposerez de 2 minutes maximum pour y répondre.</Text>
+        ) : 
+        <Text style={styles.titre}>La question s'affichera automatiquement, et vous disposerez d'un maximum de 2 minutes pour y répondre.</Text>
+      }
       <Text style={styles.titre}>Chaque bonne réponse vaut 100 points ou plus en fonction de votre rapidité.</Text>
     </View>
   );
