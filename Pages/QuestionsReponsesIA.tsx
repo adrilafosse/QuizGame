@@ -37,7 +37,6 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
     fetch('https://back-mv6pbo6mya-ew.a.run.app/')
       .then(response => response.json())
       .then(data => {
-        console.log("data :",data)
         if (data.API_KEY) {
           setApiKey(data.API_KEY);
         } 
