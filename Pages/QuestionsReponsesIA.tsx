@@ -6,7 +6,6 @@ import { TextInput } from 'react-native';
 import { ref, set, update } from 'firebase/database';
 import { db } from '../firebaseConfig';
 import { Platform, Dimensions } from 'react-native';
-import Constants from 'expo-constants';
 
 const {width} = Dimensions.get('window');
 
@@ -45,7 +44,7 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
         console.error(error);
       });
   }, []);
-
+  
     const Exemple = async () => {
       try {
         const response = await fetch( 

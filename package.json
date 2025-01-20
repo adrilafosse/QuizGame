@@ -33,6 +33,7 @@
     "expo-updates": "~0.26.10",
     "firebase": "^11.0.1",
     "papaparse": "^5.4.1",
+    "path-browserify": "^1.0.1",
     "react": "18.3.1",
     "react-device-detect": "^2.2.3",
     "react-dom": "18.3.1",
