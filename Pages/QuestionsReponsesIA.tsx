@@ -24,7 +24,6 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [reponse4, setreponse4] = useState('');
   const [texte, setTexte] = useState('');
   const [generer, setGenerer] = useState(false);
-  const [tableauExemple, setTableauExemple] = useState([]);
   const apiKey = process.env.API_KEY;
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -33,43 +32,69 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
     });
   }, []);
 
-  const Exemple = async  () => {
-    try {
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyBZcicrdZrHXirde-AcHddKpoQSL7h7pD8`,{
-      
-      //const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          contents: [
-            {
-              parts: [
-                { text: `Génère moi un JSON contenant 5 nouveaux exemples de prompts similaire à ces 10 exemples : 
-                  J'adore regarder le coucher de soleil à la plage, Mon passe-temps préféré est de lire des romans policiers,
-                  J'aime faire des gâteaux avec ma famille, Je bois toujours un café le matin pour bien commencer la journée,
-                  J'aime faire du jogging dans le parc chaque week-end, J'adore voyager et découvrir de nouvelles cultures,
-                  Mon plat préféré est la pizza faite maison, 'aime passer du temps à jardiner dans mon jardin,
-                  Je regarde toujours les étoiles la nuit quand le ciel est dégagé, J'apprécie écouter de la musique pour me détendre."` }
-              ]
-            }
-          ]
-        })
-      });
-      const data = await response.json();
-      const text = data.candidates[0].content.parts[0].text;
-      // Suppression des balises ```json
-      const nettoyer = text.replace(/```json|```/g, "").trim();
-      const exemples = JSON.parse(nettoyer);
-      const formattedExamples = exemples.map((exemple, index) => {
-        return `${index + 1}. ${exemple}`;
-      });
-      setTableauExemple(formattedExamples);
-    } catch (error) {
-      console.error('Erreur lors de la génération de contenu:', error);
-    }
-  }
+    const Exemple = async () => {
+      try {
+        const response = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+          //`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyBZcicrdZrHXirde-AcHddKpoQSL7h7pD8`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json",
+            },
+            body: JSON.stringify({
+              contents: [
+                {
+                  parts: [
+                    {
+                      text: `Génère moi un JSON contenant 1 nouveau exemple de prompt en t'inspirant de ces 9 exemples, différent de "${texte}" : 
+                        Les présidents de la 5e république en France,
+                        Les présidents des Etats-Unis,
+                        Les rois de France,
+                        Jérôme à 3 frères et 4 soeurs,
+                        Ludivine a visité ces pays hors de l'Europe : Vietnam, Etats-Unis, Canada, Martinique et Tunisie,
+                        Adrien est allé faire du ski à Risoul, Val d'isère, Isola 2000, Alpes d'Huez, les Arcs, Courchevelle, les Menuires, le Sauze et Avoriaz et j'aimerais retourner à l'Alpes d'Huez,
+                        Le plat traditionnel Canadien est la poutine,
+                        Le Beausset compte 1098 habitants en 2022 et elle est catégorisée petite ville,
+                        Les monuments emblématiques de Paris,
+                        Les fleuves principaux en Europe,
+                        Camille a déjà visité des îles tropicales,
+                        Le plat national espagnol est la paella, souvent préparée avec du riz, des fruits de mer, du poulet et des épices,
+                        Martin collectionne les timbres représentant des animaux en voie de disparition,
+                        Une des capitales des pays nordiques est Copenhague,
+                        Sophie adore les films de science-fiction comme Star Wars,
+                        Les fromages français célèbres,
+                        Jean a remporté la médaille d'or en athlétisme dans ces compétitions : les Jeux olympiques de 2012, le championnat d'Europe 2014 et les Mondiaux de 2015,
+                        Le Mont-Blanc, situé dans les Alpes, est la plus haute montagne d'Europe occidentale avec une altitude de 4 807 mètres,
+                        sous le forme {prompt: 'exemple'}`,
+                    },
+                  ],
+                },
+              ],
+            }),
+          }
+        );
+    
+        // Vérification de la réponse
+        if (response.ok) {
+          const data = await response.json();
+          const text = data.candidates[0].content.parts[0].text;
+    
+          // Nettoyage du texte pour récupérer uniquement le JSON
+          const jsonText = JSON.parse(text.replace(/```json/g, '').replace(/```/g, '').trim());
+          setTexte(jsonText.prompt);
+          Generer(jsonText.prompt)
+        } else {
+          console.error("Erreur de réponse de l'API:", response.status);
+        }
+      } catch (error) {
+        console.error("Erreur lors de la génération de contenu:", error);
+      }
+    };
+    
+    
+    
 
   const questionSuivante = () => {
     if(reponse1 && reponse2 && question){
@@ -101,6 +126,7 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
   const Generer = async (texte: string) => {
     try {
       setGenerer(true)
+      //const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyBZcicrdZrHXirde-AcHddKpoQSL7h7pD8`,{
       const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
         method: "POST",
         headers: {
@@ -110,7 +136,8 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
           contents: [
             {
               parts: [
-                { text: `Génère une question avec 1 bonne réponse et 3 mauvaises réponses à partir du texte suivant : "${texte} et je veux que le résultat soit uniquement sous cette forme question,bonnereponse,mauvaisereponse1,mauvaisereponse2,mauvaisereponse3"` }
+                { text: `Génère moi un JSON avec une question, 1 bonne réponse et 3 mauvaises réponses à partir du texte suivant : "${texte}
+                  sous le forme {question: 'question'},"{bonneReponse: 'bonne réponse'},{mauvaiseReponse1: 'mauvaise réponse 1'},{mauvaiseReponse2: 'mauvaise réponse 2'}, {mauvaiseReponse3: 'mauvaise réponse 3'}` }
               ]
             }
           ]
@@ -118,15 +145,15 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
       });
 
       const data = await response.json();
-      if (data && data.candidates && data.candidates.length > 0) {
-        const toutesLesReponses = data.candidates[0].content.parts[0].text.split(',').map(str => str.trim());
-        setQuestion(toutesLesReponses[0]);
-        setreponse1(toutesLesReponses[1]);
-        setreponse2(toutesLesReponses[2]);
-        setreponse3(toutesLesReponses[3]);
-        setreponse4(toutesLesReponses[4]);
-      }
+      const text = data.candidates[0].content.parts[0].text;    
+      // Nettoyage du texte pour récupérer uniquement le JSON
 
+      const jsonText = JSON.parse(text.replace(/```json/g, '').replace(/```/g, '').trim());
+      setQuestion(jsonText.question);
+      setreponse1(jsonText.bonneReponse);
+      setreponse2(jsonText.mauvaiseReponse1);
+      setreponse3(jsonText.mauvaiseReponse2);
+      setreponse4(jsonText.mauvaiseReponse3);
     } catch (error) {
       console.error('Erreur lors de la génération de contenu:', error);
     }
@@ -165,16 +192,6 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
   return (
     <View style={styles.container}>
         <Text style={styles.question}>Question : {page}</Text>
-        <TouchableOpacity style={styles.bouton} onPress={Exemple}>
-          <Text style={styles.boutonText}>Exemples</Text>
-        </TouchableOpacity>
-        <View style={styles.list}>
-          {tableauExemple.map((example, index) => (
-            <Text key={index} style={styles.exampleText}>
-              {example}
-            </Text>
-          ))}
-        </View>
         <Text style={styles.sous_titre }>Ecrivez un texte pour générer une question avec les réponses</Text>
         <TextInput 
             style={styles.input3} 
@@ -184,10 +201,14 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
             value={texte}
             onChangeText={setTexte} 
         />
+       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.bouton} onPress={() => Generer(texte)}>
-            <Text style={styles.boutonText}>Générer</Text>
+          <Text style={styles.boutonText}>Générer</Text>
         </TouchableOpacity>
-
+        <TouchableOpacity style={styles.bouton4} onPress={Exemple}>
+          <Text style={styles.boutonText}>Voir un exemple</Text>
+        </TouchableOpacity>
+      </View>
         { generer ? (
         <>
         <View style={styles.container2}>
@@ -284,6 +305,12 @@ const styles = StyleSheet.create({
     marginTop: Platform.OS === 'web' && width >= 768 ? hp('2%') :  hp('2%'),
     width: Platform.OS === 'web' && width >= 768 ? '70%' : wp('95%'),
   },
+  buttonContainer: {
+    flexDirection: 'row', // Les boutons sont alignés horizontalement
+    alignItems: 'center', // Centrage vertical des boutons
+    justifyContent: 'center', // Centrage horizontal du conteneur
+    marginVertical: 10, // Espacement vertical du conteneur
+  },
   bonne_reponse:{
     color: 'red',
   },
@@ -321,6 +348,19 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: Platform.OS === 'web' && width >= 768 ? hp('2%') : hp('2%'),
     marginBottom: Platform.OS === 'web' && width >= 768 ? hp('2%') : hp('0%'),
+    marginHorizontal:10,
+  },
+  bouton4: {
+    backgroundColor: '#002B5B',
+    paddingVertical: Platform.OS === 'web' && width >= 768 ? hp('2%') : hp('2%'),
+    paddingHorizontal: Platform.OS === 'web' && width >= 768 ? wp('5%') : wp('12%'),
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    marginTop: Platform.OS === 'web' && width >= 768 ? hp('2%') : hp('2%'),
+    marginBottom: Platform.OS === 'web' && width >= 768 ? hp('2%') : hp('0%'),
+    marginHorizontal:10,
   },
   bouton2: {
     backgroundColor: '#757575',
