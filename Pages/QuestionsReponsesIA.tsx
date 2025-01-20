@@ -34,10 +34,10 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    // Appeler l'API Flask pour récupérer la clé API
-    fetch('https://back-mv6pbo6mya-ew.a.run.app/')  // Remplace par l'URL de ton API Flask
+    fetch('https://back-mv6pbo6mya-ew.a.run.app/')
       .then(response => response.json())
       .then(data => {
+        console.log("data :",data)
         if (data.API_KEY) {
           setApiKey(data.API_KEY);
         } 
