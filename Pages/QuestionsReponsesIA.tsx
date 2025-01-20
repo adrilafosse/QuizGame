@@ -6,6 +6,7 @@ import { TextInput } from 'react-native';
 import { ref, set, update } from 'firebase/database';
 import { db } from '../firebaseConfig';
 import { Platform, Dimensions } from 'react-native';
+import Constants from 'expo-constants';
 
 const {width} = Dimensions.get('window');
 
@@ -24,7 +25,7 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [reponse4, setreponse4] = useState('');
   const [texte, setTexte] = useState('');
   const [generer, setGenerer] = useState(false);
-  const apiKey = process.env.API_KEY;
+  const [apiKey, setApiKey] = useState('');
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => null,
@@ -32,9 +33,23 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
     });
   }, []);
 
+  useEffect(() => {
+    // Appeler l'API Flask pour récupérer la clé API
+    fetch('https://back-mv6pbo6mya-ew.a.run.app/')  // Remplace par l'URL de ton API Flask
+      .then(response => response.json())
+      .then(data => {
+        if (data.API_KEY) {
+          setApiKey(data.API_KEY);
+        } 
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+
     const Exemple = async () => {
       try {
-        const response = await fetch(
+        const response = await fetch( 
           `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
           //`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyBZcicrdZrHXirde-AcHddKpoQSL7h7pD8`,
           {
