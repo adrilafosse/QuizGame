@@ -56,7 +56,6 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
         setApiKey(data.data().API_KEY);
         const response = await fetch( 
           `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${data.data().API_KEY}`,
-          //`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyBZcicrdZrHXirde-AcHddKpoQSL7h7pD8`,
           {
             method: "POST",
             headers: {
@@ -148,7 +147,6 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
       const ref = doc(dbFirestore, 'api', '4IJN1b8Pyv9TnUoWH2GG');
       const dataApi = await getDoc(ref);
       setGenerer(true)
-      //const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyBZcicrdZrHXirde-AcHddKpoQSL7h7pD8`,{
       const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${dataApi.data().API_KEY}`, {
         method: "POST",
         headers: {

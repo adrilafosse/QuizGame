@@ -6,7 +6,8 @@ import { ref, get } from "firebase/database";
 import { db } from '../firebaseConfig';
 import { useRoute } from '@react-navigation/native';
 import * as Notifications from 'expo-notifications';
-import { Platform, Dimensions } from 'react-native';
+import { Platform, Dimensions, TouchableOpacity } from 'react-native';
+import QRCode from 'react-native-qrcode-svg';
 
 const {width} = Dimensions.get('window');
 
@@ -20,7 +21,11 @@ const EnAttente: React.FC<{ navigation: any }> = ({ navigation }) => {
   const route = useRoute();
   const { valeur, pseudo, datePartie } = route.params as RouteParams;
   const [tempsRestant, setTempsRestant] = useState('');
+  const [QRcodeVariable, setQRcodeVariable] = useState(false);
   const dateActuelle = new Date();
+  const uniqueId = valeur;
+  const date = datePartie;
+  const qrcode = `https://quizgame-mv6pbo6mya-ew.a.run.app?id=${uniqueId}&date=${date}`;
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -101,18 +106,35 @@ const EnAttente: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.titre2}>Félicitations, vous êtes inscrit !</Text>
-      { tempsRestant !== '0 minute' ? (
-        <Text style={styles.titre}>La partie commencera dans {tempsRestant}.</Text>
-      ):
-        <Text style={styles.titre}>La partie débutera dans moins d'une minute</Text>
+      { QRcodeVariable === false ? (
+      <>
+        <Text style={styles.titre2}>Félicitations, vous êtes inscrit !</Text>
+        { tempsRestant !== '0 minute' ? (
+          <Text style={styles.titre}>La partie commencera dans {tempsRestant}.</Text>
+          ):
+          <Text style={styles.titre}>La partie débutera dans moins d'une minute</Text>
+        }
+        { Platform.OS !== 'web' ? (
+          <Text style={styles.titre}>Une notification s'affichera sur votre téléphone pour chaque question. Vous disposerez de 2 minutes maximum pour y répondre.</Text>
+          ) : 
+          <Text style={styles.titre}>La question s'affichera automatiquement, et vous disposerez d'un maximum de 2 minutes pour y répondre.</Text>
+        }
+        <Text style={styles.titre}>Chaque bonne réponse vaut 100 points ou plus en fonction de votre rapidité.</Text>
+        <TouchableOpacity style={styles.bouton2} onPress={() => setQRcodeVariable(true)}>
+          <Text style={styles.boutonText}>Afficher le QRcode de la partie</Text>
+        </TouchableOpacity>
+      </>
+      ) : 
+      <>
+        <Text style={styles.titre}>Pour qu'un nouveau joueur rejoigne la partie, il peut scanner ce QRcode :</Text>
+        <View style={styles.qrContainer}>
+          <QRCode value={qrcode} size={Platform.OS === 'web' && width >= 768 ? wp('20%') :  hp('40%')} />
+        </View>
+        <TouchableOpacity style={styles.bouton2} onPress={() => setQRcodeVariable(false)}>
+          <Text style={styles.boutonText}>Retour</Text>
+        </TouchableOpacity>
+      </>
       }
-      { Platform.OS !== 'web' ? (
-        <Text style={styles.titre}>Une notification s'affichera sur votre téléphone pour chaque question. Vous disposerez de 2 minutes maximum pour y répondre.</Text>
-        ) : 
-        <Text style={styles.titre}>La question s'affichera automatiquement, et vous disposerez d'un maximum de 2 minutes pour y répondre.</Text>
-      }
-      <Text style={styles.titre}>Chaque bonne réponse vaut 100 points ou plus en fonction de votre rapidité.</Text>
     </View>
   );
 };
@@ -124,6 +146,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: wp('5%'),
+  },
+  qrContainer: {
+    marginVertical: Platform.OS === 'web' && width >= 768 ? hp('1%') :  hp('2%'),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  bouton2: {
+    backgroundColor: '#4CAF50',
+    paddingVertical: hp('2%'),
+    paddingHorizontal: wp('10%'),
+    borderRadius: 8,
+    marginTop: Platform.OS === 'web' && width >= 768 ? wp('2%') : wp('8%'),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  boutonText: {
+    color: '#FFFFFF',
+    fontSize:  Platform.OS === 'web' && width >= 768 ? wp('1.5%') : wp('5%'),
+    fontWeight: 'bold',
   },
   titre: {
     color: '#333333',

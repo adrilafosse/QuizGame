@@ -48,7 +48,7 @@ const Terminer: React.FC<{ navigation: any }> = ({ navigation }) => {
     <View style={styles.container}>
       
       <Text style={styles.titre}>Pour rappel :</Text>
-      <Text style={styles.sous_titre}>Pour rejoindre la partie, scanner ce QRcode :</Text>
+      <Text style={styles.sous_titre}>Pour que les joueurs rejoignent la partie ils peuvent scanner ce QRcode :</Text>
       <Text style={styles.sous_titre2}>{uniqueId}</Text>
       <View style={styles.qrContainer}>
         <QRCode value={qrcode} size={Platform.OS === 'web' && width >= 768 ? wp('20%') :  hp('40%')} />
