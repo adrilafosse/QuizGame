@@ -4,8 +4,9 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { useRoute } from '@react-navigation/native';
 import { TextInput } from 'react-native';
 import { ref, set, update } from 'firebase/database';
-import { db } from '../firebaseConfig';
+import { db, dbFirestore } from '../firebaseConfig';
 import { Platform, Dimensions } from 'react-native';
+import { doc, getDoc } from 'firebase/firestore';
 
 const {width} = Dimensions.get('window');
 
@@ -32,7 +33,9 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
     });
   }, []);
 
+  /*
   useEffect(() => {
+    
     fetch('https://back-mv6pbo6mya-ew.a.run.app/')
       .then(response => response.json())
       .then(data => {
@@ -43,12 +46,16 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
       .catch(error => {
         console.error(error);
       });
-  }, []);
+      
+  }, []);*/
   
     const Exemple = async () => {
       try {
+        const ref = doc(dbFirestore, 'api', '4IJN1b8Pyv9TnUoWH2GG');
+        const data = await getDoc(ref);
+        setApiKey(data.data().API_KEY);
         const response = await fetch( 
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${data.data().API_KEY}`,
           //`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyBZcicrdZrHXirde-AcHddKpoQSL7h7pD8`,
           {
             method: "POST",
@@ -138,9 +145,11 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
   }
   const Generer = async (texte: string) => {
     try {
+      const ref = doc(dbFirestore, 'api', '4IJN1b8Pyv9TnUoWH2GG');
+      const dataApi = await getDoc(ref);
       setGenerer(true)
       //const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyBZcicrdZrHXirde-AcHddKpoQSL7h7pD8`,{
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${dataApi.data().API_KEY}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

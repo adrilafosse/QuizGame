@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useRoute } from '@react-navigation/native';
 import { Platform, Dimensions } from 'react-native';
+import QRCode from 'react-native-qrcode-svg';
 
 const {width} = Dimensions.get('window');
 
@@ -40,12 +41,18 @@ const Terminer: React.FC<{ navigation: any }> = ({ navigation }) => {
         hours > 0 ? `${hours} heure${hours > 1 ? 's' : ''}, ` : ''
       }${minutes} minute${minutes > 1 ? 's' : ''}`
     );
+    
   }, [date]);
+  const qrcode = `https://quizgame-mv6pbo6mya-ew.a.run.app?id=${uniqueId}&date=${date}`;
   return (
     <View style={styles.container}>
+      
       <Text style={styles.titre}>Pour rappel :</Text>
-      <Text style={styles.sous_titre}>Pour rejoindre la partie, entrer le nom suivant</Text>
+      <Text style={styles.sous_titre}>Pour rejoindre la partie, scanner ce QRcode :</Text>
       <Text style={styles.sous_titre2}>{uniqueId}</Text>
+      <View style={styles.qrContainer}>
+        <QRCode value={qrcode} size={Platform.OS === 'web' && width >= 768 ? wp('20%') :  hp('40%')} />
+      </View>
       <Text style={styles.sous_titre}>La partie débutera dans {tempsRestant}</Text>         
       <TouchableOpacity style={styles.bouton} onPress={() => navigation.navigate('Accueil')}>
         <Text style={styles.boutonText}>Accueil</Text>
@@ -62,38 +69,43 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS === 'web' && width >= 768 ? hp('5%') :  hp('20%'),
     paddingHorizontal: wp('5%'),
   },
+  qrContainer: {
+    marginVertical: Platform.OS === 'web' && width >= 768 ? hp('1%') :  hp('2%'),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   titre: {
     color: '#333333',
     fontWeight: 'bold',
-    fontSize: Platform.OS === 'web' && width >= 768 ? wp('5%') : wp('12%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('4%') : wp('12%'),
     textAlign: 'center',
     paddingHorizontal: wp('5%'), 
   },
   sous_titre: {
     color: '#757575',
-    fontSize:  Platform.OS === 'web' && width >= 768 ? wp('3%') : wp('6%'),
-    paddingTop: hp('8%'),
+    fontSize:  Platform.OS === 'web' && width >= 768 ? wp('2%') : wp('6%'),
+    paddingTop: hp('2%'),
     textAlign: 'center',
   },
   sous_titre2: {
     color: '#757575',
     fontWeight: 'bold',
-    fontSize:  Platform.OS === 'web' && width >= 768 ? wp('4%') : wp('7%'),
-    paddingTop: hp('8%'),
+    fontSize:  Platform.OS === 'web' && width >= 768 ? wp('2%') : wp('7%'),
+    paddingTop: hp('2%'),
     textAlign: 'center',
   },
   bouton: {
     backgroundColor: '#4CAF50',
-    paddingVertical: hp('2.5%'),
-    paddingHorizontal: wp('15%'),
+    paddingVertical: hp('2%'),
+    paddingHorizontal: wp('10%'),
     borderRadius: 8,
-    marginTop: hp('8%'),
+    marginTop: hp('5%'),
     alignItems: 'center',
     justifyContent: 'center',
   },
   boutonText: {
     color: '#FFFFFF',
-    fontSize: wp('4%'),
+    fontSize:  Platform.OS === 'web' && width >= 768 ? wp('2%') : wp('5%'),
     fontWeight: 'bold',
   },
 });

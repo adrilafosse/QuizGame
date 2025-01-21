@@ -1,14 +1,35 @@
 import React, {useEffect } from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import * as Notifications from 'expo-notifications';
-import { Platform, Dimensions } from 'react-native';
-
+import { Linking, Platform, Dimensions } from 'react-native';
 
 const {width} = Dimensions.get('window');
 
 const Page_Accueil: React.FC<{ navigation: any }> = ({ navigation }) => {
-  
+
+  useEffect(() => {
+    const getParamsFromUrl = async () => {
+      const url = await Linking.getInitialURL();
+
+      if (url) {
+        const queryParams = new URLSearchParams(url.split('?')[1]);
+        const id = queryParams.get('id');
+        const date = queryParams.get('date');
+        const date2 = new Date(date);
+        if (date2 && date) {
+          const dateActuelle = new Date();
+          if(date2 > dateActuelle){
+            const valeur = id;
+            navigation.navigate('Pseudo', { valeur });
+          }
+        }
+      }
+    };
+
+    getParamsFromUrl();
+  }, []);
+
   useEffect(() => {
     const notification = Notifications.addNotificationResponseReceivedListener(response => {
       const { valeur, pseudo, compteur, date2 } = response.notification.request.content.data;
