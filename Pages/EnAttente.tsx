@@ -126,7 +126,7 @@ const EnAttente: React.FC<{ navigation: any }> = ({ navigation }) => {
       </>
       ) : 
       <>
-        <Text style={styles.titre}>Pour qu'un nouveau joueur rejoigne la partie, il peut scanner ce QRcode :</Text>
+        <Text style={styles.titre}>Pour rejoindre la partie tout nouveau joueur peut scanner ce QRcode :</Text>
         <View style={styles.qrContainer}>
           <QRCode value={qrcode} size={Platform.OS === 'web' && width >= 768 ? wp('20%') :  hp('40%')} />
         </View>
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
   },
   boutonText: {
     color: '#FFFFFF',
-    fontSize:  Platform.OS === 'web' && width >= 768 ? wp('1.5%') : wp('5%'),
+    fontSize:  Platform.OS === 'web' && width >= 768 ? wp('1.5%') : wp('4%'),
     fontWeight: 'bold',
   },
   titre: {

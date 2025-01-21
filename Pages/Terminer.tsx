@@ -45,10 +45,9 @@ const Terminer: React.FC<{ navigation: any }> = ({ navigation }) => {
   }, [date]);
   const qrcode = `https://quizgame-mv6pbo6mya-ew.a.run.app?id=${uniqueId}&date=${date}`;
   return (
-    <View style={styles.container}>
-      
+    <View style={styles.container}>   
       <Text style={styles.titre}>Pour rappel :</Text>
-      <Text style={styles.sous_titre}>Pour que les joueurs rejoignent la partie ils peuvent scanner ce QRcode :</Text>
+      <Text style={styles.sous_titre}>Afin de rejoindre la partie, chaque joueur peut scanner ce QRcode :</Text>
       <Text style={styles.sous_titre2}>{uniqueId}</Text>
       <View style={styles.qrContainer}>
         <QRCode value={qrcode} size={Platform.OS === 'web' && width >= 768 ? wp('20%') :  hp('40%')} />
@@ -66,7 +65,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5F5F5',
     alignItems: 'center',
-    paddingTop: Platform.OS === 'web' && width >= 768 ? hp('5%') :  hp('20%'),
+    paddingTop: Platform.OS === 'web' && width >= 768 ? hp('5%') :  hp('10%'),
     paddingHorizontal: wp('5%'),
   },
   qrContainer: {
@@ -77,7 +76,7 @@ const styles = StyleSheet.create({
   titre: {
     color: '#333333',
     fontWeight: 'bold',
-    fontSize: Platform.OS === 'web' && width >= 768 ? wp('4%') : wp('12%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('4%') : wp('10%'),
     textAlign: 'center',
     paddingHorizontal: wp('5%'), 
   },
