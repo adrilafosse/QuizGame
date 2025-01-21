@@ -9,7 +9,7 @@ const {width} = Dimensions.get('window');
 const Page_Accueil: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   useEffect(() => {
-    const getParamsFromUrl = async () => {
+    const URL = async () => {
       const url = await Linking.getInitialURL();
 
       if (url) {
@@ -26,8 +26,7 @@ const Page_Accueil: React.FC<{ navigation: any }> = ({ navigation }) => {
         }
       }
     };
-
-    getParamsFromUrl();
+    URL();
   }, []);
 
   useEffect(() => {
