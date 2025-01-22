@@ -43,7 +43,7 @@ const Terminer: React.FC<{ navigation: any }> = ({ navigation }) => {
     );
     
   }, [date]);
-  const qrcode = `https://storage.googleapis.com/quizgame/web-build/index.html?id=${uniqueId}`;
+  const qrcode = `https://storage.googleapis.com/quizgame/index.html?id=${uniqueId}`;
   return (
     <View style={styles.container}>   
       <Text style={styles.titre}>Pour rappel :</Text>

@@ -24,7 +24,7 @@ const EnAttente: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [QRcodeVariable, setQRcodeVariable] = useState(false);
   const dateActuelle = new Date();
   const uniqueId = valeur;
-  const qrcode = `https://storage.googleapis.com/quizgame/web-build/index.html?id=${uniqueId}`;
+  const qrcode = `https://storage.googleapis.com/quizgame/index.html?id=${uniqueId}`;
 
   React.useLayoutEffect(() => {
     navigation.setOptions({

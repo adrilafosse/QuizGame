@@ -8,7 +8,7 @@ import { db, dbFirestore } from '../firebaseConfig';
 import { Platform, Dimensions } from 'react-native';
 import { doc, getDoc } from 'firebase/firestore';
 
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 interface RouteParams {
   uniqueId: string;
@@ -16,7 +16,7 @@ interface RouteParams {
 }
 
 const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
-  const route = useRoute(); 
+  const route = useRoute();
   const { uniqueId, page } = route.params as RouteParams;
   const [question, setQuestion] = useState('');
   const [reponse1, setreponse1] = useState('');
@@ -32,89 +32,31 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
     });
   }, []);
 
-  /*
-  useEffect(() => {
-    
-    fetch('https://back-mv6pbo6mya-ew.a.run.app/')
-      .then(response => response.json())
-      .then(data => {
-        if (data.API_KEY) {
-          setApiKey(data.API_KEY);
-        } 
-      })
-      .catch(error => {
-        console.error(error);
-      });
-      
-  }, []);*/
-  
-    const Exemple = async () => {
-      try {
-        const ref = doc(dbFirestore, 'api', '4IJN1b8Pyv9TnUoWH2GG');
-        const data = await getDoc(ref);
-        const response = await fetch( 
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${data.data().API_KEY}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Accept": "application/json",
-            },
-            body: JSON.stringify({
-              contents: [
-                {
-                  parts: [
-                    {
-                      text: `Génère moi un JSON contenant 1 nouveau exemple de prompt en t'inspirant de ces 9 exemples, différent de "${texte}" : 
-                        Les présidents de la 5e république en France,
-                        Les présidents des Etats-Unis,
-                        Les rois de France,
-                        Jérôme à 3 frères et 4 soeurs,
-                        Ludivine a visité ces pays hors de l'Europe : Vietnam, Etats-Unis, Canada, Martinique et Tunisie,
-                        Adrien est allé faire du ski à Risoul, Val d'isère, Isola 2000, Alpes d'Huez, les Arcs, Courchevelle, les Menuires, le Sauze et Avoriaz et j'aimerais retourner à l'Alpes d'Huez,
-                        Le plat traditionnel Canadien est la poutine,
-                        Le Beausset compte 1098 habitants en 2022 et elle est catégorisée petite ville,
-                        Les monuments emblématiques de Paris,
-                        Les fleuves principaux en Europe,
-                        Camille a déjà visité des îles tropicales,
-                        Le plat national espagnol est la paella, souvent préparée avec du riz, des fruits de mer, du poulet et des épices,
-                        Martin collectionne les timbres représentant des animaux en voie de disparition,
-                        Une des capitales des pays nordiques est Copenhague,
-                        Sophie adore les films de science-fiction comme Star Wars,
-                        Les fromages français célèbres,
-                        Jean a remporté la médaille d'or en athlétisme dans ces compétitions : les Jeux olympiques de 2012, le championnat d'Europe 2014 et les Mondiaux de 2015,
-                        Le Mont-Blanc, situé dans les Alpes, est la plus haute montagne d'Europe occidentale avec une altitude de 4 807 mètres,
-                        sous le forme {prompt: 'exemple'}`,
-                    },
-                  ],
-                },
-              ],
-            }),
-          }
-        );
-    
-        // Vérification de la réponse
-        if (response.ok) {
-          const data = await response.json();
-          const text = data.candidates[0].content.parts[0].text;
-    
-          // Nettoyage du texte pour récupérer uniquement le JSON
-          const jsonText = JSON.parse(text.replace(/```json/g, '').replace(/```/g, '').trim());
-          setTexte(jsonText.prompt);
-          Generer(jsonText.prompt)
-        } else {
-          console.error("Erreur de réponse de l'API:", response.status);
-        }
-      } catch (error) {
-        console.error("Erreur lors de la génération de contenu:", error);
+  const Exemple = async () => {
+    try {
+      const reponse = await fetch('https://back-mv6pbo6mya-ew.a.run.app//Exemple');
+      // Vérification de la réponse
+      if (reponse.ok) {
+        const data = await reponse.json();
+        const text = data.candidates[0].content.parts[0].text;
+
+        // Nettoyage du texte pour récupérer uniquement le JSON
+        const jsonText = JSON.parse(text.replace(/```json/g, '').replace(/```/g, '').trim());
+        setTexte(jsonText.prompt);
+        Generer(jsonText.prompt)
+      } else {
+        console.error("Erreur de réponse de l'API:", reponse.status);
       }
-    };
-    
-    
-    
+    } catch (error) {
+      console.error("Erreur lors de la génération de contenu:", error);
+    }
+  };
+
+
+
 
   const questionSuivante = () => {
-    if(reponse1 && reponse2 && question){
+    if (reponse1 && reponse2 && question) {
       Validation();
       setQuestion('');
       setreponse1('');
@@ -125,47 +67,36 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
       setTexte('');
       navigation.navigate('Questions réponsesIA', { uniqueId, page: page + 1 });
     }
-    else{
+    else {
       alert("Vous devez rentrer au moins une question, une bonne réponse et une mauvaise réponse");
-    } 
+    }
   };
   const Terminer = () => {
-    if(reponse1 && reponse2 && question && reponse3 && reponse4){
+    if (reponse1 && reponse2 && question && reponse3 && reponse4) {
       alert("Pour terminer tous les champs doivent être vide");
-    }else{
-      const page2 = page -1;
-      update(ref(db, uniqueId),{
-        nombreDeQuestions : page2,
+    } else {
+      const page2 = page - 1;
+      update(ref(db, uniqueId), {
+        nombreDeQuestions: page2,
       })
-      navigation.navigate('Nouvelle partie', {uniqueId, page2});
+      navigation.navigate('Nouvelle partie', { uniqueId, page2 });
     }
   }
   const Generer = async (texte: string) => {
+    setGenerer(true);
     try {
-      const ref = doc(dbFirestore, 'api', '4IJN1b8Pyv9TnUoWH2GG');
-      const dataApi = await getDoc(ref);
-      setGenerer(true)
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${dataApi.data().API_KEY}`, {
-        method: "POST",
+      const reponse = await fetch('https://back-mv6pbo6mya-ew.a.run.app/Generer', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json"
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          contents: [
-            {
-              parts: [
-                { text: `Génère moi un JSON avec une question, 1 bonne réponse et 3 mauvaises réponses à partir du texte suivant : "${texte}
-                  sous le forme {question: 'question'},"{bonneReponse: 'bonne réponse'},{mauvaiseReponse1: 'mauvaise réponse 1'},{mauvaiseReponse2: 'mauvaise réponse 2'}, {mauvaiseReponse3: 'mauvaise réponse 3'}` }
-              ]
-            }
-          ]
-        })
+        body: JSON.stringify({ texte })
       });
 
-      const data = await response.json();
-      const text = data.candidates[0].content.parts[0].text;    
-      // Nettoyage du texte pour récupérer uniquement le JSON
+      const data = await reponse.json();
+      const text = data.candidates[0].content.parts[0].text;
 
+      // Nettoyage du texte pour récupérer uniquement le JSON
       const jsonText = JSON.parse(text.replace(/```json/g, '').replace(/```/g, '').trim());
       setQuestion(jsonText.question);
       setreponse1(jsonText.bonneReponse);
@@ -176,50 +107,50 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
       console.error('Erreur lors de la génération de contenu:', error);
     }
   };
-  
-  async function Validation(){
-    if(reponse3 && reponse4){
+
+  async function Validation() {
+    if (reponse3 && reponse4) {
       set(ref(db, `${uniqueId}/question_reponse/${page}`), {
-        question : question,
-        reponse1 : reponse1,
-        reponse2 : reponse2,
-        reponse3 : reponse3,
-        reponse4 : reponse4,
-        nombreDeReponses : 4,
+        question: question,
+        reponse1: reponse1,
+        reponse2: reponse2,
+        reponse3: reponse3,
+        reponse4: reponse4,
+        nombreDeReponses: 4,
       });
     }
-    else if(reponse3){
+    else if (reponse3) {
       set(ref(db, `${uniqueId}/question_reponse/${page}`), {
-        question : question,
-        reponse1 : reponse1,
-        reponse2 : reponse2,
-        reponse3 : reponse3,
-        nombreDeReponses : 3,
+        question: question,
+        reponse1: reponse1,
+        reponse2: reponse2,
+        reponse3: reponse3,
+        nombreDeReponses: 3,
       });
     }
-    else{
+    else {
       set(ref(db, `${uniqueId}/question_reponse/${page}`), {
-        question : question,
-        reponse1 : reponse1,
-        reponse2 : reponse2,
-        nombreDeReponses : 2,
+        question: question,
+        reponse1: reponse1,
+        reponse2: reponse2,
+        nombreDeReponses: 2,
       });
     }
   }
-  
+
   return (
     <View style={styles.container}>
-        <Text style={styles.question}>Question : {page}</Text>
-        <Text style={styles.sous_titre }>Ecrivez un texte pour générer une question avec les réponses</Text>
-        <TextInput 
-            style={styles.input3} 
-            placeholder="Ecrivez quelque chose..."
-            placeholderTextColor="#757575"
-            multiline={true}
-            value={texte}
-            onChangeText={setTexte} 
-        />
-       <View style={styles.buttonContainer}>
+      <Text style={styles.question}>Question : {page}</Text>
+      <Text style={styles.sous_titre}>Ecrivez un texte pour générer une question avec les réponses</Text>
+      <TextInput
+        style={styles.input3}
+        placeholder="Ecrivez quelque chose..."
+        placeholderTextColor="#757575"
+        multiline={true}
+        value={texte}
+        onChangeText={setTexte}
+      />
+      <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.bouton} onPress={() => Generer(texte)}>
           <Text style={styles.boutonText}>Générer</Text>
         </TouchableOpacity>
@@ -227,85 +158,85 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
           <Text style={styles.boutonText}>Voir un exemple</Text>
         </TouchableOpacity>
       </View>
-        { generer ? (
+      {generer ? (
         <>
-        <View style={styles.container2}>
-          { width >= 768 ? (
-            <Text style={styles.Question}>Question               : </Text>
-          ) : null}
-            <TextInput 
-            style={styles.input} 
-            placeholder="Question"
-            placeholderTextColor="#757575"
-            value={question}
-            onChangeText={setQuestion} 
+          <View style={styles.container2}>
+            {width >= 768 ? (
+              <Text style={styles.Question}>Question               : </Text>
+            ) : null}
+            <TextInput
+              style={styles.input}
+              placeholder="Question"
+              placeholderTextColor="#757575"
+              value={question}
+              onChangeText={setQuestion}
             />
-        </View>
-        <View style={styles.container2}>
-          { width >= 768 ? (
-            <Text style={styles.bonne_reponse}>Bonne réponse      : </Text>
-          ) : null}
-          <TextInput 
-            style={styles.input} 
-            placeholder="Bonne réponse "
-            placeholderTextColor="#757575"
-            value={reponse1}
-            onChangeText={setreponse1} 
-          />
-        </View>
-        <View style={styles.container2}>
-          { width >= 768 ? (
-            <Text>Mauvaise réponse : </Text>
-          ) : null}
-            <TextInput 
-            style={styles.input} 
-            placeholder="Mauvaise réponse"
-            placeholderTextColor="#757575"
-            value={reponse2}
-            onChangeText={setreponse2} 
+          </View>
+          <View style={styles.container2}>
+            {width >= 768 ? (
+              <Text style={styles.bonne_reponse}>Bonne réponse      : </Text>
+            ) : null}
+            <TextInput
+              style={styles.input}
+              placeholder="Bonne réponse "
+              placeholderTextColor="#757575"
+              value={reponse1}
+              onChangeText={setreponse1}
             />
-        </View>
-        <View style={styles.container2}>
-          { width >= 768 ? (
-            <Text>Mauvaise réponse : </Text>
-          ) : null}
-            <TextInput 
-            style={styles.input} 
-            placeholder="Mauvaise réponse"
-            placeholderTextColor="#757575"
-            value={reponse3}
-            onChangeText={setreponse3} 
+          </View>
+          <View style={styles.container2}>
+            {width >= 768 ? (
+              <Text>Mauvaise réponse : </Text>
+            ) : null}
+            <TextInput
+              style={styles.input}
+              placeholder="Mauvaise réponse"
+              placeholderTextColor="#757575"
+              value={reponse2}
+              onChangeText={setreponse2}
             />
-        </View>
-        <View style={styles.container2}>
-          { width >= 768 ? (
-            <Text>Mauvaise réponse : </Text>
-          ) : null}
-            <TextInput 
-            style={styles.input} 
-            placeholder="Mauvaise réponse"
-            placeholderTextColor="#757575"
-            value={reponse4}
-            onChangeText={setreponse4} 
+          </View>
+          <View style={styles.container2}>
+            {width >= 768 ? (
+              <Text>Mauvaise réponse : </Text>
+            ) : null}
+            <TextInput
+              style={styles.input}
+              placeholder="Mauvaise réponse"
+              placeholderTextColor="#757575"
+              value={reponse3}
+              onChangeText={setreponse3}
             />
-        </View>
-        <TouchableOpacity style={styles.bouton2} onPress={questionSuivante}>
-          <Text style={styles.boutonText}>Ajouter</Text>
-        </TouchableOpacity>
+          </View>
+          <View style={styles.container2}>
+            {width >= 768 ? (
+              <Text>Mauvaise réponse : </Text>
+            ) : null}
+            <TextInput
+              style={styles.input}
+              placeholder="Mauvaise réponse"
+              placeholderTextColor="#757575"
+              value={reponse4}
+              onChangeText={setreponse4}
+            />
+          </View>
+          <TouchableOpacity style={styles.bouton2} onPress={questionSuivante}>
+            <Text style={styles.boutonText}>Ajouter</Text>
+          </TouchableOpacity>
         </>
-        ) : null}
-        {page > 1 ? (
-            <>
-                <Text style={styles.ou}>----------   ou   ----------</Text>
-                <TouchableOpacity 
-                    style={styles.bouton3} 
-                    onPress={Terminer}
-                    >
-                    <Text style={styles.boutonText3}>Terminer</Text>
-                </TouchableOpacity>
-            </>
-        ) : null}
-      </View>  
+      ) : null}
+      {page > 1 ? (
+        <>
+          <Text style={styles.ou}>----------   ou   ----------</Text>
+          <TouchableOpacity
+            style={styles.bouton3}
+            onPress={Terminer}
+          >
+            <Text style={styles.boutonText3}>Terminer</Text>
+          </TouchableOpacity>
+        </>
+      ) : null}
+    </View>
   );
 };
 
@@ -314,13 +245,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5F5F5',
     alignItems: 'center',
-    paddingTop: Platform.OS === 'web' && width >= 768 ? hp('2%') :  hp('6%'),
+    paddingTop: Platform.OS === 'web' && width >= 768 ? hp('2%') : hp('6%'),
   },
   container2: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',
-    marginTop: Platform.OS === 'web' && width >= 768 ? hp('2%') :  hp('2%'),
+    marginTop: Platform.OS === 'web' && width >= 768 ? hp('2%') : hp('2%'),
     width: Platform.OS === 'web' && width >= 768 ? '70%' : wp('95%'),
   },
   buttonContainer: {
@@ -329,13 +260,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center', // Centrage horizontal du conteneur
     marginVertical: 10, // Espacement vertical du conteneur
   },
-  bonne_reponse:{
+  bonne_reponse: {
     color: 'red',
   },
-  Question:{
+  Question: {
     fontWeight: 'bold',
   },
-  ou:{
+  ou: {
     paddingTop: Platform.OS === 'web' && width >= 768 ? wp('1%') : wp('3%'),
     color: '#757575',
     fontSize: Platform.OS === 'web' && width >= 768 ? wp('1%') : wp('4%'),
@@ -366,7 +297,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: Platform.OS === 'web' && width >= 768 ? hp('2%') : hp('2%'),
     marginBottom: Platform.OS === 'web' && width >= 768 ? hp('2%') : hp('0%'),
-    marginHorizontal:10,
+    marginHorizontal: 10,
   },
   bouton4: {
     backgroundColor: '#002B5B',
@@ -378,7 +309,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: Platform.OS === 'web' && width >= 768 ? hp('2%') : hp('2%'),
     marginBottom: Platform.OS === 'web' && width >= 768 ? hp('2%') : hp('0%'),
-    marginHorizontal:10,
+    marginHorizontal: 10,
   },
   bouton2: {
     backgroundColor: '#757575',
@@ -389,7 +320,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignSelf: 'center',
     marginTop: Platform.OS === 'web' && width >= 768 ? hp('2%') : hp('2%'),
-    marginHorizontal:wp('3%'),
+    marginHorizontal: wp('3%'),
   },
   boutonText: {
     color: '#FFFFFF',
