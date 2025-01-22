@@ -31,9 +31,9 @@ const Pseudo: React.FC<{ navigation: any }> = ({ navigation }) => {
               else {
                 update(ref(db,`${valeur}/pseudo`),{
                   [pseudo] : pseudo,
-                })      
+                })   
                 navigation.navigate('En attente', { valeur, pseudo, datePartie });
-                }
+              }
             });
           }
           else{
