@@ -25,7 +25,6 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [reponse4, setreponse4] = useState('');
   const [texte, setTexte] = useState('');
   const [generer, setGenerer] = useState(false);
-  const [apiKey, setApiKey] = useState('');
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => null,
@@ -53,7 +52,6 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
       try {
         const ref = doc(dbFirestore, 'api', '4IJN1b8Pyv9TnUoWH2GG');
         const data = await getDoc(ref);
-        setApiKey(data.data().API_KEY);
         const response = await fetch( 
           `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${data.data().API_KEY}`,
           {

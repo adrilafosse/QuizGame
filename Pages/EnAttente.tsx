@@ -25,7 +25,7 @@ const EnAttente: React.FC<{ navigation: any }> = ({ navigation }) => {
   const dateActuelle = new Date();
   const uniqueId = valeur;
   const date = datePartie;
-  const qrcode = `https://quizgame-mv6pbo6mya-ew.a.run.app?id=${uniqueId}&date=${date}`;
+  const qrcode = `https://quizgame-mv6pbo6mya-ew.a.run.app?id=${uniqueId}`;
 
   React.useLayoutEffect(() => {
     navigation.setOptions({

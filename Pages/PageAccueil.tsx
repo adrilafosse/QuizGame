@@ -15,29 +15,10 @@ const Page_Accueil: React.FC<{ navigation: any }> = ({ navigation }) => {
       if (url) {
         const queryParams = new URLSearchParams(url.split('?')[1]);
         const id = queryParams.get('id');
-        const date = queryParams.get('date');
-        if(id && date){
-          // Vérifie si la chaîne correspond au format DD/MM/YYYY HH:mm
-          const regex = /^(\d{2})\/(\d{2})\/(\d{4})\s(\d{2}):(\d{2})$/;
-          const format = regex.test(date);
-          if(format == true){
-            const [day, month, year, hour, minute] = date.split(/[\s/:]/);
-            const dateFormater = `${year}-${month}-${day}T${hour}:${minute}:00`;
-            const dateFinal = new Date(dateFormater);
-            const dateActuelle = new Date();
-            if(dateFinal > dateActuelle){
-              const valeur = id;
-              navigation.navigate('Pseudo', { valeur });
-            } 
-          }else{
-            const date2 = new Date(date); 
-            const dateActuelle = new Date();
-            if(date2 > dateActuelle){
-              const valeur = id;
-              navigation.navigate('Pseudo', { valeur });
-            } 
-          }
-        }
+        if(id){
+          const valeur =id;
+          navigation.navigate('Pseudo', { valeur });
+        } 
       }
     };
     URL();
