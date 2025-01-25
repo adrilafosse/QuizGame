@@ -4,20 +4,20 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { useRoute } from '@react-navigation/native';
 import { TextInput } from 'react-native';
 import { ref, set, update } from 'firebase/database';
-import { db, dbFirestore } from '../firebaseConfig';
+import { db } from '../firebaseConfig';
 import { Platform, Dimensions } from 'react-native';
-import { doc, getDoc } from 'firebase/firestore';
 
 const { width } = Dimensions.get('window');
 
 interface RouteParams {
   uniqueId: string;
   page: number;
+  code: string;
 }
 
 const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
   const route = useRoute();
-  const { uniqueId, page } = route.params as RouteParams;
+  const { uniqueId, page, code } = route.params as RouteParams;
   const [question, setQuestion] = useState('');
   const [reponse1, setreponse1] = useState('');
   const [reponse2, setreponse2] = useState('');
@@ -34,7 +34,14 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   const Exemple = async () => {
     try {
-      const reponse = await fetch('https://back-mv6pbo6mya-ew.a.run.app//Exemple');
+      const reponse = await fetch('https://back-mv6pbo6mya-ew.a.run.app/Generer', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ code })
+      });
+
       // Vérification de la réponse
       if (reponse.ok) {
         const data = await reponse.json();
@@ -71,7 +78,7 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
       alert("Vous devez rentrer au moins une question, une bonne réponse et une mauvaise réponse");
     }
   };
-  const Terminer = () => {
+  const Terminer = async () => {
     if (reponse1 && reponse2 && question && reponse3 && reponse4) {
       alert("Pour terminer tous les champs doivent être vide");
     } else {
@@ -79,7 +86,21 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
       update(ref(db, uniqueId), {
         nombreDeQuestions: page2,
       })
-      navigation.navigate('Nouvelle partie', { uniqueId, page2 });
+      try {
+        const reponse = await fetch('https://back-mv6pbo6mya-ew.a.run.app/Supprimer', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ code })
+        });
+        if (reponse.ok) {
+          navigation.navigate('Nouvelle partie', { uniqueId, page2 });
+        }
+      } catch (error) {
+        console.error('Erreur');
+      }
+
     }
   }
   const Generer = async (texte: string) => {
@@ -90,7 +111,7 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ texte })
+        body: JSON.stringify({ texte, code })
       });
 
       const data = await reponse.json();
