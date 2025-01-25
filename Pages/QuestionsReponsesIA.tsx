@@ -34,7 +34,7 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   const Exemple = async () => {
     try {
-      const reponse = await fetch('https://back-mv6pbo6mya-ew.a.run.app/Generer', {
+      const reponse = await fetch('https://back-mv6pbo6mya-ew.a.run.app/Exemple', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -58,10 +58,6 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
       console.error("Erreur lors de la génération de contenu:", error);
     }
   };
-
-
-
-
   const questionSuivante = () => {
     if (reponse1 && reponse2 && question) {
       Validation();
