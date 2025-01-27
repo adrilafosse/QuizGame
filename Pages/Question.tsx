@@ -6,22 +6,23 @@ import { db } from '../firebaseConfig';
 import { useFocusEffect, useRoute } from '@react-navigation/native';
 import { Platform, Dimensions } from 'react-native';
 
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 interface RouteParams {
   valeur: string;
   pseudo: string;
   compteur: number;
   date2: string;
+  code: string;
 }
 
 const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
   const route = useRoute();
-  const { valeur, pseudo, compteur, date2 } = route.params as RouteParams;
+  const { valeur, pseudo, compteur, date2, code } = route.params as RouteParams;
   const [nombreQuestions, setNombreQuestions] = useState(0);
   const [nombreReponses, setNombreReponses] = useState(0);
   const [question, setQuestion] = useState('');
-  
+
   const [reponse, setReponse] = useState('');
   const [timer, setTimer] = useState(60);
   let tableau = [];
@@ -51,16 +52,16 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
     const dateActuelle = new Date();
     const dateComparaison = new Date(date2)
     dateComparaison.setMinutes(dateComparaison.getMinutes() + 2)
-    if(!reponse){
+    if (!reponse) {
       //Si la notification est apparue il y a plus de 2 minutes ou si le compteur est arrivé à 0
-      if (dateActuelle>dateComparaison) {
-        if (compteur < nombreQuestions){
+      if (dateActuelle > dateComparaison) {
+        if (compteur < nombreQuestions) {
           update(ref(db, `${valeur}/reponses/${pseudo}`), {
             [`${compteur}`]: '',
           });
           navigation.navigate('ReponseTropLongue');
         }
-        else if(compteur == nombreQuestions){
+        else if (compteur == nombreQuestions) {
           update(ref(db, `${valeur}/reponses/${pseudo}`), {
             [`${compteur}`]: '',
           });
@@ -71,25 +72,25 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
   }, [timer, date2, reponse, compteur])
 
   useEffect(() => {
-    if(redirection == false){
+    if (redirection == false) {
       if (timer > 0) {
         // Utilisation de setInterval pour décrémenter le timer toutes les secondes
         const intervalId = setInterval(() => {
           setTimer(prev => prev - 1);
         }, 1000);
-  
+
         // Nettoyer l'intervalle lors du démontage ou de la mise à jour du timer
         return () => clearInterval(intervalId);
-      }    
-      if(!reponse){
-        if (compteur < nombreQuestions && timer == 0) {     
+      }
+      if (!reponse) {
+        if (compteur < nombreQuestions && timer == 0) {
           update(ref(db, `${valeur}/reponses/${pseudo}`), {
             [`${compteur}`]: '',
           });
           navigation.navigate('ReponseTropLongue');
           setRedirection(true)
         }
-        else if(compteur == nombreQuestions && timer == 0){
+        else if (compteur == nombreQuestions && timer == 0) {
           update(ref(db, `${valeur}/reponses/${pseudo}`), {
             [`${compteur}`]: '',
           });
@@ -107,7 +108,7 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
       }
     });
     get(ref(db, `${valeur}/score`)).then((snapshot) => {
-      if (snapshot.exists()&& snapshot.child(pseudo).exists()) {
+      if (snapshot.exists() && snapshot.child(pseudo).exists()) {
         const score = snapshot.child(pseudo).val();
         setScoreJoueur(score)
       }
@@ -118,33 +119,58 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
         setNombreReponses(data.nombreDeReponses);
         setQuestion(data.question);
         setBonneReponse(data.reponse1)
-        if(data.nombreDeReponses === 2){
-          tableau = [data.reponse1,data.reponse2]
+        if (data.nombreDeReponses === 2) {
+          tableau = [data.reponse1, data.reponse2]
         }
-        if(data.nombreDeReponses === 3){
-          tableau = [data.reponse1,data.reponse2,data.reponse3]
+        if (data.nombreDeReponses === 3) {
+          tableau = [data.reponse1, data.reponse2, data.reponse3]
         }
-        if(data.nombreDeReponses === 4){
-          tableau = [data.reponse1,data.reponse2,data.reponse3,data.reponse4]
+        if (data.nombreDeReponses === 4) {
+          tableau = [data.reponse1, data.reponse2, data.reponse3, data.reponse4]
         }
         const tableauMelange = melangerTableau(tableau);
         setTableauFinal(tableauMelange);
       }
-    });    
+    });
   }, [compteur]);
 
   const melangerTableau = (tableau) => {
     const taille = tableau.length;
     for (let i = 0; i < taille; i++) {
-       const a = Math.floor(Math.random() * taille);
-       const temp = tableau[i];
-       tableau[i] = tableau[a];
-       tableau[a] = temp;
+      const a = Math.floor(Math.random() * taille);
+      const temp = tableau[i];
+      tableau[i] = tableau[a];
+      tableau[a] = temp;
     }
     return tableau;
   };
 
-  const Validation = (reponse: string) => {
+  const Validation = async (reponse: string) => {
+    try {
+      const reponseAPI = await fetch('http://127.0.0.1:8080/Score', {
+        //const reponse = await fetch('https://back-mv6pbo6mya-ew.a.run.app/Score', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ code, reponse, pseudo, valeur, compteur, timer })
+      });
+      if (reponseAPI.ok) {
+        update(ref(db, `${valeur}/reponses/${pseudo}`), {
+          [compteur]: reponse,
+        });
+        if (compteur < nombreQuestions) {
+          navigation.navigate('AttenteReponse');
+          return;
+        } else {
+          navigation.navigate('Retour', { valeur, pseudo });
+          return;
+        }
+      }
+    } catch (error) {
+      console.error('Erreur lors de la génération de contenu:', error);
+    }
+    /*
     setReponse(reponse)
     update(ref(db, `${valeur}/reponses/${pseudo}`), {
       [compteur]: reponse,
@@ -158,6 +184,7 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
         [pseudo] : scoreJoueur
       });
     }
+      
     if (compteur < nombreQuestions) {
       navigation.navigate('AttenteReponse');
       return;
@@ -165,6 +192,7 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
       navigation.navigate('Retour', { valeur, pseudo });
       return;
     }
+      */
   };
 
   return (
@@ -203,29 +231,29 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5F5F5',
     alignItems: 'center',
-    paddingTop: Platform.OS === 'web' && width >= 768 ? hp('5%') :  hp('12%'),
+    paddingTop: Platform.OS === 'web' && width >= 768 ? hp('5%') : hp('12%'),
   },
   nombreDeQuestion: {
-    fontSize: Platform.OS === 'web' && width >= 768 ? wp('4%') :  wp('8%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('3%') : wp('8%'),
     fontWeight: 'bold',
     color: '#333333',
     textAlign: 'center',
-    marginTop: Platform.OS === 'web' && width >= 768 ? hp('2%') :  hp('8%'),
+    marginTop: Platform.OS === 'web' && width >= 768 ? hp('2%') : hp('8%'),
   },
   question: {
-    fontSize: Platform.OS === 'web' && width >= 768 ? wp('5%') :  wp('8%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('3%') : wp('8%'),
     fontWeight: 'bold',
     color: '#222222',
     textAlign: 'center',
     paddingHorizontal: wp('4%'),
-    paddingTop: Platform.OS === 'web' && width >= 768 ? hp('2%') :  hp('8%'),
+    paddingTop: Platform.OS === 'web' && width >= 768 ? hp('2%') : hp('8%'),
   },
   reponseContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
     width: '90%',
-    paddingTop: Platform.OS === 'web' && width >= 768 ? hp('2%') :  hp('8%'),
+    paddingTop: Platform.OS === 'web' && width >= 768 ? hp('2%') : hp('8%'),
   },
   button: {
     width: '48%',
@@ -237,12 +265,12 @@ const styles = StyleSheet.create({
   },
   texte: {
     color: '#FFFFFF',
-    fontSize: wp('4%'),
+    fontSize: wp('2%'),
     fontWeight: 'bold',
     textAlign: 'center',
   },
   timer: {
-    fontSize: Platform.OS === 'web' && width >= 768 ? wp('4%') :  wp('10%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('4%') : wp('10%'),
     fontWeight: 'bold',
     color: '#333',
   },

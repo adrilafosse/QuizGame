@@ -6,7 +6,7 @@ import { db } from '../firebaseConfig';
 import { useRoute } from '@react-navigation/native';
 import { Platform, Dimensions } from 'react-native';
 
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 interface RouteParams {
   valeur: string;
 }
@@ -15,7 +15,7 @@ const Pseudo: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [pseudo, setPseudo] = useState('');
   const route = useRoute();
   const { valeur } = route.params as RouteParams;
-  
+
   const Validation = () => {
     if (pseudo) {
       get(ref(db, `${valeur}/date`)).then((snapshot) => {
@@ -23,26 +23,29 @@ const Pseudo: React.FC<{ navigation: any }> = ({ navigation }) => {
           const date = snapshot.val()
           const datePartie = new Date(date)
           const dateActuelle = new Date();
-          if(dateActuelle<datePartie){
-            get(ref(db, `${valeur}/pseudo`)).then((snapshot) => {
+          if (dateActuelle < datePartie) {
+            get(ref(db, `${valeur}/pseudo`)).then(async (snapshot) => {
               if (snapshot.exists() && snapshot.child(pseudo).exists()) {
-                  alert('Ce pseudo est déjà utilisé');
+                alert('Ce pseudo est déjà utilisé');
               }
               else {
-                update(ref(db,`${valeur}/pseudo`),{
-                  [pseudo] : pseudo,
-                })   
-                navigation.navigate('En attente', { valeur, pseudo, datePartie });
+                update(ref(db, `${valeur}/pseudo`), {
+                  [pseudo]: pseudo,
+                })
+                const reponse = await fetch('http://127.0.0.1:8080/Cookie');
+                //const reponse = await fetch('https://back-mv6pbo6mya-ew.a.run.app/Cookie');
+                const code = await reponse.text();
+                navigation.navigate('En attente', { valeur, pseudo, datePartie, code });
               }
             });
           }
-          else{
+          else {
             alert('La partie a déjà commencé');
           }
         }
       });
     }
-    else{
+    else {
       alert('Rentrez un pseudo');
     }
   };
@@ -69,12 +72,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5F5F5',
     alignItems: 'center',
-    paddingTop: Platform.OS === 'web' && width >= 768 ? hp('10%') :  hp('28%'),
+    paddingTop: Platform.OS === 'web' && width >= 768 ? hp('10%') : hp('28%'),
   },
   titre: {
     color: '#333333',
     fontWeight: 'bold',
-    fontSize: Platform.OS === 'web' && width >= 768 ? wp('6%') :  wp('8%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('6%') : wp('8%'),
     textAlign: 'center',
     paddingHorizontal: wp('5%'),
   },

@@ -1,10 +1,10 @@
-import React, {useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import * as Notifications from 'expo-notifications';
 import { Linking, Platform, Dimensions } from 'react-native';
 
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 const Page_Accueil: React.FC<{ navigation: any }> = ({ navigation }) => {
 
@@ -15,10 +15,10 @@ const Page_Accueil: React.FC<{ navigation: any }> = ({ navigation }) => {
       if (url) {
         const queryParams = new URLSearchParams(url.split('?')[1]);
         const id = queryParams.get('id');
-        if(id){
-          const valeur =id;
+        if (id) {
+          const valeur = id;
           navigation.navigate('Pseudo', { valeur });
-        } 
+        }
       }
     };
     URL();
@@ -26,9 +26,9 @@ const Page_Accueil: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   useEffect(() => {
     const notification = Notifications.addNotificationResponseReceivedListener(response => {
-      const { valeur, pseudo, compteur, date2 } = response.notification.request.content.data;
-      if (valeur && pseudo && compteur && date2) {
-        navigation.navigate('Question', { valeur, pseudo, compteur,date2 });
+      const { valeur, pseudo, compteur, date2, code } = response.notification.request.content.data;
+      if (valeur && pseudo && compteur && date2 && code) {
+        navigation.navigate('Question', { valeur, pseudo, compteur, date2, code });
       } else {
         console.log("Les données de la notification sont manquantes");
       }
@@ -44,10 +44,10 @@ const Page_Accueil: React.FC<{ navigation: any }> = ({ navigation }) => {
       <TouchableOpacity style={styles.bouton} onPress={() => navigation.navigate('NomPartie')}>
         <Text style={styles.boutonText}>Créer une partie</Text>
       </TouchableOpacity>
-          <Text style={styles.ou}>----------   ou   ----------</Text>
-          <TouchableOpacity style={styles.bouton2} onPress={() => navigation.navigate('RejoindrePartie')}>
-            <Text style={styles.boutonText}>Rejoindre une partie</Text>
-          </TouchableOpacity>
+      <Text style={styles.ou}>----------   ou   ----------</Text>
+      <TouchableOpacity style={styles.bouton2} onPress={() => navigation.navigate('RejoindrePartie')}>
+        <Text style={styles.boutonText}>Rejoindre une partie</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -57,14 +57,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5F5F5',
     alignItems: 'center',
-    paddingTop: Platform.OS === 'web' && width >= 768 ? hp('1%') :  hp('8%'),
+    paddingTop: Platform.OS === 'web' && width >= 768 ? hp('1%') : hp('8%'),
   },
   titre: {
     color: '#333333',
     fontWeight: 'bold',
     fontSize: Platform.OS === 'web' && width >= 768 ? wp('8%') : wp('16%'),
   },
-  ou:{
+  ou: {
     paddingTop: Platform.OS === 'web' && width >= 768 ? wp('2%') : wp('8%'),
     color: '#757575',
     fontSize: Platform.OS === 'web' && width >= 768 ? wp('2%') : wp('4%'),
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
   },
   boutonText: {
     color: '#FFFFFF',
-    fontSize:  Platform.OS === 'web' && width >= 768 ? wp('2%') : wp('5%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('2%') : wp('5%'),
     fontWeight: 'bold',
   },
 });

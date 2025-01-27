@@ -34,7 +34,8 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   const Exemple = async () => {
     try {
-      const reponse = await fetch('https://back-mv6pbo6mya-ew.a.run.app/Exemple', {
+      const reponse = await fetch('http://127.0.0.1:8080/Exemple', {
+        //const reponse = await fetch('https://back-mv6pbo6mya-ew.a.run.app/Exemple', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -68,7 +69,7 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
       setreponse4('');
       setGenerer(false);
       setTexte('');
-      navigation.navigate('Questions réponsesIA', { uniqueId, page: page + 1 });
+      navigation.navigate('Questions réponsesIA', { uniqueId, page: page + 1, code });
     }
     else {
       alert("Vous devez rentrer au moins une question, une bonne réponse et une mauvaise réponse");
@@ -83,7 +84,8 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
         nombreDeQuestions: page2,
       })
       try {
-        const reponse = await fetch('https://back-mv6pbo6mya-ew.a.run.app/Supprimer', {
+        const reponse = await fetch('http://127.0.0.1:8080/Supprimer', {
+          //const reponse = await fetch('https://back-mv6pbo6mya-ew.a.run.app/Supprimer', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -102,7 +104,8 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
   const Generer = async (texte: string) => {
     setGenerer(true);
     try {
-      const reponse = await fetch('https://back-mv6pbo6mya-ew.a.run.app/Generer', {
+      const reponse = await fetch('http://127.0.0.1:8080/Generer', {
+        //const reponse = await fetch('https://back-mv6pbo6mya-ew.a.run.app/Generer', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -124,7 +127,6 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
       console.error('Erreur lors de la génération de contenu:', error);
     }
   };
-
   async function Validation() {
     if (reponse3 && reponse4) {
       set(ref(db, `${uniqueId}/question_reponse/${page}`), {

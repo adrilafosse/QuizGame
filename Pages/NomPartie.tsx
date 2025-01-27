@@ -29,7 +29,8 @@ const NomPartie: React.FC<{ navigation: any }> = ({ navigation }) => {
         }
         else {
           try {
-            const reponse = await fetch('https://back-mv6pbo6mya-ew.a.run.app/Cookie');
+            const reponse = await fetch('http://127.0.0.1:8080/Cookie');
+            //const reponse = await fetch('https://back-mv6pbo6mya-ew.a.run.app/Cookie');
             const code = await reponse.text();
             if (tiroir) {
               navigation.navigate('Questions réponsesIA', { uniqueId, page, code });
