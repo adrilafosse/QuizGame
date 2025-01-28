@@ -1,32 +1,37 @@
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { StyleSheet, Text, View } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import { get, ref } from 'firebase/database';
-import { db } from '../firebaseConfig';
+import { dbFirestore } from '../firebaseConfig';
 import { useRoute } from '@react-navigation/native';
+import { doc, getDoc } from 'firebase/firestore';
 interface RouteParams {
-  valeur: string;
+    valeur: string;
 }
 
 const Score: React.FC<{ navigation: any }> = ({ navigation }) => {
-  const route = useRoute();
-  const { valeur } = route.params as RouteParams;
-  const [dataTableau, setDataTableau] = useState([]);
-
+    const route = useRoute();
+    const { valeur } = route.params as RouteParams;
+    const [dataTableau, setDataTableau] = useState([]);
     useEffect(() => {
-        get(ref(db, `${valeur}/score`)).then((snapshot) => {
-            if (snapshot.exists()) {
-                const nouvelleDonnee = snapshot.val();
-                const dataArray = Object.entries(nouvelleDonnee)
-                    .map(([name, score]) => ({ name, score: Number(score) }))
-                    .sort((a, b) => b.score - a.score);
-                setDataTableau(dataArray);
-            } else {
-                console.log('Aucune donnée trouvée !');
+        const Scores = async () => {
+            try {
+                const docRef = doc(dbFirestore, `${valeur}/score`);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const scoresData = docSnap.data();
+                    const dataArray = Object.entries(scoresData)
+                        .map(([name, score]) => ({ name, score: Number(score) }))
+                        .sort((a, b) => b.score - a.score);
+                    setDataTableau(dataArray);
+                } else {
+                    console.log('Aucune donnée trouvée !');
+                }
+            } catch (error) {
+                console.error('Erreur lors de la récupération des scores depuis Firestore:', error);
             }
-        });
-    });
-    
+        }
+        Scores();
+    }, []);
+
     return (
         <View style={styles.container}>
             {dataTableau.map((item, index) => (

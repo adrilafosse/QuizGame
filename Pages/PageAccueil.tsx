@@ -26,9 +26,9 @@ const Page_Accueil: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   useEffect(() => {
     const notification = Notifications.addNotificationResponseReceivedListener(response => {
-      const { valeur, pseudo, compteur, date2, code } = response.notification.request.content.data;
-      if (valeur && pseudo && compteur && date2 && code) {
-        navigation.navigate('Question', { valeur, pseudo, compteur, date2, code });
+      const { valeur, pseudo, compteur, date2, token, uid } = response.notification.request.content.data;
+      if (valeur && pseudo && compteur && date2 && token && uid) {
+        navigation.navigate('Question', { valeur, pseudo, compteur, date2, token, uid });
       } else {
         console.log("Les données de la notification sont manquantes");
       }

@@ -13,12 +13,13 @@ interface RouteParams {
   pseudo: string;
   compteur: number;
   date2: string;
-  code: string;
+  token: string;
+  uid: string;
 }
 
 const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
   const route = useRoute();
-  const { valeur, pseudo, compteur, date2, code } = route.params as RouteParams;
+  const { valeur, pseudo, compteur, date2, token, uid } = route.params as RouteParams;
   const [nombreQuestions, setNombreQuestions] = useState(0);
   const [nombreReponses, setNombreReponses] = useState(0);
   const [question, setQuestion] = useState('');
@@ -27,8 +28,6 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [timer, setTimer] = useState(60);
   let tableau = [];
   const [tableauFinal, setTableauFinal] = useState<string[]>([]);
-  const [bonneReponse, setBonneReponse] = useState('');
-  const [scoreJoueur, setScoreJoueur] = useState(0);
   const [redirection, setRedirection] = useState(false);
 
   React.useLayoutEffect(() => {
@@ -107,18 +106,11 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
         setNombreQuestions(snapshot.val());
       }
     });
-    get(ref(db, `${valeur}/score`)).then((snapshot) => {
-      if (snapshot.exists() && snapshot.child(pseudo).exists()) {
-        const score = snapshot.child(pseudo).val();
-        setScoreJoueur(score)
-      }
-    });
     get(ref(db, `${valeur}/question_reponse/${compteur}`)).then((snapshot) => {
       if (snapshot.exists()) {
         const data = snapshot.val();
         setNombreReponses(data.nombreDeReponses);
         setQuestion(data.question);
-        setBonneReponse(data.reponse1)
         if (data.nombreDeReponses === 2) {
           tableau = [data.reponse1, data.reponse2]
         }
@@ -153,7 +145,7 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ code, reponse, pseudo, valeur, compteur, timer })
+        body: JSON.stringify({ token, uid, reponse, pseudo, valeur, compteur, timer })
       });
       if (reponseAPI.ok) {
         update(ref(db, `${valeur}/reponses/${pseudo}`), {

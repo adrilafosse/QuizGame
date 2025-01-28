@@ -15,12 +15,13 @@ interface RouteParams {
   valeur: string;
   pseudo: string;
   datePartie: Date;
-  code: string;
+  token: string;
+  uid: string;
 }
 
 const EnAttente: React.FC<{ navigation: any }> = ({ navigation }) => {
   const route = useRoute();
-  const { valeur, pseudo, datePartie, code } = route.params as RouteParams;
+  const { valeur, pseudo, datePartie, token, uid } = route.params as RouteParams;
   const [tempsRestant, setTempsRestant] = useState('');
   const [QRcodeVariable, setQRcodeVariable] = useState(false);
   const dateActuelle = new Date();
@@ -86,7 +87,7 @@ const EnAttente: React.FC<{ navigation: any }> = ({ navigation }) => {
               const diff = date.getTime() - nouvelleDateActuelle.getTime();
               if (diff <= 0) {
                 clearInterval(intervalId); // Arrêter l'intervalle
-                navigation.navigate('Question', { valeur, pseudo, compteur, date2, code });
+                navigation.navigate('Question', { valeur, pseudo, compteur, date2, token, uid });
               }
             }, 1000);
           }
@@ -95,7 +96,7 @@ const EnAttente: React.FC<{ navigation: any }> = ({ navigation }) => {
               `Question ${compteur}`,
               `C'est l'heure pour la question ${compteur}!`,
               date,
-              { valeur, date2, pseudo, compteur, code }
+              { valeur, date2, pseudo, compteur, token, uid }
             );
           }
         }

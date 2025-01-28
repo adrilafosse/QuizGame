@@ -1,10 +1,11 @@
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Switch } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import { get, ref, update } from 'firebase/database';
-import { db } from '../firebaseConfig';
+import { db, auth } from '../firebaseConfig';
 import { useRoute } from '@react-navigation/native';
 import { Platform, Dimensions } from 'react-native';
+import { signInWithCustomToken } from 'firebase/auth';
 
 const { width } = Dimensions.get('window');
 interface RouteParams {
@@ -32,10 +33,29 @@ const Pseudo: React.FC<{ navigation: any }> = ({ navigation }) => {
                 update(ref(db, `${valeur}/pseudo`), {
                   [pseudo]: pseudo,
                 })
-                const reponse = await fetch('http://127.0.0.1:8080/Cookie');
-                //const reponse = await fetch('https://back-mv6pbo6mya-ew.a.run.app/Cookie');
-                const code = await reponse.text();
-                navigation.navigate('En attente', { valeur, pseudo, datePartie, code });
+                const reponse = await fetch('http://127.0.0.1:8080/CookiePseudo', {
+                  //const reponse = await fetch('https://back-mv6pbo6mya-ew.a.run.app/Generer', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({ pseudo })
+                });
+
+                if (reponse.ok) {
+                  const data = await reponse.json();
+                  const tokenPersonnnalise = data.token;
+                  const uid = data.uid;
+                  try {
+                    // Authentifier l'utilisateur avec le token personnalisé
+                    const userCredential = await signInWithCustomToken(auth, tokenPersonnnalise);
+                    // recuperer le token d'authentification
+                    const token = await userCredential.user.getIdToken();
+                    navigation.navigate('En attente', { valeur, pseudo, datePartie, token, uid });
+                  } catch (error) {
+                    console.error("Erreur d'authentification :", error);
+                  }
+                }
               }
             });
           }
