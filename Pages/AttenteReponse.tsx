@@ -10,7 +10,6 @@ const AttenteReponse: React.FC<{ navigation: any }> = ({ navigation }) => {
     require('./../assets/gif2.gif'),
     require('./../assets/gif3.gif'),
     require('./../assets/gif4.gif'),
-    require('./../assets/gif5.gif'),
     require('./../assets/gif8.gif'),
     require('./../assets/gif9.gif'),
     require('./../assets/gif10.gif'),
