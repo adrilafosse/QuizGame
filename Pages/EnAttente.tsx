@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
   },
   titre: {
     color: '#333333',
-    fontSize: Platform.OS === 'web' && width >= 768 ? wp('2%') : wp('3%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('2%') : wp('4%'),
     paddingTop: Platform.OS === 'web' && width >= 768 ? hp('2%') : hp('6%'),
     textAlign: 'center',
     marginBottom: hp('2%'),

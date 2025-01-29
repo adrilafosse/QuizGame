@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
   },
   texte: {
     color: '#FFFFFF',
-    fontSize: wp('2%'),
+    fontSize: Platform.OS === 'web' && width >= 768 ? wp('2%') : wp('3%'),
     fontWeight: 'bold',
     textAlign: 'center',
   },
