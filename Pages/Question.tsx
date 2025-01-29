@@ -147,6 +147,7 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
         body: JSON.stringify({ token, uid, reponse, pseudo, valeur, compteur, timer })
       });
       if (reponseAPI.ok) {
+        setReponse(reponse)
         update(ref(db, `${valeur}/reponses/${pseudo}`), {
           [compteur]: reponse,
         });
