@@ -33,8 +33,7 @@ const Pseudo: React.FC<{ navigation: any }> = ({ navigation }) => {
                 update(ref(db, `${valeur}/pseudo`), {
                   [pseudo]: pseudo,
                 })
-                const reponse = await fetch('http://127.0.0.1:8080/CookiePseudo', {
-                  //const reponse = await fetch('https://back-mv6pbo6mya-ew.a.run.app/Generer', {
+                const reponse = await fetch('https://back-mv6pbo6mya-ew.a.run.app/CookiePseudo', {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json',

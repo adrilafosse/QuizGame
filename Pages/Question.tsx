@@ -139,8 +139,7 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   const Validation = async (reponse: string) => {
     try {
-      const reponseAPI = await fetch('http://127.0.0.1:8080/Score', {
-        //const reponse = await fetch('https://back-mv6pbo6mya-ew.a.run.app/Score', {
+      const reponseAPI = await fetch('https://back-mv6pbo6mya-ew.a.run.app/Score', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -162,29 +161,6 @@ const Question: React.FC<{ navigation: any }> = ({ navigation }) => {
     } catch (error) {
       console.error('Erreur lors de la génération de contenu:', error);
     }
-    /*
-    setReponse(reponse)
-    update(ref(db, `${valeur}/reponses/${pseudo}`), {
-      [compteur]: reponse,
-    });
-    if(reponse == bonneReponse){
-      update(ref(db, `${valeur}/score/`),{
-        [pseudo] : scoreJoueur + 100 + timer
-      });  
-    }else{
-      update(ref(db, `${valeur}/score/`),{
-        [pseudo] : scoreJoueur
-      });
-    }
-      
-    if (compteur < nombreQuestions) {
-      navigation.navigate('AttenteReponse');
-      return;
-    } else {
-      navigation.navigate('Retour', { valeur, pseudo });
-      return;
-    }
-      */
   };
 
   return (
