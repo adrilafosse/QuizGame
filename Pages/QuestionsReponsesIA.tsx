@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useRoute } from '@react-navigation/native';
@@ -12,12 +12,11 @@ const { width } = Dimensions.get('window');
 interface RouteParams {
   uniqueId: string;
   page: number;
-  code: string;
 }
 
 const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
   const route = useRoute();
-  const { uniqueId, page, code } = route.params as RouteParams;
+  const { uniqueId, page } = route.params as RouteParams;
   const [question, setQuestion] = useState('');
   const [reponse1, setreponse1] = useState('');
   const [reponse2, setreponse2] = useState('');
@@ -25,6 +24,7 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [reponse4, setreponse4] = useState('');
   const [texte, setTexte] = useState('');
   const [generer, setGenerer] = useState(false);
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => null,
@@ -34,26 +34,22 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   const Exemple = async () => {
     try {
-      const reponse = await fetch('https://back-mv6pbo6mya-ew.a.run.app/Exemple', {
-        method: 'POST',
+      console.log("Cookies dans le navigateur:", document.cookie);
+      const response = await fetch('https://back-mv6pbo6mya-ew.a.run.app/Exemple', {
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ code })
+        credentials: 'include',
       });
+      const data = await response.json();
+      const text = data.candidates[0].content.parts[0].text;
 
-      // Vérification de la réponse
-      if (reponse.ok) {
-        const data = await reponse.json();
-        const text = data.candidates[0].content.parts[0].text;
+      // Récupérer uniquement le JSON
+      const jsonText = JSON.parse(text.replace(/```json/g, '').replace(/```/g, '').trim());
+      setTexte(jsonText.prompt);
+      Generer(jsonText.prompt)
 
-        // Nettoyage du texte pour récupérer uniquement le JSON
-        const jsonText = JSON.parse(text.replace(/```json/g, '').replace(/```/g, '').trim());
-        setTexte(jsonText.prompt);
-        Generer(jsonText.prompt)
-      } else {
-        console.error("Erreur de réponse de l'API:", reponse.status);
-      }
     } catch (error) {
       console.error("Erreur lors de la génération de contenu:", error);
     }
@@ -68,7 +64,7 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
       setreponse4('');
       setGenerer(false);
       setTexte('');
-      navigation.navigate('Questions réponsesIA', { uniqueId, page: page + 1, code });
+      navigation.navigate('Questions réponsesIA', { uniqueId, page: page + 1 });
     }
     else {
       alert("Vous devez rentrer au moins une question, une bonne réponse et une mauvaise réponse");
@@ -84,11 +80,11 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
       })
       try {
         const reponse = await fetch('https://back-mv6pbo6mya-ew.a.run.app/Supprimer', {
-          method: 'POST',
+          method: 'GET',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ code })
+          credentials: 'include',
         });
         if (reponse.ok) {
           navigation.navigate('Nouvelle partie', { uniqueId, page2 });
@@ -107,13 +103,14 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ texte, code })
+        credentials: 'include',
+        body: JSON.stringify({ texte })
       });
 
       const data = await reponse.json();
       const text = data.candidates[0].content.parts[0].text;
 
-      // Nettoyage du texte pour récupérer uniquement le JSON
+      // Récupérer uniquement le JSON
       const jsonText = JSON.parse(text.replace(/```json/g, '').replace(/```/g, '').trim());
       setQuestion(jsonText.question);
       setreponse1(jsonText.bonneReponse);

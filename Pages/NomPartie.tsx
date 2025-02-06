@@ -29,15 +29,21 @@ const NomPartie: React.FC<{ navigation: any }> = ({ navigation }) => {
         }
         else {
           try {
-            const reponse = await fetch('https://back-mv6pbo6mya-ew.a.run.app/Cookie');
-            const code = await reponse.text();
-            if (tiroir) {
-              navigation.navigate('Questions réponsesIA', { uniqueId, page, code });
-            } else {
-              navigation.navigate('Questions réponses', { uniqueId, page });
+            const response = await fetch("https://back-mv6pbo6mya-ew.a.run.app/Cookie", {
+              method: "GET",
+              credentials: "include",
+            });
+            const data = await response.json();
+            if (data) {
+              if (tiroir) {
+                navigation.navigate('Questions réponsesIA', { uniqueId, page });
+              } else {
+                navigation.navigate('Questions réponses', { uniqueId, page });
+              }
             }
+
           } catch (error) {
-            console.error("Erreur");
+            console.error("Erreur lors de la récupération du cookie:", error);
           }
         }
       });
