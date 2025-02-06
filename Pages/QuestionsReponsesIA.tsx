@@ -34,7 +34,6 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   const Exemple = async () => {
     try {
-      console.log("Cookies dans le navigateur:", document.cookie);
       const response = await fetch('https://back-mv6pbo6mya-ew.a.run.app/Exemple', {
         method: 'GET',
         headers: {
