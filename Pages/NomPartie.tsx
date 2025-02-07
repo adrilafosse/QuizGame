@@ -29,19 +29,18 @@ const NomPartie: React.FC<{ navigation: any }> = ({ navigation }) => {
         }
         else {
           try {
-            const response = await fetch("https://back-mv6pbo6mya-ew.a.run.app/Cookie", {
+            const response = await fetch("http://127.0.0.1:8080/Cookie", {
               method: "GET",
-              credentials: "include",
             });
             const data = await response.json();
-            if (data) {
+            document.cookie = `cookie=${data.cookie}`;
+            if (response.ok) {
               if (tiroir) {
                 navigation.navigate('Questions réponsesIA', { uniqueId, page });
               } else {
                 navigation.navigate('Questions réponses', { uniqueId, page });
               }
             }
-
           } catch (error) {
             console.error("Erreur lors de la récupération du cookie:", error);
           }

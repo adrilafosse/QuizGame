@@ -24,6 +24,7 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [reponse4, setreponse4] = useState('');
   const [texte, setTexte] = useState('');
   const [generer, setGenerer] = useState(false);
+  const cookie = document.cookie.split('; ').find(row => row.startsWith('cookie='))?.split('=')[1];
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -34,13 +35,12 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   const Exemple = async () => {
     try {
-      const response = await fetch('https://back-mv6pbo6mya-ew.a.run.app/Exemple', {
+      const response = await fetch(`http://127.0.0.1:8080/Exemple?cookie=${cookie}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include',
-      });
+      });;
       const data = await response.json();
       const text = data.candidates[0].content.parts[0].text;
 
@@ -78,12 +78,12 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
         nombreDeQuestions: page2,
       })
       try {
-        const reponse = await fetch('https://back-mv6pbo6mya-ew.a.run.app/Supprimer', {
+        const reponse = await fetch(`http://127.0.0.1:8080/Supprimer?cookie=${cookie}`, {
+          //const reponse = await fetch('https://back-mv6pbo6mya-ew.a.run.app/Supprimer', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
           },
-          credentials: 'include',
         });
         if (reponse.ok) {
           navigation.navigate('Nouvelle partie', { uniqueId, page2 });
@@ -97,12 +97,12 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
   const Generer = async (texte: string) => {
     setGenerer(true);
     try {
-      const reponse = await fetch('https://back-mv6pbo6mya-ew.a.run.app/Generer', {
+      const reponse = await fetch(`http://127.0.0.1:8080/Generer?cookie=${cookie}`, {
+        //const reponse = await fetch('https://back-mv6pbo6mya-ew.a.run.app/Generer', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include',
         body: JSON.stringify({ texte })
       });
 
