@@ -29,7 +29,7 @@ const NomPartie: React.FC<{ navigation: any }> = ({ navigation }) => {
         }
         else {
           try {
-            const response = await fetch("http://127.0.0.1:8080/Cookie", {
+            const response = await fetch("https://back-mv6pbo6mya-ew.a.run.app/Cookie", {
               method: "GET",
             });
             const data = await response.json();

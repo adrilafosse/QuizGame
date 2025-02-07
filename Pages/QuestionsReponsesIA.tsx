@@ -35,7 +35,7 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   const Exemple = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8080/Exemple?cookie=${cookie}`, {
+      const response = await fetch(`https://back-mv6pbo6mya-ew.a.run.app/Exemple?cookie=${cookie}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -78,8 +78,7 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
         nombreDeQuestions: page2,
       })
       try {
-        const reponse = await fetch(`http://127.0.0.1:8080/Supprimer?cookie=${cookie}`, {
-          //const reponse = await fetch('https://back-mv6pbo6mya-ew.a.run.app/Supprimer', {
+        const reponse = await fetch(`https://back-mv6pbo6mya-ew.a.run.app//Supprimer?cookie=${cookie}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -97,8 +96,7 @@ const QuestionsReponsesIA: React.FC<{ navigation: any }> = ({ navigation }) => {
   const Generer = async (texte: string) => {
     setGenerer(true);
     try {
-      const reponse = await fetch(`http://127.0.0.1:8080/Generer?cookie=${cookie}`, {
-        //const reponse = await fetch('https://back-mv6pbo6mya-ew.a.run.app/Generer', {
+      const reponse = await fetch(`https://back-mv6pbo6mya-ew.a.run.app//Generer?cookie=${cookie}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
