@@ -29,11 +29,10 @@ const NomPartie: React.FC<{ navigation: any }> = ({ navigation }) => {
         }
         else {
           try {
-            const response = await fetch("https://back-mv6pbo6mya-ew.a.run.app/Cookie", {
-              method: "GET",
+            const response = await fetch('https://back-mv6pbo6mya-ew.a.run.app/Cookie', {
+              method: 'GET',
+              credentials: 'include',
             });
-            const data = await response.json();
-            document.cookie = `cookie=${data.cookie}`;
             if (response.ok) {
               if (tiroir) {
                 navigation.navigate('Questions réponsesIA', { uniqueId, page });

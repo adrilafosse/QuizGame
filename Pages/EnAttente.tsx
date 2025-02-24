@@ -117,7 +117,7 @@ const EnAttente: React.FC<{ navigation: any }> = ({ navigation }) => {
           {Platform.OS !== 'web' ? (
             <Text style={styles.titre}>Une notification s'affichera sur votre téléphone pour chaque question. Vous disposerez de 2 minutes maximum pour y répondre.</Text>
           ) :
-            <Text style={styles.titre}>La question s'affichera automatiquement, et vous disposerez d'un maximum de 2 minutes pour y répondre.</Text>
+            <Text style={styles.titre}>La question s'affichera automatiquement, et vous disposerez d'un maximum de 60 secondes pour y répondre.</Text>
           }
           <Text style={styles.titre}>Chaque bonne réponse vaut 100 points ou plus en fonction de votre rapidité.</Text>
           <TouchableOpacity style={styles.bouton2} onPress={() => setQRcodeVariable(true)}>
